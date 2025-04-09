@@ -16,7 +16,6 @@ import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             HabitTrackerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
