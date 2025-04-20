@@ -13,14 +13,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
+import com.acevy.habit_tracker.data.local.dao.HabitLogDao
 import com.acevy.habit_tracker.data.local.database.AppDatabase
+import com.acevy.habit_tracker.data.repository.HabitLogRepositoryImpl
 import com.acevy.habit_tracker.data.repository.HabitRepositoryImpl
 import com.acevy.habit_tracker.di.HabitListViewModelFactory
+import com.acevy.habit_tracker.di.HabitLogViewModelFactory
+import com.acevy.habit_tracker.domain.usecase.AddHabitLogUseCase
 import com.acevy.habit_tracker.domain.usecase.AddHabitUseCase
 import com.acevy.habit_tracker.domain.usecase.GetHabitsUseCase
+import com.acevy.habit_tracker.domain.usecase.GetLogsByHabitUseCase
+import com.acevy.habit_tracker.ui.screen.PreviewHabitLogScreen
 import com.acevy.habit_tracker.ui.screen.PreviewHabitScreen
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
 import com.acevy.habit_tracker.ui.viewmodel.HabitListViewModel
+import com.acevy.habit_tracker.ui.viewmodel.HabitLogViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,16 +39,16 @@ class MainActivity : ComponentActivity() {
             AppDatabase::class.java, "habit-db"
         ).build()
 
-        val repository = HabitRepositoryImpl(db.habitDao())
-        val getHabitsUseCase = GetHabitsUseCase(repository)
-        val addHabitUseCase = AddHabitUseCase(repository)
+        val repo = HabitLogRepositoryImpl(db.habitLogDao())
+        val addUseCase = AddHabitLogUseCase(repo)
+        val getUseCase = GetLogsByHabitUseCase(repo)
 
-        val viewModelFactory = HabitListViewModelFactory(getHabitsUseCase, addHabitUseCase)
-        val viewModel = ViewModelProvider(this, viewModelFactory)[HabitListViewModel::class.java]
+        val viewModelFactory = HabitLogViewModelFactory(addUseCase, getUseCase)
+        val viewModel = ViewModelProvider(this, viewModelFactory)[HabitLogViewModel::class.java]
 
         setContent {
             HabitTrackerTheme {
-                PreviewHabitScreen(viewModel)
+                PreviewHabitLogScreen(viewModel)
             }
         }
     }
