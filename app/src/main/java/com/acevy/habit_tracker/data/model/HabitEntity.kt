@@ -9,8 +9,13 @@ data class HabitEntity(
     val userId: Long,
     val title: String,
     val description: String,
-    val goalType: String, // daily, weekly, etc
-    val reminderTime: String?, // HH:mm
+    val goalType: String,              // daily, weekly, etc
+    val category: String,              // new
+    val startDate: String,             // new
+    val endDate: String?,              // new
+    val reminderTime: String?,         // HH:mm
+    val reminderType: String?,         // daily, weekly, monthly
+    val reminderDays: List<Int>?,      // [1, 3, 5] or [1, 15]
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis(),
 )
