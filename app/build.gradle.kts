@@ -66,4 +66,16 @@ dependencies {
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
+
+    //splash api
+    implementation(libs.androidx.core.splashscreen)
+
+    // Compose UI
+    implementation(libs.ui)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.material3) // jika pakai Material 3
+    debugImplementation(libs.ui.tooling)
+
+    // Jika pakai alignment dari Foundation misalnya
+    implementation(libs.androidx.foundation)
 }
