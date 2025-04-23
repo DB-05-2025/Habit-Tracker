@@ -21,7 +21,7 @@ import com.acevy.habit_tracker.data.model.UserRewardEntity
         UserLevelEntity::class],
     version = 1
 )
-
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun habitDao(): HabitDao
     abstract fun habitLogDao(): HabitLogDao

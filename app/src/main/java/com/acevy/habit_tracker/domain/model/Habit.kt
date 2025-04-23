@@ -10,7 +10,12 @@ data class Habit(
     val title: String,
     val description: String,
     val goalType: String,
+    val category: String,
+    val startDate: String,
+    val endDate: String?,
     val reminderTime: String?,
+    val reminderType: String?,
+    val reminderDays: List<Int>?,
     val createdAt: Long,
     val updatedAt: Long,
 ) : Parcelable
