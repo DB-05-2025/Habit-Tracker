@@ -8,7 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.acevy.habit_tracker.data.local.database.AppDatabase
-import com.acevy.habit_tracker.data.model.UserRewardEntity
 import com.acevy.habit_tracker.data.repository.UserRewardRepositoryImpl
 import com.acevy.habit_tracker.domain.model.UserReward
 import com.acevy.habit_tracker.domain.usecase.InsertUserRewardUseCase
@@ -30,7 +29,7 @@ class MainActivity : ComponentActivity() {
         val userRewardRepo = UserRewardRepositoryImpl(userRewardDao)
         val insertUserRewardUseCase = InsertUserRewardUseCase(userRewardRepo)
 
-        // --- Insert Dummy Habit ---
+        // --- Insert Dummy Reward ---
         val dummyReward = UserReward(
             id = 0,
             userId = 1,
