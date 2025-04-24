@@ -1,7 +1,8 @@
 package com.acevy.habit_tracker.data.repository
 
 import com.acevy.habit_tracker.data.local.dao.HabitLogDao
-import com.acevy.habit_tracker.data.model.HabitLogEntity
+import com.acevy.habit_tracker.data.mapper.toDomain
+import com.acevy.habit_tracker.data.mapper.toEntity
 import com.acevy.habit_tracker.domain.model.HabitLog
 import com.acevy.habit_tracker.domain.repository.HabitLogRepository
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +12,7 @@ class HabitLogRepositoryImpl(
     private val dao: HabitLogDao,
 ) : HabitLogRepository {
 
-    override suspend fun addLog(log: HabitLog) {
+    override suspend fun insertHabitLog(log: HabitLog) {
         dao.insertHabitLog(log.toEntity())
     }
 
@@ -27,11 +28,4 @@ class HabitLogRepositoryImpl(
         dao.deleteHabitLog(log.toEntity())
     }
 
-    private fun HabitLog.toEntity() = HabitLogEntity(
-        id, habitId, date, status, note, createdAt, updatedAt
-    )
-
-    private fun HabitLogEntity.toDomain() = HabitLog(
-        id, habitId, date, status, note, createdAt, updatedAt
-    )
 }

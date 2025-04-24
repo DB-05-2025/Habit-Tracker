@@ -3,7 +3,7 @@ package com.acevy.habit_tracker.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.acevy.habit_tracker.domain.model.HabitLog
-import com.acevy.habit_tracker.domain.usecase.AddHabitLogUseCase
+import com.acevy.habit_tracker.domain.usecase.InsertHabitLogUseCase
 import com.acevy.habit_tracker.domain.usecase.GetLogsByHabitUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class HabitLogViewModel(
-    private val addHabitLogUseCase: AddHabitLogUseCase,
+    private val addHabitLogUseCase: InsertHabitLogUseCase,
     private val getLogsByHabitUseCase: GetLogsByHabitUseCase,
 ) : ViewModel() {
 
