@@ -1,14 +1,14 @@
 package com.acevy.habit_tracker.data.local.database
 
 import androidx.room.*
-import com.acevy.habit_tracker.data.local.dao.UserRewardDao
-import com.acevy.habit_tracker.data.model.UserRewardEntity
+import com.acevy.habit_tracker.data.local.dao.UserDao
+import com.acevy.habit_tracker.data.model.UserEntity
 
 @Database(
-    entities = [UserRewardEntity::class],
+    entities = [UserEntity::class],
     version = 1
 )
 
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun userRewardDao(): UserRewardDao
+    abstract fun userDao(): UserDao
 }

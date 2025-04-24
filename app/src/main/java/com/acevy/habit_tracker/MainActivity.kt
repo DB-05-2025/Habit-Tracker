@@ -8,9 +8,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.acevy.habit_tracker.data.local.database.AppDatabase
-import com.acevy.habit_tracker.data.repository.UserRewardRepositoryImpl
-import com.acevy.habit_tracker.domain.model.UserReward
-import com.acevy.habit_tracker.domain.usecase.InsertUserRewardUseCase
+import com.acevy.habit_tracker.data.repository.UserRepositoryImpl
+import com.acevy.habit_tracker.domain.model.User
+import com.acevy.habit_tracker.domain.usecase.GetUserByIdUseCase
+import com.acevy.habit_tracker.domain.usecase.InsertUserUseCase
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
 import kotlinx.coroutines.launch
 
@@ -25,25 +26,27 @@ class MainActivity : ComponentActivity() {
             AppDatabase::class.java, "habit-db"
         ).build()
 
-        val userRewardDao = db.userRewardDao()
-        val userRewardRepo = UserRewardRepositoryImpl(userRewardDao)
-        val insertUserRewardUseCase = InsertUserRewardUseCase(userRewardRepo)
+        val userDao = db.userDao()
+        val userRepo = UserRepositoryImpl(userDao)
+        val insertUserUseCase = InsertUserUseCase(userRepo)
+        val getUserByIdUseCase = GetUserByIdUseCase(userRepo)
 
-        // --- Insert Dummy Reward ---
-        val dummyReward = UserReward(
+        // --- Insert Dummy User ---
+        val newUser = User(
             id = 0,
-            userId = 1,
-            amount = 50,
-            source = "habit_completed",
-            earnedAt = System.currentTimeMillis()
+            firstName = "Darul",
+            lastName = "Annas",
+            gender = "male",
+            birthDate = "1996-09-25",
+            createdAt = System.currentTimeMillis()
         )
 
         lifecycleScope.launch {
             try {
-                insertUserRewardUseCase(dummyReward)
-                Log.d("RewardInsert", "Reward berhasil disimpan")
+                val insertedId = insertUserUseCase(newUser)
+                Log.d("UserInsert", "User berhasil ditambahkan dengan id=$insertedId")
             } catch (e: Exception) {
-                Log.e("RewardInsert", "Gagal simpan reward: ${e.message}")
+                Log.e("UserInsert", "Gagal insert user: ${e.message}")
             }
         }
 

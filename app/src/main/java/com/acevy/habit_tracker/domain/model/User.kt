@@ -4,10 +4,11 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class UserReward(
+data class User(
     val id: Long,
-    val userId: Long,
-    val amount: Int,
-    val source: String,
-    val earnedAt: Long,
+    val firstName: String,
+    val lastName: String,
+    val gender: String,
+    val birthDate: String,
+    val createdAt: Long,
 ) : Parcelable
