@@ -8,10 +8,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.acevy.habit_tracker.data.local.database.AppDatabase
-import com.acevy.habit_tracker.data.repository.UserRepositoryImpl
-import com.acevy.habit_tracker.domain.model.User
-import com.acevy.habit_tracker.domain.usecase.GetUserByIdUseCase
-import com.acevy.habit_tracker.domain.usecase.InsertUserUseCase
+import com.acevy.habit_tracker.data.repository.UserLevelRepositoryImpl
+import com.acevy.habit_tracker.domain.model.UserLevel
+import com.acevy.habit_tracker.domain.usecase.GetUserLevelUseCase
+import com.acevy.habit_tracker.domain.usecase.UpdateUserLevelByXpUseCase
+import com.acevy.habit_tracker.domain.usecase.UpdateUserLevelUseCase
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
 import kotlinx.coroutines.launch
 
@@ -26,27 +27,44 @@ class MainActivity : ComponentActivity() {
             AppDatabase::class.java, "habit-db"
         ).build()
 
-        val userDao = db.userDao()
-        val userRepo = UserRepositoryImpl(userDao)
-        val insertUserUseCase = InsertUserUseCase(userRepo)
-        val getUserByIdUseCase = GetUserByIdUseCase(userRepo)
+        val userLevelDao = db.userLevelDao()
+        val userLevelRepo = UserLevelRepositoryImpl(userLevelDao)
 
-        // --- Insert Dummy User ---
-        val newUser = User(
-            id = 0,
-            firstName = "Darul",
-            lastName = "Annas",
-            gender = "male",
-            birthDate = "1996-09-25",
-            createdAt = System.currentTimeMillis()
+        val getUserLevelUseCase = GetUserLevelUseCase(userLevelRepo)
+        val updateUserLevelUseCase = UpdateUserLevelUseCase(userLevelRepo)
+        val updateUserLevelByXpUseCase = UpdateUserLevelByXpUseCase(
+            getUserLevelUseCase, updateUserLevelUseCase
         )
+
+        // --- Insert Dummy User Level ---
+        val levelData = UserLevel(
+            id = 0,
+            userId = 1,
+            level = 2,
+            currentXp = 150,
+            updatedAt = System.currentTimeMillis()
+        )
+        val dummyXp = 250
+        val userId = 1L
 
         lifecycleScope.launch {
             try {
-                val insertedId = insertUserUseCase(newUser)
-                Log.d("UserInsert", "User berhasil ditambahkan dengan id=$insertedId")
+                updateUserLevelUseCase(levelData)
+                Log.d("UserLevelTest", "User level berhasil disimpan")
+
+                updateUserLevelByXpUseCase(userId, dummyXp)
+                Log.d("XPTest", "XP $dummyXp berhasil diproses")
+
+                // Tampilkan hasil level akhir
+                getUserLevelUseCase(userId).collect { level ->
+                    level?.let {
+                        Log.d("XPTest", "Level: ${it.level}, XP: ${it.currentXp}")
+                    }
+                }
             } catch (e: Exception) {
-                Log.e("UserInsert", "Gagal insert user: ${e.message}")
+                Log.e("UserLevelTest", "Gagal simpan user level: ${e.message}")
+
+                Log.e("XPTest", "Gagal update XP: ${e.message}")
             }
         }
 
