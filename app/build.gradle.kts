@@ -67,4 +67,7 @@ dependencies {
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
+
+    //splash api
+    implementation(libs.androidx.core.splashscreen)
 }

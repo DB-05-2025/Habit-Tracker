@@ -6,6 +6,7 @@ import com.acevy.habit_tracker.domain.usecase.InsertHabitLogUseCase
 import com.acevy.habit_tracker.domain.usecase.GetLogsByHabitUseCase
 import com.acevy.habit_tracker.ui.viewmodel.HabitLogViewModel
 
+@Suppress("UNCHECKED_CAST")
 class HabitLogViewModelFactory(
     private val add: InsertHabitLogUseCase,
     private val get: GetLogsByHabitUseCase,
