@@ -24,6 +24,6 @@ sealed class OnboardingModel(
     data object ThirdPage : OnboardingModel(
         image = R.drawable.img_into_3,
         title = "Bangun Rantai Kebiasaan",
-        description = "Setiap hari anda melakukan kebiasaan anda anda memperkuat rantai kemajuan anda fitur statistik visual kami akan membantu anda memantau streak anda dan tetap termotivasi untuk tidak melewatkan satu hari pun"
+        description = "Setiap hari anda melakukan kebiasaan anda anda memperkuat rantai kemajuan anda fitur statistik visual kami akan membantu anda memantau streak anda dan tetap termotivasi"
     )
 }

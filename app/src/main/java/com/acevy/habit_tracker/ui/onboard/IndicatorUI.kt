@@ -21,7 +21,7 @@ fun IndicatorUI(
     pageSize: Int,
     currentPage: Int,
     selectedColor: Color = Color.Green,
-    unselectedColor: Color = Color.Black
+    unselectedColor: Color = Color.Gray
 ) {
     Row(horizontalArrangement = Arrangement.SpaceBetween) {
         repeat(pageSize) { it ->

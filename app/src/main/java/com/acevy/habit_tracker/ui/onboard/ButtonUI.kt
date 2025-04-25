@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ButtonUI(
-    text: String = "Next",
+    text: String = "Lanjut",
     backgroundColor: Color = Color.Green, // Mengubah warna default menjadi hijau
     textColor: Color = MaterialTheme.colorScheme.onPrimary,
     textStyle: TextStyle = MaterialTheme.typography.titleMedium,
@@ -43,7 +43,7 @@ fun ButtonUI(
 @Preview(showBackground = true)
 @Composable
 fun NextButton() {
-    ButtonUI(text = "Next", backgroundColor = Color.Green) { // Menggunakan warna hijau
+    ButtonUI(text = "Lanjut", backgroundColor = Color.Green) { // Menggunakan warna hijau
         // onClick handler
     }
 }

@@ -59,7 +59,7 @@ fun OnboardingScreen(
                 pageSize = pages.size,
                 currentPage = pagerState.currentPage,
                 selectedColor = Color.Green,
-                unselectedColor = Color.Black
+                unselectedColor = Color.Gray
             )
 
             Spacer(modifier = Modifier.padding(16.dp))
@@ -87,11 +87,14 @@ fun OnboardingScreen(
                     Spacer(modifier = Modifier.weight(1f))
                 }
 
-                // Tombol Next dan Tombol Finish (berubah tergantung halaman)
+                // Tombol Lanjut dan Tombol Finish (berubah tergantung halaman)
                 val isLastPage = pagerState.currentPage == pages.size - 1
                 ButtonUI(
-                    text = if (isLastPage) "Get Started" else "Next",
-                    backgroundColor = if (isLastPage) Color.Green else MaterialTheme.colorScheme.primary
+                    text = if (isLastPage) "Mulai" else "Lanjut",
+                    backgroundColor = if (isLastPage) Color.Green else Color.Green, // Ubah warna tombol "Lanjut" menjadi hijau
+                    textColor = Color.White, // Opsional: Tambahkan warna teks agar lebih kontras
+                    textStyle = MaterialTheme.typography.bodySmall,
+                    fontSize = 13
                 ) {
                     if (isLastPage) {
                         onFinish()
