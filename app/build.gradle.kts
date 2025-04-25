@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp")
     id("kotlin-parcelize")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -45,7 +46,7 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -69,13 +70,4 @@ dependencies {
 
     //splash api
     implementation(libs.androidx.core.splashscreen)
-
-    // Compose UI
-    implementation(libs.ui)
-    implementation(libs.ui.tooling.preview)
-    implementation(libs.material3) // jika pakai Material 3
-    debugImplementation(libs.ui.tooling)
-
-    // Jika pakai alignment dari Foundation misalnya
-    implementation(libs.androidx.foundation)
 }
