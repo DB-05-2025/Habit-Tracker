@@ -1,12 +1,17 @@
-package com.acevy.habit_tracker.data.local.dao
+package com.acevy.habit_tracker.data.local.dao.habit
 
-import androidx.room.*
-import com.acevy.habit_tracker.data.model.HabitEntity
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
+import com.acevy.habit_tracker.data.model.habit.HabitEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HabitDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun insertHabit(habit: HabitEntity): Long
 
     @Update

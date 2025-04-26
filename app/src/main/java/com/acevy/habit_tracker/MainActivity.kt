@@ -5,24 +5,14 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.acevy.habit_tracker.data.local.database.AppDatabase
-import com.acevy.habit_tracker.data.repository.HabitRepositoryImpl
-import com.acevy.habit_tracker.di.HabitListViewModelFactory
-import com.acevy.habit_tracker.domain.model.Habit
-import com.acevy.habit_tracker.domain.usecase.AddHabitUseCase
-import com.acevy.habit_tracker.domain.usecase.GetHabitsUseCase
+import com.acevy.habit_tracker.data.repository.habit.HabitRepositoryImpl
+import com.acevy.habit_tracker.domain.model.habit.Habit
+import com.acevy.habit_tracker.domain.usecase.habit.InsertHabitUseCase
+import com.acevy.habit_tracker.domain.usecase.habit.GetHabitsUseCase
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
-import com.acevy.habit_tracker.ui.viewmodel.HabitListViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -38,35 +28,30 @@ class MainActivity : ComponentActivity() {
         ).build()
 
         val habitRepo = HabitRepositoryImpl(db.habitDao())
-        val addHabitUseCase = AddHabitUseCase(habitRepo)
+        val insertHabitUseCase = InsertHabitUseCase(habitRepo)
         val getHabitsUseCase = GetHabitsUseCase(habitRepo)
 
         // --- Insert Dummy Habit ---
         val dummyHabit = Habit(
-            id = 0,
+            habitId = 0,
             userId = 1,
             title = "Coba Habit Insert",
-            description = "Test insert dari MainActivity",
-            goalType = "daily",
-            category = "Kesehatan",
-            startDate = "2025-04-22",
-            endDate = null,
+            note = "Test insert dari MainActivity",
+            repeatDays = listOf(1, 3, 5),
             reminderTime = "06:30",
-            reminderType = "weekly",
-            reminderDays = listOf(1, 3, 5),
             createdAt = System.currentTimeMillis(),
             updatedAt = System.currentTimeMillis()
         )
 
         lifecycleScope.launch {
             try {
-                addHabitUseCase(dummyHabit)
-                Log.d("HabitInsert", "✅ Habit berhasil ditambahkan")
+                insertHabitUseCase(dummyHabit)
+                Log.d("HabitInsert", "Habit berhasil ditambahkan")
 
                 val list = getHabitsUseCase(1).first()
                 Log.d("HabitCheck", "Total habit user 1: ${list.size}")
             } catch (e: Exception) {
-                Log.e("HabitInsert", "❌ Gagal insert habit: ${e.message}")
+                Log.e("HabitInsert", "Gagal insert habit: ${e.message}")
             }
         }
 
