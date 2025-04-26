@@ -1,11 +1,13 @@
 package com.acevy.habit_tracker
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +27,7 @@ import com.acevy.habit_tracker.ui.onboard.OnboardingScreen
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -62,24 +65,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             HabitTrackerTheme {
-                ShowOnboardingScreen()
+                HabitTrackerApp()
             }
         }
     }
-}
-
-@Composable
-private fun ShowOnboardingScreen() {
-    val context = LocalContext.current
-
-    Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
-        OnboardingScreen {
-            Toast.makeText(context, "Onboarding Completed", Toast.LENGTH_SHORT).show()
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
 }
