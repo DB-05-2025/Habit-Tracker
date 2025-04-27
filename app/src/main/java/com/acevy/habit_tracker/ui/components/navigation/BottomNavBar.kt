@@ -1,8 +1,12 @@
 package com.acevy.habit_tracker.ui.components.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ShowChart
 import androidx.compose.material.icons.filled.DashboardCustomize
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.ShowChart
+import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -12,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.acevy.habit_tracker.ui.navigation.NavigationItem
+import com.acevy.habit_tracker.ui.model.NavigationItem
 import com.acevy.habit_tracker.ui.navigation.Screen
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.AppType
@@ -28,7 +32,9 @@ fun BottomNavBar(
     val navItems = listOf(
         NavigationItem("Home", Icons.Default.Home, Screen.Home),
         NavigationItem("Habits", Icons.Default.DashboardCustomize, Screen.Habit),
-    )
+        NavigationItem("Progress", Icons.AutoMirrored.Filled.ShowChart, Screen.Progress),
+        NavigationItem("Notifications", Icons.Default.Notifications, Screen.Notification),
+        )
 
     NavigationBar(modifier = modifier, containerColor = AppColors.White) {
         navItems.forEach { item ->
@@ -59,7 +65,7 @@ fun BottomNavBar(
                         style = AppType.body10
                     )
                 },
-                alwaysShowLabel = true
+                alwaysShowLabel = false
             )
         }
     }

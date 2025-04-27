@@ -18,10 +18,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.acevy.habit_tracker.data.local.datastore.UserPreferences
 import com.acevy.habit_tracker.ui.layout.MainScreenWithBottomNav
+import com.acevy.habit_tracker.ui.screens.habit.AddHabitScreen
 import com.acevy.habit_tracker.ui.screens.habit.HabitScreen
 import com.acevy.habit_tracker.ui.screens.home.HomeScreen
+import com.acevy.habit_tracker.ui.screens.notification.NotificationScreen
 import com.acevy.habit_tracker.ui.screens.onboarding.GetStartedScreen
 import com.acevy.habit_tracker.ui.screens.onboarding.OnboardingScreen
+import com.acevy.habit_tracker.ui.screens.progress.ProgressScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -97,6 +100,27 @@ fun AppNavHost(
                 }
             }
 
+            composable(Screen.Notification.route) {
+                MainScreenWithBottomNav(
+                    navController = navController,
+                    currentRoute = Screen.Notification.route
+                ) { padding ->
+                    NotificationScreen(modifier = Modifier.padding(padding))
+                }
+            }
+
+            composable(Screen.Progress.route) {
+                MainScreenWithBottomNav(
+                    navController = navController,
+                    currentRoute = Screen.Notification.route
+                ) { padding ->
+                    ProgressScreen(
+                        userPreferences = userPreferences,
+                        modifier = Modifier.padding(padding)
+                    )
+                }
+            }
+
             composable(Screen.Habit.route) {
                 MainScreenWithBottomNav(
                     navController = navController,
@@ -104,6 +128,12 @@ fun AppNavHost(
                 ) { padding ->
                     HabitScreen(modifier = Modifier.padding(padding))
                 }
+            }
+
+            composable(Screen.AddHabit.route) {
+                AddHabitScreen(
+                    onBack = { navController.popBackStack() }
+                )
             }
         }
     }
