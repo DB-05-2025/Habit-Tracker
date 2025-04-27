@@ -27,7 +27,7 @@ fun DotsIndicator(
         modifier = modifier
     ) {
         repeat(totalPages) { index ->
-            val isSelected = index + 1 == currentPage
+            val isSelected = index == currentPage
             Box(
                 modifier = modifier
                     .width(if (isSelected) 20.dp else 8.dp)

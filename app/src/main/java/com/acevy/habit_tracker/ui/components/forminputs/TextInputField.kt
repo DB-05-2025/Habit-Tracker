@@ -68,7 +68,7 @@ fun TextInputField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
-            textStyle = AppType.body12,
+            textStyle = AppType.body12.copy(color = AppColors.GrayDark),
             shape = AppShapes.Rounded16,
             placeholder = {
                 Text(text = placeholder, style = AppType.body12)

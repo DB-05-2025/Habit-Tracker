@@ -1,30 +1,26 @@
 package com.acevy.habit_tracker
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.annotation.RequiresApi
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.acevy.habit_tracker.data.local.database.AppDatabase
-import com.acevy.habit_tracker.data.repository.HabitLogRepositoryImpl
-import com.acevy.habit_tracker.domain.model.HabitLog
-import com.acevy.habit_tracker.domain.usecase.InsertHabitLogUseCase
+import com.acevy.habit_tracker.data.repository.habit.HabitRepositoryImpl
+import com.acevy.habit_tracker.domain.model.habit.Habit
+import com.acevy.habit_tracker.domain.usecase.habit.InsertHabitUseCase
+import com.acevy.habit_tracker.domain.usecase.habit.GetHabitsUseCase
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
-import com.acevy.habit_tracker.ui.onboard.OnboardingScreen
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -35,51 +31,39 @@ class MainActivity : ComponentActivity() {
             AppDatabase::class.java, "habit-db"
         ).build()
 
-        val habitLogDao = db.habitLogDao()
-        val habitLogRepo = HabitLogRepositoryImpl(habitLogDao)
-        val insertHabitLogUseCase = InsertHabitLogUseCase(habitLogRepo)
+        val habitRepo = HabitRepositoryImpl(db.habitDao())
+        val insertHabitUseCase = InsertHabitUseCase(habitRepo)
+        val getHabitsUseCase = GetHabitsUseCase(habitRepo)
 
         // --- Insert Dummy Habit ---
-        val dummyLog = HabitLog(
-            id = 0,
-            habitId = 1,
-            date = "2025-04-22",
-            status = "completed",
-            note = "Berhasil dilakukan sesuai jadwal",
+        val dummyHabit = Habit(
+            habitId = 0,
+            userId = 1,
+            title = "Coba Habit Insert",
+            note = "Test insert dari MainActivity",
+            repeatDays = listOf(1, 3, 5),
+            reminderTime = "06:30",
             createdAt = System.currentTimeMillis(),
             updatedAt = System.currentTimeMillis()
         )
 
         lifecycleScope.launch {
             try {
-                insertHabitLogUseCase(dummyLog)
-                Log.d("HabitLogTest", "HabitLog berhasil ditambahkan")
+                insertHabitUseCase(dummyHabit)
+                Log.d("HabitInsert", "Habit berhasil ditambahkan")
+
+                val list = getHabitsUseCase(1).first()
+                Log.d("HabitCheck", "Total habit user 1: ${list.size}")
             } catch (e: Exception) {
-                Log.e("HabitLogTest", "Gagal insert habit log: ${e.message}")
+                Log.e("HabitInsert", "Gagal insert habit: ${e.message}")
             }
         }
         installSplashScreen()
 
         setContent {
             HabitTrackerTheme {
-                ShowOnboardingScreen()
+                HabitTrackerApp()
             }
         }
     }
-}
-
-@Composable
-private fun ShowOnboardingScreen() {
-    val context = LocalContext.current
-
-    Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
-        OnboardingScreen {
-            Toast.makeText(context, "Onboarding Completed", Toast.LENGTH_SHORT).show()
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
 }
