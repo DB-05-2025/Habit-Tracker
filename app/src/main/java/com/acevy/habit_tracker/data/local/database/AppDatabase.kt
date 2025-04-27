@@ -1,10 +1,10 @@
 package com.acevy.habit_tracker.data.local.database
 
 import androidx.room.*
-import com.acevy.habit_tracker.data.local.dao.HabitDao
-import com.acevy.habit_tracker.data.model.HabitEntity
+import com.acevy.habit_tracker.data.local.dao.notificationlog.NotificationLogDao
+import com.acevy.habit_tracker.data.model.notificationlog.NotificationLogEntity
 
-@Database(entities = [HabitEntity::class], version = 1)
+@Database(entities = [NotificationLogEntity::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun habitDao(): HabitDao
+    abstract fun notificationLogDao(): NotificationLogDao
 }
