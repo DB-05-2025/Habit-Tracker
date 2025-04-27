@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp")
     id("kotlin-parcelize")
-    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -46,11 +45,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.coil.compose)
-    implementation(libs.androidx.datastore.preferences)
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.material.icons.extended)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -64,16 +59,11 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    androidTestImplementation(libs.androidx.navigation.testing)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
 
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
-
-    //splash api
-    implementation(libs.androidx.core.splashscreen)
 }
