@@ -4,7 +4,5 @@ import com.acevy.habit_tracker.domain.model.habit.Habit
 import com.acevy.habit_tracker.domain.repository.habit.HabitRepository
 
 class UpdateHabitUseCase(private val repo: HabitRepository) {
-    suspend operator fun invoke(habit: Habit) {
-        repo.updateHabit(habit)
-    }
+    suspend operator fun invoke(habit: Habit) = repo.updateHabit(habit)
 }
