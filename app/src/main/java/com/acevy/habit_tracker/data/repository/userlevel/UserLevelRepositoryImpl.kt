@@ -1,12 +1,10 @@
-package com.acevy.habit_tracker.data.repository
+package com.acevy.habit_tracker.data.repository.userlevel
 
-import com.acevy.habit_tracker.data.local.dao.UserLevelDao
-import com.acevy.habit_tracker.data.mapper.toDomain
-import com.acevy.habit_tracker.data.mapper.toEntity
-import com.acevy.habit_tracker.domain.model.UserLevel
-import com.acevy.habit_tracker.domain.repository.UserLevelRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import com.acevy.habit_tracker.data.local.dao.userlevel.UserLevelDao
+import com.acevy.habit_tracker.data.mapper.userlevel.toDomain
+import com.acevy.habit_tracker.data.mapper.userlevel.toEntity
+import com.acevy.habit_tracker.domain.model.userlevel.UserLevel
+import com.acevy.habit_tracker.domain.repository.userlevel.UserLevelRepository
 
 class UserLevelRepositoryImpl(
     private val dao: UserLevelDao,

@@ -1,7 +1,7 @@
-package com.acevy.habit_tracker.domain.usecase
+package com.acevy.habit_tracker.domain.usecase.userlevel
 
-import com.acevy.habit_tracker.domain.model.UserLevel
-import com.acevy.habit_tracker.domain.repository.UserLevelRepository
+import com.acevy.habit_tracker.domain.model.userlevel.UserLevel
+import com.acevy.habit_tracker.domain.repository.userlevel.UserLevelRepository
 
 // Logika otomatis tambah XP -> naik Level -> threshold bertahap -> insert/update otomatis.
 class UpdateUserXpAndLevelUseCase(private val repo: UserLevelRepository) {

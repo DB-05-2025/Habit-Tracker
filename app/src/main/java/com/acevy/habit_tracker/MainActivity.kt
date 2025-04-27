@@ -8,9 +8,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.acevy.habit_tracker.data.local.database.AppDatabase
-import com.acevy.habit_tracker.data.repository.UserLevelRepositoryImpl
-import com.acevy.habit_tracker.domain.model.UserLevel
-import com.acevy.habit_tracker.domain.usecase.UpdateUserXpAndLevelUseCase
+import com.acevy.habit_tracker.data.repository.userlevel.UserLevelRepositoryImpl
+import com.acevy.habit_tracker.domain.usecase.userlevel.UpdateUserXpAndLevelUseCase
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
 import kotlinx.coroutines.launch
 

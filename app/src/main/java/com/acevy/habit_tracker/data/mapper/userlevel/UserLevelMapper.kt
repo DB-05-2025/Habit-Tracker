@@ -1,7 +1,7 @@
-package com.acevy.habit_tracker.data.mapper
+package com.acevy.habit_tracker.data.mapper.userlevel
 
-import com.acevy.habit_tracker.data.model.UserLevelEntity
-import com.acevy.habit_tracker.domain.model.UserLevel
+import com.acevy.habit_tracker.data.model.userlevel.UserLevelEntity
+import com.acevy.habit_tracker.domain.model.userlevel.UserLevel
 
 fun UserLevel.toEntity() = UserLevelEntity(
     userLevelId = userLevelId,
