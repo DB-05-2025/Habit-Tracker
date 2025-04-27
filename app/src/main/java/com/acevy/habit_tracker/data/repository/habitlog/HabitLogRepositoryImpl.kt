@@ -12,20 +12,12 @@ class HabitLogRepositoryImpl(
     private val dao: HabitLogDao,
 ) : HabitLogRepository {
 
-    override suspend fun insertHabitLog(log: HabitLog): Long {
-        return dao.insertHabitLog(log.toEntity())
-    }
+    override suspend fun insertHabitLog(log: HabitLog): Long = dao.insertHabitLog(log.toEntity())
 
-    override suspend fun updateHabitLog(log: HabitLog) {
-        dao.updateHabitLog(log.toEntity())
-    }
+    override suspend fun updateHabitLog(log: HabitLog) = dao.updateHabitLog(log.toEntity())
 
-    override suspend fun deleteHabitLog(log: HabitLog) {
-        dao.deleteHabitLog(log.toEntity())
-    }
+    override suspend fun deleteHabitLog(log: HabitLog) = dao.deleteHabitLog(log.toEntity())
 
-    override fun getLogsByHabitId(habitId: Long): Flow<List<HabitLog>> {
-        return dao.getLogsByHabitId(habitId).map { list -> list.map { it.toDomain() } }
-    }
-
+    override fun getLogsByHabitId(habitId: Long): Flow<List<HabitLog>> =
+        dao.getLogsByHabitId(habitId).map { list -> list.map { it.toDomain() } }
 }
