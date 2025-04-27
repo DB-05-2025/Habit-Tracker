@@ -44,8 +44,6 @@ class UpdateUserXpAndLevelUseCase(private val repo: UserLevelRepository) {
         }
     }
 
-    private fun getXpThresholdForLevel(level: Int): Int {
-        return 100 + (level - 1) * 20
-    }
+    private fun getXpThresholdForLevel(level: Int): Int = 100 + (level - 1) * 20
 }
 

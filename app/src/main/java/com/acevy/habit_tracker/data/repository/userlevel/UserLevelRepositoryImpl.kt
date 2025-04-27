@@ -9,15 +9,12 @@ import com.acevy.habit_tracker.domain.repository.userlevel.UserLevelRepository
 class UserLevelRepositoryImpl(
     private val dao: UserLevelDao,
 ) : UserLevelRepository {
-    override suspend fun insertUserLevel(userLevel: UserLevel): Long {
-        return dao.insertUserLevel(userLevel.toEntity())
-    }
+    override suspend fun insertUserLevel(userLevel: UserLevel): Long =
+        dao.insertUserLevel(userLevel.toEntity())
 
-    override suspend fun updateUserLevel(userLevel: UserLevel) {
+    override suspend fun updateUserLevel(userLevel: UserLevel) =
         dao.updateUserLevel(userLevel.toEntity())
-    }
 
-    override suspend fun getUserLevelByUserId(userId: Long): UserLevel? {
-        return dao.getUserLevelByUserId(userId)?.toDomain()
-    }
+    override suspend fun getUserLevelByUserId(userId: Long): UserLevel? =
+        dao.getUserLevelByUserId(userId)?.toDomain()
 }
