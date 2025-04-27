@@ -25,14 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.acevy.habit_tracker.data.local.datastore.UserPreferences
-import com.acevy.habit_tracker.ui.components.cards.ProgressCard
+import com.acevy.habit_tracker.ui.components.cards.HomeProgressCard
 import com.acevy.habit_tracker.ui.components.navigation.BottomNavBar
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.AppType
 import com.acevy.habit_tracker.utils.getFormattedToday
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -74,12 +71,13 @@ fun HomeScreen(
                     }
                     append("!")
                 },
-                style = AppType.bold20
+                style = AppType.bold20,
+                color = AppColors.GrayDark
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            ProgressCard(percent = 0f)
+            HomeProgressCard(percent = 0f)
 
             Spacer(modifier = Modifier.height(32.dp))
 
