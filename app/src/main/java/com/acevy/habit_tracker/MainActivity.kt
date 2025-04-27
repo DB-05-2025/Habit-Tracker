@@ -10,9 +10,7 @@ import androidx.room.Room
 import com.acevy.habit_tracker.data.local.database.AppDatabase
 import com.acevy.habit_tracker.data.repository.UserLevelRepositoryImpl
 import com.acevy.habit_tracker.domain.model.UserLevel
-import com.acevy.habit_tracker.domain.usecase.GetUserLevelUseCase
-import com.acevy.habit_tracker.domain.usecase.UpdateUserLevelByXpUseCase
-import com.acevy.habit_tracker.domain.usecase.UpdateUserLevelUseCase
+import com.acevy.habit_tracker.domain.usecase.UpdateUserXpAndLevelUseCase
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
 import kotlinx.coroutines.launch
 
@@ -27,44 +25,29 @@ class MainActivity : ComponentActivity() {
             AppDatabase::class.java, "habit-db"
         ).build()
 
-        val userLevelDao = db.userLevelDao()
-        val userLevelRepo = UserLevelRepositoryImpl(userLevelDao)
+        val userLevelRepo = UserLevelRepositoryImpl(db.userLevelDao())
+        val updateUserXpAndLevelUseCase = UpdateUserXpAndLevelUseCase(userLevelRepo)
 
-        val getUserLevelUseCase = GetUserLevelUseCase(userLevelRepo)
-        val updateUserLevelUseCase = UpdateUserLevelUseCase(userLevelRepo)
-        val updateUserLevelByXpUseCase = UpdateUserLevelByXpUseCase(
-            getUserLevelUseCase, updateUserLevelUseCase
-        )
-
-        // --- Insert Dummy User Level ---
-        val levelData = UserLevel(
-            id = 0,
-            userId = 1,
-            level = 2,
-            currentXp = 150,
-            updatedAt = System.currentTimeMillis()
-        )
-        val dummyXp = 250
-        val userId = 1L
+        // --- Insert Dummy userId dan XP ---
+        val dummyUserId = 1L
+        val xpEarned = 130 // Misal user dapet XP dari menyelesaikan habit
 
         lifecycleScope.launch {
             try {
-                updateUserLevelUseCase(levelData)
-                Log.d("UserLevelTest", "User level berhasil disimpan")
+                updateUserXpAndLevelUseCase(dummyUserId, xpEarned)
+                Log.d("UserLevelUpdate", "XP user berhasil ditambahkan: $xpEarned XP")
 
-                updateUserLevelByXpUseCase(userId, dummyXp)
-                Log.d("XPTest", "XP $dummyXp berhasil diproses")
-
-                // Tampilkan hasil level akhir
-                getUserLevelUseCase(userId).collect { level ->
-                    level?.let {
-                        Log.d("XPTest", "Level: ${it.level}, XP: ${it.currentXp}")
-                    }
+                val updatedUserLevel = userLevelRepo.getUserLevelByUserId(dummyUserId)
+                if (updatedUserLevel != null) {
+                    Log.d(
+                        "UserLevelCheck",
+                        "Level: ${updatedUserLevel.level}, XP: ${updatedUserLevel.currentXp}"
+                    )
+                } else {
+                    Log.e("UserLevelCheck", "User level tidak ditemukan")
                 }
             } catch (e: Exception) {
-                Log.e("UserLevelTest", "Gagal simpan user level: ${e.message}")
-
-                Log.e("XPTest", "Gagal update XP: ${e.message}")
+                Log.e("UserLevelUpdate", "Gagal update XP/Level: ${e.message}")
             }
         }
 

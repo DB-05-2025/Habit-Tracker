@@ -4,6 +4,7 @@ import com.acevy.habit_tracker.domain.model.UserLevel
 import kotlinx.coroutines.flow.Flow
 
 interface UserLevelRepository {
-    suspend fun insertOrUpdate(userLevel: UserLevel)
-    fun getUserLevel(userId: Long): Flow<UserLevel?>
+    suspend fun insertUserLevel(userLevel: UserLevel): Long
+    suspend fun updateUserLevel(userLevel: UserLevel)
+    suspend fun getUserLevelByUserId(userId: Long): UserLevel?
 }

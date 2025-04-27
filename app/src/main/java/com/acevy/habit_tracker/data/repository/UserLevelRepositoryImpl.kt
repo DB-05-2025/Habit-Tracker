@@ -11,11 +11,15 @@ import kotlinx.coroutines.flow.map
 class UserLevelRepositoryImpl(
     private val dao: UserLevelDao,
 ) : UserLevelRepository {
-    override suspend fun insertOrUpdate(userLevel: UserLevel) {
-        dao.insertOrUpdate(userLevel.toEntity())
+    override suspend fun insertUserLevel(userLevel: UserLevel): Long {
+        return dao.insertUserLevel(userLevel.toEntity())
     }
 
-    override fun getUserLevel(userId: Long): Flow<UserLevel?> {
-        return dao.getUserLevel(userId).map { it?.toDomain() }
+    override suspend fun updateUserLevel(userLevel: UserLevel) {
+        dao.updateUserLevel(userLevel.toEntity())
+    }
+
+    override suspend fun getUserLevelByUserId(userId: Long): UserLevel? {
+        return dao.getUserLevelByUserId(userId)?.toDomain()
     }
 }
