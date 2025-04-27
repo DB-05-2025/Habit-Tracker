@@ -17,4 +17,9 @@ object AppColors {
     // 🔳 UI Surface (background, bottom bar, card)
     val DarkBlue = Color(0xFF1A2633) // #1A2633
     val White = Color(0xFFFFFFFF) // #FFFFFF
+
+    //Icons
+    val RedIcon = Color(0xFFF30000)
+    val BlueIcon = Color(0xFF076AFF)
+    val PurpleIcon = Color(0xFFD300F8)
 }
