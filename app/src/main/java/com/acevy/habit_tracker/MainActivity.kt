@@ -8,9 +8,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.acevy.habit_tracker.data.local.database.AppDatabase
-import com.acevy.habit_tracker.data.repository.UserRewardRepositoryImpl
-import com.acevy.habit_tracker.domain.model.UserReward
-import com.acevy.habit_tracker.domain.usecase.InsertUserRewardUseCase
+import com.acevy.habit_tracker.data.repository.reward.UserRewardRepositoryImpl
+import com.acevy.habit_tracker.domain.model.reward.UserReward
+import com.acevy.habit_tracker.domain.usecase.reward.InsertUserRewardUseCase
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
 import kotlinx.coroutines.launch
 
@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
 
         // --- Insert Dummy Reward ---
         val dummyReward = UserReward(
-            id = 0,
+            userRewardId = 0,
             userId = 1,
             amount = 50,
             source = "habit_completed",

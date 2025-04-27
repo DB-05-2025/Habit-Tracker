@@ -1,10 +1,10 @@
-package com.acevy.habit_tracker.data.repository
+package com.acevy.habit_tracker.data.repository.reward
 
-import com.acevy.habit_tracker.data.local.dao.UserRewardDao
-import com.acevy.habit_tracker.data.mapper.toDomain
-import com.acevy.habit_tracker.data.mapper.toEntity
-import com.acevy.habit_tracker.domain.model.UserReward
-import com.acevy.habit_tracker.domain.repository.UserRewardRepository
+import com.acevy.habit_tracker.data.local.dao.reward.UserRewardDao
+import com.acevy.habit_tracker.data.mapper.reward.toDomain
+import com.acevy.habit_tracker.data.mapper.reward.toEntity
+import com.acevy.habit_tracker.domain.model.reward.UserReward
+import com.acevy.habit_tracker.domain.repository.reward.UserRewardRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

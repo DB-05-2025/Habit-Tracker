@@ -1,8 +1,8 @@
 package com.acevy.habit_tracker.data.local.database
 
 import androidx.room.*
-import com.acevy.habit_tracker.data.local.dao.UserRewardDao
-import com.acevy.habit_tracker.data.model.UserRewardEntity
+import com.acevy.habit_tracker.data.local.dao.reward.UserRewardDao
+import com.acevy.habit_tracker.data.model.reward.UserRewardEntity
 
 @Database(
     entities = [UserRewardEntity::class],
