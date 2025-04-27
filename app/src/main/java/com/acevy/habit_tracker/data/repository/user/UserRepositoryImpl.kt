@@ -10,15 +10,13 @@ import kotlinx.coroutines.flow.map
 
 class UserRepositoryImpl(private val dao: UserDao) : UserRepository {
 
-    override suspend fun insertUser(user: User): Long {
-        return dao.insertUser(user.toEntity())
-    }
+    override suspend fun insertUser(user: User): Long = dao.insertUser(user.toEntity())
 
-    override fun getUserById(userId: Long): Flow<User?> {
-        return dao.getUserById(userId).map { it?.toDomain() }
-    }
 
-    override suspend fun updateUser(user: User) {
-        dao.updateUser(user.toEntity())
-    }
+    override fun getUserById(userId: Long): Flow<User?> =
+        dao.getUserById(userId).map { it?.toDomain() }
+
+
+    override suspend fun updateUser(user: User) = dao.updateUser(user.toEntity())
+
 }
