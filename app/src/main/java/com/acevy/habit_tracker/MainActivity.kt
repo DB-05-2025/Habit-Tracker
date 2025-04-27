@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
             amount = 50,
             source = "habit_completed",
             earnedAt = System.currentTimeMillis()
-        )
+        ) 
 
         lifecycleScope.launch {
             try {

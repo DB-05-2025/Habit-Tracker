@@ -12,8 +12,8 @@ class UserRewardRepositoryImpl(
     private val dao: UserRewardDao,
 ) : UserRewardRepository {
 
-    override suspend fun insertUserReward(reward: UserReward) {
-        dao.insertUserReward(reward.toEntity())
+    override suspend fun insertUserReward(reward: UserReward): Long {
+        return dao.insertUserReward(reward.toEntity())
     }
 
     override fun getRewardsByUser(userId: Long): Flow<List<UserReward>> {
