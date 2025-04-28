@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class HabitStack(
     val habitStackId: Long,
     val userId: Long,
+//    val name: String?, /*TAMBAHAN DEVY*/
     val primaryHabitId: Long,
     val stackedHabitId: Long,
     val createdAt: Long,

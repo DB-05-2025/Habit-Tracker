@@ -12,17 +12,22 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.AppType
 import com.acevy.habit_tracker.ui.components.indicators.PillSwitcher
+import com.acevy.habit_tracker.ui.screens.habit.habitstack.HabitStackingPage
+import com.acevy.habit_tracker.ui.screens.habit.habittrack.HabitTrackingPage
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HabitScreen(modifier: Modifier = Modifier) {
+fun HabitScreen(
+    modifier: Modifier = Modifier,
+    navController: NavController
+) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
 
@@ -55,18 +60,10 @@ fun HabitScreen(modifier: Modifier = Modifier) {
                     .fillMaxSize()
             ) { page ->
                 when (page) {
-                    0 -> HabitTrackingPage()
-                    1 -> HabitStackingPage()
+                    0 -> HabitTrackingPage(navController = navController)
+                    1 -> HabitStackingPage(navController = navController)
                 }
             }
         }
-    }
-}
-
-
-@Composable
-fun HabitStackingPage() {
-    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("Stacking Mode", style = AppType.body14)
     }
 }

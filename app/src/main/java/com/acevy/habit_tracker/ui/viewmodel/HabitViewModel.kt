@@ -1,4 +1,4 @@
-package com.acevy.habit_tracker.ui.screens.habit
+package com.acevy.habit_tracker.ui.viewmodel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf

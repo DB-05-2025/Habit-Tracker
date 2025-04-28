@@ -1,10 +1,9 @@
-package com.acevy.habit_tracker.ui.viewmodelfactory
+package com.acevy.habit_tracker.ui.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.acevy.habit_tracker.di.Injection
-import com.acevy.habit_tracker.ui.screens.habit.HabitViewModel
 
 class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
 
