@@ -13,6 +13,7 @@ object AppColors {
     val GreenBorder = Color(0xFF38C770) // #38C770
     val GreenAccent = Color(0xFF73FF63) // #73FF63
     val OffWhite = Color(0xFFFAFFFA) // #FAFFFA
+    val Orange = Color(0xFFFEB872) // #FEB872
 
     // 🔳 UI Surface (background, bottom bar, card)
     val DarkBlue = Color(0xFF1A2633) // #1A2633
