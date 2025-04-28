@@ -86,6 +86,7 @@ fun OnboardingCard(
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewSecondOnboardingCard() {

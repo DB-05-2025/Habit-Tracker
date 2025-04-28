@@ -4,12 +4,11 @@ import android.content.Context
 import androidx.room.Room
 import com.acevy.habit_tracker.data.local.database.AppDatabase
 import com.acevy.habit_tracker.data.repository.habit.HabitRepositoryImpl
-import com.acevy.habit_tracker.domain.repository.habit.HabitRepository
 import com.acevy.habit_tracker.domain.usecase.habit.DeleteHabitUseCase
 import com.acevy.habit_tracker.domain.usecase.habit.GetHabitsUseCase
 import com.acevy.habit_tracker.domain.usecase.habit.InsertHabitUseCase
 import com.acevy.habit_tracker.domain.usecase.habit.UpdateHabitUseCase
-import com.acevy.habit_tracker.ui.screens.habit.HabitViewModel
+import com.acevy.habit_tracker.ui.viewmodel.HabitViewModel
 
 object Injection {
     fun provideHabitViewModel(context: Context): HabitViewModel {
