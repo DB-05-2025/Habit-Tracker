@@ -9,12 +9,12 @@ import com.acevy.habit_tracker.data.model.user.UserEntity
 import com.acevy.habit_tracker.data.model.userlevel.UserLevelEntity
 
 @Database(
-    entities = [UserEntity::class],
-               [UserLevelEntity::class],
-                [HabitEntity::class],
+    entities = [UserEntity::class,
+                UserLevelEntity::class,
+                HabitEntity::class],
     version = 1
 )
-
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun userLevelDao(): UserLevelDao
