@@ -1,5 +1,6 @@
 package com.acevy.habit_tracker.ui.screens.onboarding
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -16,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.acevy.habit_tracker.data.local.datastore.UserPreferences
 import com.acevy.habit_tracker.ui.components.cards.OnboardingCard
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
@@ -23,8 +26,11 @@ import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
 @Composable
 fun OnboardingScreen(
     onFinish: () -> Unit,
+    userPreferences: UserPreferences,
     modifier: Modifier = Modifier
 ) {
+    val isOnboardingCompleted by userPreferences.onboardingCompletedFlow.collectAsState(initial = "")
+    Log.d("ONBOARDING DATASTORE", "OnboardingScreen: $isOnboardingCompleted")
     var currentPage by rememberSaveable { mutableIntStateOf(0) }
 
     val pages = listOf(
@@ -80,12 +86,12 @@ fun OnboardingScreen(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewOnboardingScreen() {
-    HabitTrackerTheme {
-        OnboardingScreen(
-            onFinish = { /* No-op for preview */ }
-        )
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewOnboardingScreen() {
+//    HabitTrackerTheme {
+//        OnboardingScreen(
+//            onFinish = { /* No-op for preview */ }
+//        )
+//    }
+//}

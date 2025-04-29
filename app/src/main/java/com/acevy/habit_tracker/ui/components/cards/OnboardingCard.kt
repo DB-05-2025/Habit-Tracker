@@ -46,7 +46,8 @@ fun OnboardingCard(
                 width = 1.dp,
                 color = AppColors.GrayLight,
                 shape = AppShapes.Rounded16
-            ),
+            )
+            .height(270.dp),
         colors = CardDefaults.cardColors(containerColor = AppColors.White),
         shape = AppShapes.Rounded16
     ) {
@@ -73,7 +74,9 @@ fun OnboardingCard(
                 text = description,
                 style = AppType.roboto14,
                 color = AppColors.GrayDark,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                maxLines = 5,
+                minLines = 5,
             )
 
             Spacer(modifier = Modifier.height(16.dp))

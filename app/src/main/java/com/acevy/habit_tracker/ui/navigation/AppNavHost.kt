@@ -2,7 +2,10 @@ package com.acevy.habit_tracker.ui.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -10,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
@@ -36,17 +40,17 @@ fun AppNavHost(
 ) {
     val context = LocalContext.current
     val userPreferences = remember { UserPreferences(context) }
-    val startDestination = remember { mutableStateOf(Screen.Onboarding.route) }
-
     val isOnboardingCompleted by userPreferences.onboardingCompletedFlow.collectAsState(initial = false)
 
-    LaunchedEffect(Unit) {
-        startDestination.value = if (isOnboardingCompleted) Screen.Home.route else Screen.Onboarding.route
+    val resolvedStartDestination = if (isOnboardingCompleted) {
+        Screen.Main.route
+    } else {
+        Screen.Onboarding.route
     }
 
     NavHost(
         navController = navController,
-        startDestination = startDestination.value,
+        startDestination = resolvedStartDestination,
         modifier = modifier
     ) {
         composable(Screen.Onboarding.route) {
@@ -64,7 +68,8 @@ fun AppNavHost(
             OnboardingScreen(
                 onFinish = {
                     hasFinished = true
-                }
+                },
+                userPreferences = userPreferences
             )
         }
         composable(Screen.GetStarted.route) {
