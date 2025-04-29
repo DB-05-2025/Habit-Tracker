@@ -51,7 +51,7 @@ fun HabitCardItem(
             .clickable { onClick() },
         shape = AppShapes.Rounded16,
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        border = BorderStroke(1.dp, borderColor),
+        border = BorderStroke(1.5.dp, borderColor),
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 0.dp)
     ) {
         Row(

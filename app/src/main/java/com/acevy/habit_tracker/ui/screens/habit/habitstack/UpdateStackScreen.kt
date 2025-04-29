@@ -50,10 +50,8 @@ fun UpdateStackScreen(
         )
 
         StackForm(
-            title = "Update Stack",
             initialStackName = "",
             initialHabits = dummyHabits,
-            onBack = onBack,
             onSubmit = { name, selectedHabits ->
                 Log.d("STACK", "Updated: $name with ${selectedHabits.count { it.isSelected }} habits")
                 onBack()

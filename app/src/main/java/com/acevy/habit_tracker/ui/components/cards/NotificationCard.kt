@@ -33,7 +33,7 @@ fun NotificationCard(
     isActive: Boolean = false
 ) {
     val backgroundColor = if (isActive) AppColors.OffWhite else AppColors.White
-    val borderColor = if (isActive) AppColors.GreenPrimary else Color.Transparent
+    val borderColor = if (isActive) AppColors.GreenPrimary else AppColors.GrayLight
 
     Card(
         modifier = modifier
@@ -44,7 +44,7 @@ fun NotificationCard(
                 ambientColor = Color(0x40000000),
                 spotColor = Color(0x40000000)
             )
-            .border(1.dp, borderColor, AppShapes.Rounded16),
+            .border(1.5.dp, borderColor, AppShapes.Rounded16),
         shape = AppShapes.Rounded16,
         colors = CardDefaults.cardColors(containerColor = backgroundColor)
     ) {
