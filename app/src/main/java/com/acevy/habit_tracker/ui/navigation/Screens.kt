@@ -10,5 +10,7 @@ sealed class Screen(val route: String) {
 
     data object Habit : Screen("habit")
     data object AddHabit : Screen("addhabit")
-
+    data object UpdateHabit : Screen("updatehabit")
+    data object AddStack : Screen("addstack")
+    data object UpdateStack : Screen("updatestack")
 }

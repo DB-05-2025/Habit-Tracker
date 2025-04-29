@@ -1,6 +1,5 @@
 package com.acevy.habit_tracker.ui.screens.onboarding
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,17 +9,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.acevy.habit_tracker.R
 import com.acevy.habit_tracker.ui.components.cards.OnboardingCard
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
@@ -82,7 +77,6 @@ fun OnboardingScreen(
                 }
             }
         )
-        Spacer(modifier = Modifier.height(32.dp))
     }
 }
 

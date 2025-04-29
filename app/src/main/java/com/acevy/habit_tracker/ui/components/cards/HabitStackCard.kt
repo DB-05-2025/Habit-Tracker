@@ -11,7 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -31,18 +32,18 @@ fun HabitStackCard(
     modifier: Modifier = Modifier,
     title: String,
     habits: List<String>,
-    onClick: () -> Unit
+    onEditClick: () -> Unit,
+    onDeleteClick: () -> Unit
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onClick() }
             .border(1.dp, AppColors.GrayLight, AppShapes.Rounded16),
         shape = AppShapes.Rounded16,
         colors = CardDefaults.cardColors(containerColor = AppColors.White)
     ) {
         Row(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             verticalAlignment = Alignment.Top,
@@ -54,22 +55,30 @@ fun HabitStackCard(
                     style = AppType.semiBold14,
                     color = AppColors.GrayDark
                 )
-
                 Spacer(modifier = Modifier.height(8.dp))
-
                 habits.take(2).forEach {
                     Text("• $it", style = AppType.body12, color = AppColors.GrayDark)
                 }
             }
 
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = "Lihat detail",
-                tint = AppColors.GrayDark
-            )
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = "Edit",
+                    tint = AppColors.BlueIcon,
+                    modifier = Modifier.clickable { onEditClick() }
+                )
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Delete",
+                    tint = AppColors.RedIcon,
+                    modifier = Modifier.clickable { onDeleteClick() }
+                )
+            }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
@@ -78,7 +87,8 @@ fun PreviewHabitStackCard() {
         HabitStackCard(
             title = "Rutinitas Selasa",
             habits = listOf("Bekerja", "Mabar"),
-            onClick = {}
+            onEditClick = {},
+            onDeleteClick = {}
         )
     }
 }

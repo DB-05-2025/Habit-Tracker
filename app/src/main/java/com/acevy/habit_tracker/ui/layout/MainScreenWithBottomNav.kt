@@ -24,25 +24,13 @@ fun MainScreenWithBottomNav(
         bottomBar = {
             BottomNavBar(navController = navController)
         },
-        floatingActionButton = {
-            when (currentRoute) {
-                Screen.Habit.route -> {
-                    FloatingActionButton(
-                        onClick = {
-                            navController.navigate(Screen.AddHabit.route)
-                        },
-                        shape = CircleShape,
-                        containerColor = AppColors.GreenPrimary
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = "Tambah Habit",
-                            tint = Color.White
-                        )
-                    }
-                }
-            }
-        },
+//        floatingActionButton = {
+//            when (currentRoute) {
+//                Screen.Habit.route -> {
+//
+//                }
+//            }
+//        },
         containerColor = AppColors.White
     ) { paddingValues ->
         content(paddingValues)

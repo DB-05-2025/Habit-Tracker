@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ListAlt
 import androidx.compose.material.icons.filled.Flag
-import androidx.compose.material.icons.filled.ListAlt
 import androidx.compose.material.icons.filled.Stairs
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

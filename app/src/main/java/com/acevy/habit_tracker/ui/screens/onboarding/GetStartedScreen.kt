@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,13 +15,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.acevy.habit_tracker.ui.components.buttons.ButtonPrimary
 import com.acevy.habit_tracker.ui.components.forminputs.TextInputField
 import com.acevy.habit_tracker.ui.theme.AppColors
-import com.acevy.habit_tracker.ui.theme.AppShapes
 import com.acevy.habit_tracker.ui.theme.AppType
+import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
 
 @Composable
 fun GetStartedScreen(
@@ -68,7 +67,15 @@ fun GetStartedScreen(
         ButtonPrimary(
             text = "Continue",
             onClick = { if (name.isNotBlank()) onSubmit(name) },
-            fullWidth = true
+            fullWidth = true,
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GetStartedScreenPreview(){
+    HabitTrackerTheme {
+        GetStartedScreen(onSubmit = {})
     }
 }
