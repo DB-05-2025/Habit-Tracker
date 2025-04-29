@@ -1,18 +1,13 @@
 package com.acevy.habit_tracker.ui.layout
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.SideEffect
 import androidx.navigation.NavHostController
 import com.acevy.habit_tracker.ui.components.navigation.BottomNavBar
-import com.acevy.habit_tracker.ui.navigation.Screen
 import com.acevy.habit_tracker.ui.theme.AppColors
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun MainScreenWithBottomNav(
@@ -20,6 +15,15 @@ fun MainScreenWithBottomNav(
     currentRoute: String,
     content: @Composable (PaddingValues) -> Unit
 ) {
+    val systemUiController = rememberSystemUiController()
+
+    SideEffect {
+        systemUiController.setNavigationBarColor(
+            color = AppColors.DarkBlue,
+            darkIcons = false
+        )
+    }
+
     Scaffold(
         bottomBar = {
             BottomNavBar(navController = navController)

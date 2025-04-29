@@ -46,6 +46,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.accompanist.systemuicontroller)
     implementation(libs.coil.compose)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.navigation.compose)
