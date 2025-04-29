@@ -8,11 +8,13 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.acevy.habit_tracker.ui.components.navigation.BottomNavBar
 import com.acevy.habit_tracker.ui.navigation.Screen
 import com.acevy.habit_tracker.ui.theme.AppColors
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun MainScreenWithBottomNav(
@@ -20,17 +22,38 @@ fun MainScreenWithBottomNav(
     currentRoute: String,
     content: @Composable (PaddingValues) -> Unit
 ) {
+    val systemUiController = rememberSystemUiController()
+
+    SideEffect {
+        systemUiController.setNavigationBarColor(
+            color = AppColors.DarkBlue,
+            darkIcons = false
+        )
+    }
+
     Scaffold(
         bottomBar = {
             BottomNavBar(navController = navController)
         },
-//        floatingActionButton = {
-//            when (currentRoute) {
-//                Screen.Habit.route -> {
-//
-//                }
-//            }
-//        },
+        floatingActionButton = {
+            when (currentRoute) {
+                Screen.Home.route -> {
+                    FloatingActionButton(
+                        onClick = {
+                            navController.navigate(Screen.AddHabit.route)
+                        },
+                        shape = CircleShape,
+                        containerColor = AppColors.GreenPrimary
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Tambah Habit",
+                            tint = Color.White
+                        )
+                    }
+                }
+            }
+        },
         containerColor = AppColors.White
     ) { paddingValues ->
         content(paddingValues)
