@@ -2,12 +2,14 @@ package com.acevy.habit_tracker.ui.screens.progress
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ListAlt
 import androidx.compose.material.icons.filled.Flag
@@ -20,8 +22,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.acevy.habit_tracker.data.local.datastore.UserPreferences
 import com.acevy.habit_tracker.ui.components.accordions.DisabledAccordion
+import com.acevy.habit_tracker.ui.components.accordions.ExpandableAccordion
 import com.acevy.habit_tracker.ui.components.cards.ProgressGreetingCard
 import com.acevy.habit_tracker.ui.components.cards.StatCard
+import com.acevy.habit_tracker.ui.components.progressitem.CompletedHabitItem
+import com.acevy.habit_tracker.ui.components.progressitem.MissedHabitItem
+import com.acevy.habit_tracker.ui.components.progressitem.TodayHabitItem
 import com.acevy.habit_tracker.ui.model.StatData
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.AppType
@@ -38,38 +44,83 @@ fun ProgressScreen(
         StatData("0 XP", "telah dicapai", Icons.Default.Flag, AppColors.BlueIcon)
     )
 
-    Column(
+    val todayHabits = listOf(
+        "Bekerja" to true,
+        "Olahraga" to false,
+        "Mandi" to true,
+    )
+
+    val completedHabits = listOf(
+        "Makan" to 5,
+        "Tidur" to 7
+    )
+
+    val missedHabits = listOf(
+        Triple("Belajar", 3, 7),
+        Triple("Ngoding", 2, 5),
+        Triple("Membaca", 6, 10)
+    )
+
+    LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 24.dp)
+            .padding(horizontal = 24.dp),
+        contentPadding = PaddingValues(vertical = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Spacer(modifier = Modifier.height(24.dp))
+        item {
+            Text(
+                text = "Kemajuan",
+                style = AppType.bold20,
+                color = AppColors.GrayDark
+            )
+        }
 
-        Text(
-            text = "Kemajuan",
-            style = AppType.bold20,
-            color = AppColors.GrayDark
-        )
+        item {
+            ProgressGreetingCard(userName)
+        }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        ProgressGreetingCard(userName)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            statList.forEach { (title, subtitle, icon, tint) ->
-                StatCard(title, subtitle, icon, tint)
+        item {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                statList.forEach { (title, subtitle, icon, tint) ->
+                    StatCard(title, subtitle, icon, tint)
+                }
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+//        DisabledAccordion("⏳ Sedang Berjalan")
+//        DisabledAccordion("🎉 Selesai")
+//        DisabledAccordion("😔 Terlewat")
 
-        DisabledAccordion("⏳ Sedang Berjalan")
-        DisabledAccordion("🎉 Selesai")
-        DisabledAccordion("😔 Terlewat")
+        item {
+            ExpandableAccordion(
+                title = "⏳ Sedang Berjalan",
+                items = todayHabits
+            ) { (name, done) ->
+                TodayHabitItem(name = name, isCompleted = done)
+            }
+        }
+
+        item {
+            ExpandableAccordion(
+                title = "🎉 Selesai",
+                items = completedHabits
+            ) { (name, total) ->
+                CompletedHabitItem(name = name, total = total)
+            }
+        }
+
+        item {
+            ExpandableAccordion(
+                title = "😔 Terlewat",
+                items = missedHabits
+            ) { (name, completed, total) ->
+                MissedHabitItem(name = name, completed = completed, total = total)
+            }
+        }
+
     }
 }

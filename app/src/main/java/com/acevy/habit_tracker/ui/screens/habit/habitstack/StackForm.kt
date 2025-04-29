@@ -39,10 +39,8 @@ import com.acevy.habit_tracker.ui.theme.AppType
 
 @Composable
 fun StackForm(
-    title: String,
     initialStackName: String = "",
     initialHabits: List<HabitOption> = emptyList(),
-    onBack: () -> Unit,
     onSubmit: (String, List<HabitOption>) -> Unit,
     navController: NavHostController
 ) {
@@ -60,18 +58,6 @@ fun StackForm(
     }
 
     ScreenContentLayout {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = onBack) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-            }
-            Text(title, style = AppType.bold20)
-        }
-
         Column(modifier = Modifier.fillMaxSize()) {
             TextInputField(
                 value = stackName.value,

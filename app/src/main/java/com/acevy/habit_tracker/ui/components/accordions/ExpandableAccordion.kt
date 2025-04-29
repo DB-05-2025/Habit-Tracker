@@ -10,8 +10,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
@@ -25,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.acevy.habit_tracker.ui.theme.AppColors
@@ -32,18 +38,25 @@ import com.acevy.habit_tracker.ui.theme.AppType
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
 
 @Composable
-fun ExpandableAccordion(
+fun <T> ExpandableAccordion(
     title: String,
-    content: @Composable () -> Unit
+    items: List<T>,
+    itemContent: @Composable (T) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
+            .shadow(
+                elevation = 4.dp,
+                shape = RoundedCornerShape(16.dp),
+                clip = true
+            )
+            .clip(RoundedCornerShape(16.dp))
+            .background(AppColors.White)
     ) {
-        // HEADER - hijau dengan rounded top + bawah kalau collapsed
+        // Header
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -78,23 +91,24 @@ fun ExpandableAccordion(
             }
         }
 
-        // KONTEN - putih dengan rounded bottom kalau expanded
+        // Content pakai Column biasa (scroll sendiri kalau panjang)
         AnimatedVisibility(visible = expanded) {
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
                     .background(AppColors.White)
+                    .heightIn(max = 400.dp) // ⬅️ BATASIN TINGGINYA
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    content()
+                items.forEach { item ->
+                    itemContent(item)
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
         }
+
     }
 }
 
@@ -104,25 +118,30 @@ fun ExpandableAccordion(
 fun PreviewExpandableAccordion() {
     HabitTrackerTheme {
         Column(modifier = Modifier.padding(16.dp)) {
-            ExpandableAccordion("⏳ Sedang Berjalan") {
-                Text("Habit 1: Bekerja")
-                Text("Habit 2: Olahraga")
+            ExpandableAccordion(
+                title = "⏳ Sedang Berjalan",
+                items = listOf("Habit 1: Bekerja", "Habit 2: Olahraga")
+            ) { name ->
+                Text(text = name)
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            ExpandableAccordion("🎉 Selesai") {
-                Text("Habit 1: Makan 7/7")
-                Text("Habit 2: Tidur 5/5")
+            ExpandableAccordion(
+                title = "🎉 Selesai",
+                items = listOf("Habit 1: Makan 7/7", "Habit 2: Tidur 5/5")
+            ) { name ->
+                Text(text = name)
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            ExpandableAccordion("😔 Terlewat") {
-                Text("Habit 1: Bekerja 5/10")
-                Text("Habit 2: Tidur 1/5")
+            ExpandableAccordion(
+                title = "😔 Terlewat",
+                items = listOf("Habit 1: Bekerja 5/10", "Habit 2: Tidur 1/5")
+            ) { name ->
+                Text(text = name)
             }
         }
     }
 }
-
