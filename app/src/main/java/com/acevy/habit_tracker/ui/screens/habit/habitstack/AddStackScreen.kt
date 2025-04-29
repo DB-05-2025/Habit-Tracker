@@ -48,10 +48,8 @@ fun AddStackScreen(
         )
 
         StackForm(
-            title = "Buat Stack",
             initialStackName = "",
             initialHabits = dummyHabits,
-            onBack = onBack,
             onSubmit = { name, selectedHabits ->
                 Log.d("STACK", "Submitted: $name with ${selectedHabits.count { it.isSelected }} habits")
                 onBack()
