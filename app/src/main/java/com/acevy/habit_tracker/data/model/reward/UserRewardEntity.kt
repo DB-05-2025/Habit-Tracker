@@ -5,10 +5,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "user_reward")
 data class UserRewardEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) val userRewardId: Long = 0,
     val userId: Long,
-    val rewardTypeId: Long,
     val amount: Int,
-    val source: String, // "habit_completed", "challenge", etc
-    val earnedAt: Long = System.currentTimeMillis()
+    val source: String, // e.g. "habit_completed", "challenge"
+    val earnedAt: Long = System.currentTimeMillis(),
 )

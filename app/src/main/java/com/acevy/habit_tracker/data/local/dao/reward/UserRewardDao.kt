@@ -5,12 +5,13 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.acevy.habit_tracker.data.model.reward.UserRewardEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserRewardDao {
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    suspend fun insertUserReward(reward: UserRewardEntity)
+    suspend fun insertUserReward(reward: UserRewardEntity): Long
 
     @Query("SELECT * FROM user_reward WHERE userId = :userId ORDER BY earnedAt DESC")
-    suspend fun getRewardsByUser(userId: Long): List<UserRewardEntity>
+    fun getRewardsByUser(userId: Long): Flow<List<UserRewardEntity>>
 }
