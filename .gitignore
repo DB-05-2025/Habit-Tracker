@@ -1,0 +1,25 @@
+# Built files
+/build/
+.cxx/
+.externalNativeBuild/
+
+# Gradle
+.gradle/
+local.properties
+
+# IDE settings
+*.iml
+.idea/
+!.idea/codeStyles/
+!.idea/runConfigurations/
+
+# Optional: ignore specific IDE-generated files
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+
+# Mac OS
+.DS_Store
