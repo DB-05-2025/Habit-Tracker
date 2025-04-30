@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.acevy.habit_tracker.ui.components.cards.HabitCardItem
+import com.acevy.habit_tracker.ui.components.indicators.AsyncImageWithIndicator
 import com.acevy.habit_tracker.ui.navigation.Screen
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.AppType
@@ -59,7 +60,7 @@ fun HabitTrackingPage(navController: NavController) {
                         .weight(1f),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    AsyncImage(
+                    AsyncImageWithIndicator(
                         model = "https://ofcnpgzapkplcbfngucb.supabase.co/storage/v1/object/sign/habit-tracker/empty-habit.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzFmMGNmZDEyLTQzNTktNDZlOS1iODRiLTMyYmViZDFhODY3ZiJ9.eyJ1cmwiOiJoYWJpdC10cmFja2VyL2VtcHR5LWhhYml0LnBuZyIsImlhdCI6MTc0NTgzMDc5MCwiZXhwIjoxNzc3MzY2NzkwfQ.fyk0hSnp_HViUogl20cPgi7dt235fwSNLqMFq9bah1A",
                         contentDescription = "Empty Habit",
                         modifier = Modifier

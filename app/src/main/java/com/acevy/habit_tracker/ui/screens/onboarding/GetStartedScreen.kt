@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.acevy.habit_tracker.ui.components.buttons.ButtonPrimary
 import com.acevy.habit_tracker.ui.components.forminputs.TextInputField
+import com.acevy.habit_tracker.ui.components.indicators.AsyncImageWithIndicator
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.AppType
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
@@ -56,7 +57,7 @@ fun GetStartedScreen(
             placeholder = "Masukkan nama kamu",
         )
 
-        AsyncImage(
+        AsyncImageWithIndicator(
             model = "https://ofcnpgzapkplcbfngucb.supabase.co/storage/v1/object/sign/habit-tracker/onboarding-4.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzFmMGNmZDEyLTQzNTktNDZlOS1iODRiLTMyYmViZDFhODY3ZiJ9.eyJ1cmwiOiJoYWJpdC10cmFja2VyL29uYm9hcmRpbmctNC5wbmciLCJpYXQiOjE3NDU2OTA5OTMsImV4cCI6MTc3NzIyNjk5M30.mYtEZLsynInPxCoDjCrtzh45Whb-lHcjSmHHVEPlJOY",
             contentDescription = "Get Started Illustration",
             modifier = Modifier

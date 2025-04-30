@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.acevy.habit_tracker.ui.components.indicators.AsyncImageWithIndicator
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.AppShapes
 import com.acevy.habit_tracker.ui.theme.AppType
@@ -47,7 +48,7 @@ fun ProgressGreetingCard(
                 )
             }
 
-            AsyncImage(
+            AsyncImageWithIndicator(
                 model = "https://ofcnpgzapkplcbfngucb.supabase.co/storage/v1/object/sign/habit-tracker/piala-habit.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzFmMGNmZDEyLTQzNTktNDZlOS1iODRiLTMyYmViZDFhODY3ZiJ9.eyJ1cmwiOiJoYWJpdC10cmFja2VyL3BpYWxhLWhhYml0LnBuZyIsImlhdCI6MTc0NTcyOTEyOSwiZXhwIjoxNzc3MjY1MTI5fQ.puJI0Lm_rJcdL1XcSIU6h_pRDwazGI-17MLd_XrEfTI",
                 contentDescription = "Trophy",
                 modifier = Modifier.weight(1f)
