@@ -40,25 +40,42 @@ fun AppNavHost(
 ) {
     val context = LocalContext.current
     val userPreferences = remember { UserPreferences(context) }
-    val isOnboardingCompleted by userPreferences.onboardingCompletedFlow.collectAsState(initial = false)
-
-    val resolvedStartDestination = if (isOnboardingCompleted) {
-        Screen.Main.route
-    } else {
-        Screen.Onboarding.route
-    }
+    val isOnboardingCompleted by userPreferences.onboardingCompletedFlow.collectAsState(initial = null)
 
     NavHost(
         navController = navController,
-        startDestination = resolvedStartDestination,
+        startDestination = Screen.Splash.route,
         modifier = modifier
     ) {
+        composable(Screen.Splash.route) {
+            when (isOnboardingCompleted) {
+                null -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                }
+                true -> {
+                    LaunchedEffect(Unit) {
+                        navController.navigate(Screen.Main.route) {
+                            popUpTo(Screen.Splash.route) { inclusive = true }
+                        }
+                    }
+                }
+                false -> {
+                    LaunchedEffect(Unit) {
+                        navController.navigate(Screen.Onboarding.route) {
+                            popUpTo(Screen.Splash.route) { inclusive = true }
+                        }
+                    }
+                }
+            }
+        }
+
         composable(Screen.Onboarding.route) {
             var hasFinished by remember { mutableStateOf(false) }
 
             if (hasFinished) {
                 LaunchedEffect(Unit) {
-                    userPreferences.setOnboardingCompleted(true)
                     navController.navigate(Screen.GetStarted.route) {
                         popUpTo(Screen.Onboarding.route) { inclusive = true }
                     }
@@ -78,6 +95,7 @@ fun AppNavHost(
             if (submittedName != null) {
                 LaunchedEffect(Unit) {
                     userPreferences.setUserName(submittedName!!)
+                    userPreferences.setOnboardingCompleted(true)
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.GetStarted.route) { inclusive = true }
                     }

@@ -1,6 +1,7 @@
 package com.acevy.habit_tracker.ui.navigation
 
 sealed class Screen(val route: String) {
+    data object Splash : Screen("splash")
     data object Onboarding : Screen("onboarding")
     data object GetStarted : Screen("getstarted")
     data object Main : Screen("main")
