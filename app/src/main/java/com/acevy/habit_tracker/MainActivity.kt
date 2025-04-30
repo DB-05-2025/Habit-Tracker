@@ -8,10 +8,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.acevy.habit_tracker.data.local.database.AppDatabase
-import com.acevy.habit_tracker.data.repository.user.UserRepositoryImpl
-import com.acevy.habit_tracker.domain.model.user.User
-import com.acevy.habit_tracker.domain.usecase.user.InsertUserUseCase
+import com.acevy.habit_tracker.data.repository.habitlog.HabitLogRepositoryImpl
+import com.acevy.habit_tracker.domain.model.habitlog.HabitLog
+import com.acevy.habit_tracker.domain.usecase.habitlog.GetLogsByHabitUseCase
+import com.acevy.habit_tracker.domain.usecase.habitlog.InsertHabitLogUseCase
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -25,24 +27,33 @@ class MainActivity : ComponentActivity() {
             AppDatabase::class.java, "habit-db"
         ).build()
 
-        val userDao = db.userDao()
-        val userRepo = UserRepositoryImpl(userDao)
-        val insertUserUseCase = InsertUserUseCase(userRepo)
+        val habitLogRepo = HabitLogRepositoryImpl(db.habitLogDao())
+        val insertHabitLogUseCase = InsertHabitLogUseCase(habitLogRepo)
+        val getLogsByHabitUseCase = GetLogsByHabitUseCase(habitLogRepo)
 
-        // --- Insert Dummy User ---
-        val newUser = User(
-            userId = 0,
-            name = "Darul",
+        // --- Insert Dummy Habit ---
+        val dummyHabitLog = HabitLog(
+            habitLogId = 0,
+            habitId = 1,
+            date = "2025-04-23",
+            status = "completed",
+            note = "Selesai baca 10 halaman",
             createdAt = System.currentTimeMillis(),
             updatedAt = System.currentTimeMillis()
         )
 
         lifecycleScope.launch {
             try {
-                val insertedId = insertUserUseCase(newUser)
-                Log.d("UserInsert", "User berhasil ditambahkan dengan id=$insertedId")
+                insertHabitLogUseCase(dummyHabitLog)
+                Log.d("HabitLogInsert", "HabitLog berhasil ditambahkan")
+
+                val logs = getLogsByHabitUseCase(1).first()
+                Log.d("HabitLogCheck", "Total log untuk habit 1: ${logs.size}")
+                logs.forEach { log ->
+                    Log.d("HabitLogCheck", "Log: ${log.date}, Status: ${log.status}")
+                }
             } catch (e: Exception) {
-                Log.e("UserInsert", "Gagal insert user: ${e.message}")
+                Log.e("HabitLogInsert", "Gagal insert habitlog: ${e.message}")
             }
         }
 

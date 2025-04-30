@@ -11,11 +11,14 @@ import com.acevy.habit_tracker.data.model.habitstack.HabitStackEntity
 import com.acevy.habit_tracker.data.model.reward.UserRewardEntity
 import com.acevy.habit_tracker.data.model.user.UserEntity
 import com.acevy.habit_tracker.data.model.userlevel.UserLevelEntity
+import com.acevy.habit_tracker.data.local.dao.habitlog.HabitLogDao
+import com.acevy.habit_tracker.data.model.habitlog.HabitLogEntity
 
 @Database(
     entities = [
         UserEntity::class,
         HabitEntity::class,
+        HabitLogEntity::class,
         HabitStackEntity::class,
         UserRewardEntity::class,
         UserLevelEntity::class,
@@ -26,6 +29,7 @@ import com.acevy.habit_tracker.data.model.userlevel.UserLevelEntity
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun habitDao(): HabitDao
+    abstract fun habitLogDao(): HabitLogDao
     abstract fun habitStackDao(): HabitStackDao
     abstract fun userRewardDao(): UserRewardDao
     abstract fun userLevelDao(): UserLevelDao

@@ -4,9 +4,21 @@ import com.acevy.habit_tracker.data.model.habitlog.HabitLogEntity
 import com.acevy.habit_tracker.domain.model.habitlog.HabitLog
 
 fun HabitLog.toEntity() = HabitLogEntity(
-    id, habitId, date, status, note, createdAt, updatedAt
+    habitLogId = habitLogId,
+    habitId = habitId,
+    date = date,
+    status = status,
+    note = note,
+    createdAt = createdAt,
+    updatedAt = updatedAt
 )
 
 fun HabitLogEntity.toDomain() = HabitLog(
-    id, habitId, date, status, note, createdAt, updatedAt
+    habitLogId = habitLogId,
+    habitId = habitId,
+    date = date,
+    status = status,
+    note = note,
+    createdAt = createdAt,
+    updatedAt = updatedAt
 )

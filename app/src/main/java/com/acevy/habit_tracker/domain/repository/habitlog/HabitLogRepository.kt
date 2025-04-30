@@ -4,8 +4,8 @@ import com.acevy.habit_tracker.domain.model.habitlog.HabitLog
 import kotlinx.coroutines.flow.Flow
 
 interface HabitLogRepository {
-    suspend fun insertHabitLog(log: HabitLog)
-    suspend fun getLogByDate(habitId: Long, date: String): HabitLog?
-    fun getLogsByHabit(habitId: Long): Flow<List<HabitLog>>
-    suspend fun deleteLog(log: HabitLog)
+    suspend fun insertHabitLog(log: HabitLog): Long
+    suspend fun updateHabitLog(log: HabitLog)
+    suspend fun deleteHabitLog(log: HabitLog)
+    fun getLogsByHabitId(habitId: Long): Flow<List<HabitLog>>
 }
