@@ -13,6 +13,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.AppType
@@ -34,10 +35,11 @@ fun HabitScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Habit Tracking", style = AppType.bold20) },
+                title = { Text("Habits", style = AppType.bold20, modifier = Modifier.padding(top = 12.dp)) },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = AppColors.White)
             )
         },
+        modifier = Modifier.padding(horizontal = 8.dp),
         containerColor = AppColors.White
     ) { paddingValues ->
         Column(
