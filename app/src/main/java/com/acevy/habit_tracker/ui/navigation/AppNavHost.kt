@@ -31,6 +31,8 @@ import com.acevy.habit_tracker.ui.screens.notification.NotificationScreen
 import com.acevy.habit_tracker.ui.screens.onboarding.GetStartedScreen
 import com.acevy.habit_tracker.ui.screens.onboarding.OnboardingScreen
 import com.acevy.habit_tracker.ui.screens.progress.ProgressScreen
+import com.acevy.habit_tracker.ui.screens.splash.SplashScreen
+import kotlinx.coroutines.delay
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -48,20 +50,25 @@ fun AppNavHost(
         modifier = modifier
     ) {
         composable(Screen.Splash.route) {
-            when (isOnboardingCompleted) {
-                null -> {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
-                    }
+            var isDelayFinished by remember { mutableStateOf(false) }
+
+            LaunchedEffect(Unit) {
+                delay(2000)
+                isDelayFinished = true
+            }
+
+            when {
+                !isDelayFinished -> {
+                    SplashScreen() // ⬅️ TAMPILKAN SPLASH PENUH MINIMAL 1.5 DETIK
                 }
-                true -> {
+                isOnboardingCompleted == true -> {
                     LaunchedEffect(Unit) {
                         navController.navigate(Screen.Main.route) {
                             popUpTo(Screen.Splash.route) { inclusive = true }
                         }
                     }
                 }
-                false -> {
+                isOnboardingCompleted == false -> {
                     LaunchedEffect(Unit) {
                         navController.navigate(Screen.Onboarding.route) {
                             popUpTo(Screen.Splash.route) { inclusive = true }
