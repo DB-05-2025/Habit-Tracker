@@ -31,6 +31,8 @@ import com.acevy.habit_tracker.ui.screens.notification.NotificationScreen
 import com.acevy.habit_tracker.ui.screens.onboarding.GetStartedScreen
 import com.acevy.habit_tracker.ui.screens.onboarding.OnboardingScreen
 import com.acevy.habit_tracker.ui.screens.progress.ProgressScreen
+import com.acevy.habit_tracker.ui.screens.splash.SplashScreen
+import kotlinx.coroutines.delay
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -40,25 +42,47 @@ fun AppNavHost(
 ) {
     val context = LocalContext.current
     val userPreferences = remember { UserPreferences(context) }
-    val isOnboardingCompleted by userPreferences.onboardingCompletedFlow.collectAsState(initial = false)
-
-    val resolvedStartDestination = if (isOnboardingCompleted) {
-        Screen.Main.route
-    } else {
-        Screen.Onboarding.route
-    }
+    val isOnboardingCompleted by userPreferences.onboardingCompletedFlow.collectAsState(initial = null)
 
     NavHost(
         navController = navController,
-        startDestination = resolvedStartDestination,
+        startDestination = Screen.Splash.route,
         modifier = modifier
     ) {
+        composable(Screen.Splash.route) {
+            var isDelayFinished by remember { mutableStateOf(false) }
+
+            LaunchedEffect(Unit) {
+                delay(2000)
+                isDelayFinished = true
+            }
+
+            when {
+                !isDelayFinished -> {
+                    SplashScreen() // ⬅️ TAMPILKAN SPLASH PENUH MINIMAL 1.5 DETIK
+                }
+                isOnboardingCompleted == true -> {
+                    LaunchedEffect(Unit) {
+                        navController.navigate(Screen.Main.route) {
+                            popUpTo(Screen.Splash.route) { inclusive = true }
+                        }
+                    }
+                }
+                isOnboardingCompleted == false -> {
+                    LaunchedEffect(Unit) {
+                        navController.navigate(Screen.Onboarding.route) {
+                            popUpTo(Screen.Splash.route) { inclusive = true }
+                        }
+                    }
+                }
+            }
+        }
+
         composable(Screen.Onboarding.route) {
             var hasFinished by remember { mutableStateOf(false) }
 
             if (hasFinished) {
                 LaunchedEffect(Unit) {
-                    userPreferences.setOnboardingCompleted(true)
                     navController.navigate(Screen.GetStarted.route) {
                         popUpTo(Screen.Onboarding.route) { inclusive = true }
                     }
@@ -78,6 +102,7 @@ fun AppNavHost(
             if (submittedName != null) {
                 LaunchedEffect(Unit) {
                     userPreferences.setUserName(submittedName!!)
+                    userPreferences.setOnboardingCompleted(true)
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.GetStarted.route) { inclusive = true }
                     }

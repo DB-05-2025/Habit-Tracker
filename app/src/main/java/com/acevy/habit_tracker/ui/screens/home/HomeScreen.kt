@@ -30,6 +30,7 @@ import coil.compose.AsyncImage
 import com.acevy.habit_tracker.data.local.datastore.UserPreferences
 import com.acevy.habit_tracker.ui.components.cards.HabitCardItem
 import com.acevy.habit_tracker.ui.components.cards.HomeProgressCard
+import com.acevy.habit_tracker.ui.components.indicators.AsyncImageWithIndicator
 import com.acevy.habit_tracker.ui.components.navigation.BottomNavBar
 import com.acevy.habit_tracker.ui.model.HabitItemUiState
 import com.acevy.habit_tracker.ui.theme.AppColors
@@ -108,7 +109,7 @@ fun HomeScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        AsyncImage(
+                        AsyncImageWithIndicator(
                             model = "https://ofcnpgzapkplcbfngucb.supabase.co/storage/v1/object/sign/habit-tracker/empty-habit.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzFmMGNmZDEyLTQzNTktNDZlOS1iODRiLTMyYmViZDFhODY3ZiJ9.eyJ1cmwiOiJoYWJpdC10cmFja2VyL2VtcHR5LWhhYml0LnBuZyIsImlhdCI6MTc0NTgzMDc5MCwiZXhwIjoxNzc3MzY2NzkwfQ.fyk0hSnp_HViUogl20cPgi7dt235fwSNLqMFq9bah1A",
                             contentDescription = "Empty Habit",
                             modifier = Modifier

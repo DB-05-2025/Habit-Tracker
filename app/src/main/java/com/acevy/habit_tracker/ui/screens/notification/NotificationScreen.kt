@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.acevy.habit_tracker.ui.components.cards.NotificationCard
+import com.acevy.habit_tracker.ui.components.indicators.AsyncImageWithIndicator
 import com.acevy.habit_tracker.ui.model.NotificationItemCardUiState
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.AppType
@@ -56,7 +57,7 @@ fun NotificationScreen(modifier: Modifier = Modifier) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    AsyncImage(
+                    AsyncImageWithIndicator(
                         model = "https://ofcnpgzapkplcbfngucb.supabase.co/storage/v1/object/sign/habit-tracker/empty-notif.png?token=...",
                         contentDescription = "Empty Notification",
                         modifier = Modifier

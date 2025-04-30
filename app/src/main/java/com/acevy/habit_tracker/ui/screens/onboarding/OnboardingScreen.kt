@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.acevy.habit_tracker.data.local.datastore.UserPreferences
 import com.acevy.habit_tracker.ui.components.cards.OnboardingCard
+import com.acevy.habit_tracker.ui.components.indicators.AsyncImageWithIndicator
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
 
@@ -62,7 +63,7 @@ fun OnboardingScreen(
     ) {
         Spacer(modifier = Modifier.height(48.dp))
 
-        AsyncImage(
+        AsyncImageWithIndicator(
             model = imgUrl,
             contentDescription = title,
             modifier = Modifier
