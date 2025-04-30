@@ -5,9 +5,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "user_level")
 data class UserLevelEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) val userLevelId: Long = 0,
     val userId: Long,
-    val level: Int = 1,
-    val currentXp: Int = 0,
-    val updatedAt: Long = System.currentTimeMillis()
+    val level: Int,
+    val currentXp: Int,
+    val updatedAt: Long = System.currentTimeMillis(),
 )

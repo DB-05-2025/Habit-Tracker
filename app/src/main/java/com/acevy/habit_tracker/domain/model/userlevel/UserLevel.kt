@@ -1,9 +1,13 @@
 package com.acevy.habit_tracker.domain.model.userlevel
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class UserLevel(
-    val id: Long,
+    val userLevelId: Long,
     val userId: Long,
     val level: Int,
     val currentXp: Int,
-    val updatedAt: Long,
-)
+    val updatedAt: Long
+) : Parcelable

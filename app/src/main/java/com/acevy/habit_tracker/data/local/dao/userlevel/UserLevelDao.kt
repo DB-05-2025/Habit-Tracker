@@ -4,13 +4,17 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.acevy.habit_tracker.data.model.userlevel.UserLevelEntity
 
 @Dao
 interface UserLevelDao {
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    suspend fun upsertUserLevel(level: UserLevelEntity)
+    suspend fun insertUserLevel(userLevel: UserLevelEntity): Long
+
+    @Update
+    suspend fun updateUserLevel(userLevel: UserLevelEntity)
 
     @Query("SELECT * FROM user_level WHERE userId = :userId LIMIT 1")
-    suspend fun getByUserId(userId: Long): UserLevelEntity?
+    suspend fun getUserLevelByUserId(userId: Long): UserLevelEntity?
 }

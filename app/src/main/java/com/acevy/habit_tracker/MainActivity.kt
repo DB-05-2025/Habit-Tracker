@@ -8,9 +8,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.acevy.habit_tracker.data.local.database.AppDatabase
-import com.acevy.habit_tracker.data.repository.reward.UserRewardRepositoryImpl
-import com.acevy.habit_tracker.domain.model.reward.UserReward
-import com.acevy.habit_tracker.domain.usecase.reward.InsertUserRewardUseCase
+import com.acevy.habit_tracker.data.repository.userlevel.UserLevelRepositoryImpl
+import com.acevy.habit_tracker.domain.usecase.userlevel.UpdateUserXpAndLevelUseCase
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
 import kotlinx.coroutines.launch
 
@@ -25,25 +24,29 @@ class MainActivity : ComponentActivity() {
             AppDatabase::class.java, "habit-db"
         ).build()
 
-        val userRewardDao = db.userRewardDao()
-        val userRewardRepo = UserRewardRepositoryImpl(userRewardDao)
-        val insertUserRewardUseCase = InsertUserRewardUseCase(userRewardRepo)
+        val userLevelRepo = UserLevelRepositoryImpl(db.userLevelDao())
+        val updateUserXpAndLevelUseCase = UpdateUserXpAndLevelUseCase(userLevelRepo)
 
-        // --- Insert Dummy Reward ---
-        val dummyReward = UserReward(
-            userRewardId = 0,
-            userId = 1,
-            amount = 50,
-            source = "habit_completed",
-            earnedAt = System.currentTimeMillis()
-        ) 
+        // --- Insert Dummy userId dan XP ---
+        val dummyUserId = 1L
+        val xpEarned = 130 // Misal user dapet XP dari menyelesaikan habit
 
         lifecycleScope.launch {
             try {
-                insertUserRewardUseCase(dummyReward)
-                Log.d("RewardInsert", "Reward berhasil disimpan")
+                updateUserXpAndLevelUseCase(dummyUserId, xpEarned)
+                Log.d("UserLevelUpdate", "XP user berhasil ditambahkan: $xpEarned XP")
+
+                val updatedUserLevel = userLevelRepo.getUserLevelByUserId(dummyUserId)
+                if (updatedUserLevel != null) {
+                    Log.d(
+                        "UserLevelCheck",
+                        "Level: ${updatedUserLevel.level}, XP: ${updatedUserLevel.currentXp}"
+                    )
+                } else {
+                    Log.e("UserLevelCheck", "User level tidak ditemukan")
+                }
             } catch (e: Exception) {
-                Log.e("RewardInsert", "Gagal simpan reward: ${e.message}")
+                Log.e("UserLevelUpdate", "Gagal update XP/Level: ${e.message}")
             }
         }
 
