@@ -1,4 +1,4 @@
-package com.acevy.habit_tracker.domain.model
+package com.acevy.habit_tracker.domain.model.habitlog
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

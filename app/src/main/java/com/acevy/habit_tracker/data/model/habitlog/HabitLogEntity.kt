@@ -1,4 +1,4 @@
-package com.acevy.habit_tracker.data.model
+package com.acevy.habit_tracker.data.model.habitlog
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -1,17 +1,17 @@
-package com.acevy.habit_tracker.data.local.dao
+package com.acevy.habit_tracker.data.local.dao.habitlog
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.acevy.habit_tracker.data.model.HabitLogEntity
+import com.acevy.habit_tracker.data.model.habitlog.HabitLogEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HabitLogDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun insertHabitLog(log: HabitLogEntity)
 
     @Query("SELECT * FROM habit_log WHERE habitId = :habitId ORDER BY date DESC")

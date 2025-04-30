@@ -1,4 +1,4 @@
-package com.acevy.habit_tracker.domain.model
+package com.acevy.habit_tracker.domain.model.reward
 
 data class UserReward(
     val id: Long,

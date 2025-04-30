@@ -1,10 +1,10 @@
-package com.acevy.habit_tracker.data.repository
+package com.acevy.habit_tracker.data.repository.habitlog
 
-import com.acevy.habit_tracker.data.local.dao.HabitLogDao
-import com.acevy.habit_tracker.data.mapper.toDomain
-import com.acevy.habit_tracker.data.mapper.toEntity
-import com.acevy.habit_tracker.domain.model.HabitLog
-import com.acevy.habit_tracker.domain.repository.HabitLogRepository
+import com.acevy.habit_tracker.data.local.dao.habitlog.HabitLogDao
+import com.acevy.habit_tracker.data.mapper.habitlog.toDomain
+import com.acevy.habit_tracker.data.mapper.habitlog.toEntity
+import com.acevy.habit_tracker.domain.model.habitlog.HabitLog
+import com.acevy.habit_tracker.domain.repository.habitlog.HabitLogRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

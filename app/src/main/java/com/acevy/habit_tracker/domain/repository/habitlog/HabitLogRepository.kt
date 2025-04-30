@@ -1,6 +1,6 @@
-package com.acevy.habit_tracker.domain.repository
+package com.acevy.habit_tracker.domain.repository.habitlog
 
-import com.acevy.habit_tracker.domain.model.HabitLog
+import com.acevy.habit_tracker.domain.model.habitlog.HabitLog
 import kotlinx.coroutines.flow.Flow
 
 interface HabitLogRepository {

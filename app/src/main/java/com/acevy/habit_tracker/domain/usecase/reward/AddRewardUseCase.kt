@@ -1,8 +1,8 @@
-package com.acevy.habit_tracker.domain.usecase
+package com.acevy.habit_tracker.domain.usecase.reward
 
 import com.acevy.habit_tracker.domain.model.RewardType
-import com.acevy.habit_tracker.domain.model.UserReward
-import com.acevy.habit_tracker.domain.repository.RewardRepository
+import com.acevy.habit_tracker.domain.model.reward.UserReward
+import com.acevy.habit_tracker.domain.repository.reward.RewardRepository
 
 class AddRewardUseCase(
     private val repo: RewardRepository,

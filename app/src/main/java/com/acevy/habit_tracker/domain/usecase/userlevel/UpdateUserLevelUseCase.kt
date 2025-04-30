@@ -1,7 +1,7 @@
-package com.acevy.habit_tracker.domain.usecase
+package com.acevy.habit_tracker.domain.usecase.userlevel
 
-import com.acevy.habit_tracker.domain.model.UserLevel
-import com.acevy.habit_tracker.domain.repository.RewardRepository
+import com.acevy.habit_tracker.domain.model.userlevel.UserLevel
+import com.acevy.habit_tracker.domain.repository.reward.RewardRepository
 
 class UpdateUserLevelUseCase(
     private val repo: RewardRepository,

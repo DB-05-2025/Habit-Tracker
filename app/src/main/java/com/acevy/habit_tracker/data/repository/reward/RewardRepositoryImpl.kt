@@ -1,15 +1,15 @@
-package com.acevy.habit_tracker.data.repository
+package com.acevy.habit_tracker.data.repository.reward
 
 import com.acevy.habit_tracker.data.local.dao.RewardTypeDao
-import com.acevy.habit_tracker.data.local.dao.UserRewardDao
-import com.acevy.habit_tracker.data.local.dao.UserLevelDao
+import com.acevy.habit_tracker.data.local.dao.reward.UserRewardDao
+import com.acevy.habit_tracker.data.local.dao.userlevel.UserLevelDao
 import com.acevy.habit_tracker.data.model.RewardTypeEntity
-import com.acevy.habit_tracker.data.model.UserLevelEntity
-import com.acevy.habit_tracker.data.model.UserRewardEntity
+import com.acevy.habit_tracker.data.model.reward.UserRewardEntity
+import com.acevy.habit_tracker.data.model.userlevel.UserLevelEntity
 import com.acevy.habit_tracker.domain.model.RewardType
-import com.acevy.habit_tracker.domain.model.UserLevel
-import com.acevy.habit_tracker.domain.model.UserReward
-import com.acevy.habit_tracker.domain.repository.RewardRepository
+import com.acevy.habit_tracker.domain.model.userlevel.UserLevel
+import com.acevy.habit_tracker.domain.model.reward.UserReward
+import com.acevy.habit_tracker.domain.repository.reward.RewardRepository
 
 class RewardRepositoryImpl(
     private val rewardTypeDao: RewardTypeDao,

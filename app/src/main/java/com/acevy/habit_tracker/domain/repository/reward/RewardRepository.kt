@@ -1,8 +1,8 @@
-package com.acevy.habit_tracker.domain.repository
+package com.acevy.habit_tracker.domain.repository.reward
 
 import com.acevy.habit_tracker.domain.model.RewardType
-import com.acevy.habit_tracker.domain.model.UserLevel
-import com.acevy.habit_tracker.domain.model.UserReward
+import com.acevy.habit_tracker.domain.model.reward.UserReward
+import com.acevy.habit_tracker.domain.model.userlevel.UserLevel
 
 interface RewardRepository {
     suspend fun addUserReward(reward: UserReward)
