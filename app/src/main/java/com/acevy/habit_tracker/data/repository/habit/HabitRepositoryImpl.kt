@@ -9,19 +9,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class HabitRepositoryImpl(private val dao: HabitDao) : HabitRepository {
-    override suspend fun insertHabit(habit: Habit): Long {
-        return dao.insertHabit(habit.toEntity())
-    }
+    override suspend fun insertHabit(habit: Habit): Long = dao.insertHabit(habit.toEntity())
 
-    override suspend fun updateHabit(habit: Habit) {
-        dao.updateHabit(habit.toEntity())
-    }
+    override suspend fun updateHabit(habit: Habit) = dao.updateHabit(habit.toEntity())
 
-    override suspend fun deleteHabit(habit: Habit) {
-        dao.deleteHabit(habit.toEntity())
-    }
+    override suspend fun deleteHabit(habit: Habit) = dao.deleteHabit(habit.toEntity())
 
-    override fun getHabitsByUser(userId: Long): Flow<List<Habit>> {
-        return dao.getHabitsByUser(userId).map { list -> list.map { it.toDomain() } }
-    }
+    override fun getHabitsByUser(userId: Long): Flow<List<Habit>> =
+        dao.getHabitsByUser(userId).map { list -> list.map { it.toDomain() } }
 }
