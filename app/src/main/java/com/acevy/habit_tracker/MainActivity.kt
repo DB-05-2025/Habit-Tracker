@@ -8,12 +8,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.acevy.habit_tracker.data.local.database.AppDatabase
-import com.acevy.habit_tracker.data.repository.habitlog.HabitLogRepositoryImpl
-import com.acevy.habit_tracker.domain.model.habitlog.HabitLog
-import com.acevy.habit_tracker.domain.usecase.habitlog.GetLogsByHabitUseCase
-import com.acevy.habit_tracker.domain.usecase.habitlog.InsertHabitLogUseCase
+import com.acevy.habit_tracker.data.repository.notificationlog.NotificationLogRepositoryImpl
+import com.acevy.habit_tracker.domain.model.notificationlog.NotificationLog
+import com.acevy.habit_tracker.domain.usecase.notificationlog.InsertNotificationLogUseCase
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -27,33 +25,26 @@ class MainActivity : ComponentActivity() {
             AppDatabase::class.java, "habit-db"
         ).build()
 
-        val habitLogRepo = HabitLogRepositoryImpl(db.habitLogDao())
-        val insertHabitLogUseCase = InsertHabitLogUseCase(habitLogRepo)
-        val getLogsByHabitUseCase = GetLogsByHabitUseCase(habitLogRepo)
+        val notificationLogRepo = NotificationLogRepositoryImpl(db.notificationLogDao())
+        val insertNotificationLogUseCase = InsertNotificationLogUseCase(notificationLogRepo)
 
-        // --- Insert Dummy Habit ---
-        val dummyHabitLog = HabitLog(
-            habitLogId = 0,
+        // --- Insert Dummy NotificationLog ---
+        val dummyNotification = NotificationLog(
+            notificationId = 0,
+            userId = 1,
             habitId = 1,
-            date = "2025-04-23",
-            status = "completed",
-            note = "Selesai baca 10 halaman",
-            createdAt = System.currentTimeMillis(),
-            updatedAt = System.currentTimeMillis()
+            title = "Ingat Minum Air",
+            message = "Sudahkah anda minum air hari ini?",
+            sentAt = System.currentTimeMillis(),
+            type = "user_reminder"
         )
 
         lifecycleScope.launch {
             try {
-                insertHabitLogUseCase(dummyHabitLog)
-                Log.d("HabitLogInsert", "HabitLog berhasil ditambahkan")
-
-                val logs = getLogsByHabitUseCase(1).first()
-                Log.d("HabitLogCheck", "Total log untuk habit 1: ${logs.size}")
-                logs.forEach { log ->
-                    Log.d("HabitLogCheck", "Log: ${log.date}, Status: ${log.status}")
-                }
+                val insertedId = insertNotificationLogUseCase(dummyNotification)
+                Log.d("NotificationInsert", "Notification berhasil ditambahkan id=$insertedId")
             } catch (e: Exception) {
-                Log.e("HabitLogInsert", "Gagal insert habitlog: ${e.message}")
+                Log.e("NotificationInsert", "Gagal insert notification: ${e.message}")
             }
         }
 
