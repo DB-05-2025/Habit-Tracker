@@ -8,8 +8,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.acevy.habit_tracker.data.local.database.AppDatabase
-import com.acevy.habit_tracker.data.repository.userlevel.UserLevelRepositoryImpl
-import com.acevy.habit_tracker.domain.usecase.userlevel.UpdateUserXpAndLevelUseCase
+import com.acevy.habit_tracker.data.repository.user.UserRepositoryImpl
+import com.acevy.habit_tracker.domain.model.user.User
+import com.acevy.habit_tracker.domain.usecase.user.InsertUserUseCase
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
 import kotlinx.coroutines.launch
 
@@ -24,29 +25,24 @@ class MainActivity : ComponentActivity() {
             AppDatabase::class.java, "habit-db"
         ).build()
 
-        val userLevelRepo = UserLevelRepositoryImpl(db.userLevelDao())
-        val updateUserXpAndLevelUseCase = UpdateUserXpAndLevelUseCase(userLevelRepo)
+        val userDao = db.userDao()
+        val userRepo = UserRepositoryImpl(userDao)
+        val insertUserUseCase = InsertUserUseCase(userRepo)
 
-        // --- Insert Dummy userId dan XP ---
-        val dummyUserId = 1L
-        val xpEarned = 130 // Misal user dapet XP dari menyelesaikan habit
+        // --- Insert Dummy User ---
+        val newUser = User(
+            userId = 0,
+            name = "Darul",
+            createdAt = System.currentTimeMillis(),
+            updatedAt = System.currentTimeMillis()
+        )
 
         lifecycleScope.launch {
             try {
-                updateUserXpAndLevelUseCase(dummyUserId, xpEarned)
-                Log.d("UserLevelUpdate", "XP user berhasil ditambahkan: $xpEarned XP")
-
-                val updatedUserLevel = userLevelRepo.getUserLevelByUserId(dummyUserId)
-                if (updatedUserLevel != null) {
-                    Log.d(
-                        "UserLevelCheck",
-                        "Level: ${updatedUserLevel.level}, XP: ${updatedUserLevel.currentXp}"
-                    )
-                } else {
-                    Log.e("UserLevelCheck", "User level tidak ditemukan")
-                }
+                val insertedId = insertUserUseCase(newUser)
+                Log.d("UserInsert", "User berhasil ditambahkan dengan id=$insertedId")
             } catch (e: Exception) {
-                Log.e("UserLevelUpdate", "Gagal update XP/Level: ${e.message}")
+                Log.e("UserInsert", "Gagal insert user: ${e.message}")
             }
         }
 
