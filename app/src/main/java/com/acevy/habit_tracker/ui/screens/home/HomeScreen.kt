@@ -62,6 +62,11 @@ fun HomeScreen(
     val today = remember {
         SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
     }
+    val todayDisplay = remember {
+        val rawDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(today)
+        SimpleDateFormat("EEEE, d MMMM yyyy", Locale("id", "ID")).format(rawDate!!)
+    }
+
     val todayLogs by logViewModel.todayHabitStatus.collectAsState()
 
     val total = todayLogs.size
@@ -89,7 +94,7 @@ fun HomeScreen(
         ) {
             item {
                 Text(
-                    text = today,
+                    text = todayDisplay,
                     style = AppType.body12,
                     color = AppColors.GrayDark
                 )
