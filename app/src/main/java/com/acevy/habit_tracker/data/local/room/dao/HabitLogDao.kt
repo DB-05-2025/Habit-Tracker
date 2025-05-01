@@ -15,6 +15,10 @@ interface HabitLogDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLog(log: HabitLogEntity)
 
+    @Query("SELECT * FROM habit_logs")
+    suspend fun getAllLogsOnce(): List<HabitLogEntity>
+
+
     @Query("SELECT * FROM habit_logs WHERE habitId = :habitId AND date = :date LIMIT 1")
     suspend fun getLogByHabitAndDate(habitId: Int, date: String): HabitLogEntity?
 

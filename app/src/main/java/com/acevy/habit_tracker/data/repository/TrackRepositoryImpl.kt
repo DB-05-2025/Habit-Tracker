@@ -24,4 +24,8 @@ class TrackRepositoryImpl(
     override suspend fun updateLog(log: HabitLogEntity) {
         dao.updateLog(log)
     }
+
+    override suspend fun getAllLogsOnce(): List<HabitLogEntity> {
+        return dao.getAllLogsOnce()
+    }
 }

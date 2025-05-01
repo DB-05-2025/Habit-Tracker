@@ -104,11 +104,6 @@ fun HomeProgressCard(
                     style = AppType.bold16,
                     color = AppColors.White
                 )
-                Text(
-                    text = "hari ini kamu telah\nselesaikan",
-                    style = AppType.bold16,
-                    color = AppColors.White
-                )
             }
         }
     }

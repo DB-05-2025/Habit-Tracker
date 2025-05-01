@@ -5,8 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.acevy.habit_tracker.data.local.entity.HabitLogEntity
 import com.acevy.habit_tracker.data.local.entity.HabitStatus
-import com.acevy.habit_tracker.domain.usecase.log.GenerateTodayLogsUseCase
-import com.acevy.habit_tracker.domain.usecase.log.HabitWithStatus
+import com.acevy.habit_tracker.domain.model.HabitWithStatus
 import com.acevy.habit_tracker.domain.usecase.log.LogUseCases
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
