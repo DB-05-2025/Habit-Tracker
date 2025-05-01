@@ -26,9 +26,14 @@ import com.acevy.habit_tracker.domain.usecase.notification.ClearOldNotifications
 import com.acevy.habit_tracker.domain.usecase.notification.GetAllNotificationsUseCase
 import com.acevy.habit_tracker.domain.usecase.notification.InsertNotificationUseCase
 import com.acevy.habit_tracker.domain.usecase.notification.NotificationUseCases
+import com.acevy.habit_tracker.domain.usecase.progress.GetAllLogsUseCase
+import com.acevy.habit_tracker.domain.usecase.progress.GetCompletedHabitsUseCase
+import com.acevy.habit_tracker.domain.usecase.progress.GetHabitsWithTodayStatusUseCase
+import com.acevy.habit_tracker.domain.usecase.progress.GetMissedHabitsUseCase
+import com.acevy.habit_tracker.domain.usecase.progress.GetTodayDoneLogsUseCase
 import com.acevy.habit_tracker.domain.usecase.progress.GetUserProgressUseCase
 import com.acevy.habit_tracker.domain.usecase.progress.ProgressUseCases
-import com.acevy.habit_tracker.domain.usecase.progress.UpdateUserProgressUseCase
+import com.acevy.habit_tracker.domain.usecase.progress.UpdateUserXpAndLevelUseCase
 import com.acevy.habit_tracker.domain.usecase.stack.CreateStackUseCase
 import com.acevy.habit_tracker.domain.usecase.stack.DeleteStackUseCase
 import com.acevy.habit_tracker.domain.usecase.stack.GetAllStacksUseCase
@@ -88,12 +93,22 @@ object Injection {
     }
 
     fun provideProgressUseCases(context: Context): ProgressUseCases {
-        val repo = provideProgressRepository(context)
+        val progressRepo = provideProgressRepository(context)
+        val habitRepo = provideHabitRepository(context)
+        val trackRepo = provideTrackRepository(context)
+
         return ProgressUseCases(
-            getProgress = GetUserProgressUseCase(repo),
-            updateProgress = UpdateUserProgressUseCase(repo)
+            updateUserXpAndLevel = UpdateUserXpAndLevelUseCase(progressRepo),
+            getUserProgress = GetUserProgressUseCase(progressRepo),
+
+            getHabitsWithTodayStatus = GetHabitsWithTodayStatusUseCase(habitRepo, trackRepo),
+            getCompletedHabits = GetCompletedHabitsUseCase(habitRepo, trackRepo),
+            getMissedHabits = GetMissedHabitsUseCase(habitRepo, trackRepo),
+            getTodayDoneLogs = GetTodayDoneLogsUseCase(trackRepo),
+            getAllLogs = GetAllLogsUseCase(trackRepo)
         )
     }
+
 
     // ======================
     // STACK MODULE

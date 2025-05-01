@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 data class UserProgressEntity(
     @PrimaryKey val id: Int = 1, // Singleton, hanya satu user
     val level: Int = 1,
-    val currentExp: Int = 0,
+    val currentXp: Int = 0,
     val updatedAt: Long = System.currentTimeMillis()
 )

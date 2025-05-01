@@ -5,14 +5,8 @@ import com.acevy.habit_tracker.data.local.entity.HabitLogEntity
 import com.acevy.habit_tracker.data.local.entity.HabitStatus
 import com.acevy.habit_tracker.data.local.room.dao.HabitDao
 import com.acevy.habit_tracker.data.local.room.dao.HabitLogDao
+import com.acevy.habit_tracker.domain.model.HabitWithStatus
 import java.util.Calendar
-
-data class HabitWithStatus(
-    val logId: Int,
-    val habitId: Int,
-    val title: String,
-    val status: HabitStatus
-)
 
 class GetTodayHabitStatusUseCase(
     private val habitDao: HabitDao,

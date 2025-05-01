@@ -19,8 +19,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.acevy.habit_tracker.data.local.datastore.UserPreferences
+import com.acevy.habit_tracker.data.local.entity.HabitStatus
+import com.acevy.habit_tracker.ui.ViewModelFactory
 import com.acevy.habit_tracker.ui.components.accordions.DisabledAccordion
 import com.acevy.habit_tracker.ui.components.accordions.ExpandableAccordion
 import com.acevy.habit_tracker.ui.components.cards.ProgressGreetingCard
@@ -31,35 +35,29 @@ import com.acevy.habit_tracker.ui.components.progressitem.TodayHabitItem
 import com.acevy.habit_tracker.ui.model.StatData
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.AppType
+import com.acevy.habit_tracker.ui.viewmodel.HabitViewModel
+import com.acevy.habit_tracker.ui.viewmodel.ProgressViewModel
 
 @Composable
 fun ProgressScreen(
     userPreferences: UserPreferences,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    progressViewModel: ProgressViewModel = viewModel(factory = ViewModelFactory(LocalContext.current)),
+    habitViewModel: HabitViewModel = viewModel(factory = ViewModelFactory(LocalContext.current))
 ) {
     val userName by userPreferences.userNameFlow.collectAsState(initial = "")
+    val todayHabits = progressViewModel.todayHabits.value
+    val completedHabits = progressViewModel.completedHabits.value
+    val missedHabits = progressViewModel.missedHabits.value
+    val progress = progressViewModel.progress.collectAsState().value
+    val allHabits = habitViewModel.habitList.collectAsState().value
     val statList = listOf(
-        StatData("Level 0", "saat ini", Icons.Default.Stairs, AppColors.RedIcon),
-        StatData("0 Habit", "telah dibuat", Icons.AutoMirrored.Filled.ListAlt, AppColors.PurpleIcon),
-        StatData("0 XP", "telah dicapai", Icons.Default.Flag, AppColors.BlueIcon)
+        StatData("Level ${progress?.level ?: 0}", "saat ini", Icons.Default.Stairs, AppColors.RedIcon),
+        StatData("${allHabits.size} Habit", "telah dibuat", Icons.AutoMirrored.Filled.ListAlt, AppColors.PurpleIcon),
+        StatData("${progress?.currentXp ?: 0} XP", "telah dicapai", Icons.Default.Flag, AppColors.BlueIcon)
     )
 
-    val todayHabits = listOf(
-        "Bekerja" to true,
-        "Olahraga" to false,
-        "Mandi" to true,
-    )
-
-    val completedHabits = listOf(
-        "Makan" to 5,
-        "Tidur" to 7
-    )
-
-    val missedHabits = listOf(
-        Triple("Belajar", 3, 7),
-        Triple("Ngoding", 2, 5),
-        Triple("Membaca", 6, 10)
-    )
+    val isHabitListEmpty = todayHabits.isEmpty() && completedHabits.isEmpty() && missedHabits.isEmpty()
 
     LazyColumn(
         modifier = modifier
@@ -91,36 +89,37 @@ fun ProgressScreen(
             }
         }
 
-//        DisabledAccordion("⏳ Sedang Berjalan")
-//        DisabledAccordion("🎉 Selesai")
-//        DisabledAccordion("😔 Terlewat")
+        if (isHabitListEmpty) {
+            item { DisabledAccordion("⏳ Sedang Berjalan") }
+            item { DisabledAccordion("🎉 Selesai") }
+            item { DisabledAccordion("😔 Terlewat") }
+        } else {
+            item {
+                ExpandableAccordion(
+                    title = "⏳ Sedang Berjalan",
+                    items = todayHabits
+                ) { item ->
+                    TodayHabitItem(name = item.title, isCompleted = item.status == HabitStatus.DONE)
+                }
+            }
 
-        item {
-            ExpandableAccordion(
-                title = "⏳ Sedang Berjalan",
-                items = todayHabits
-            ) { (name, done) ->
-                TodayHabitItem(name = name, isCompleted = done)
+            item {
+                ExpandableAccordion(
+                    title = "🎉 Selesai",
+                    items = completedHabits
+                ) { item ->
+                    CompletedHabitItem(name = item.title, total = item.total)
+                }
+            }
+
+            item {
+                ExpandableAccordion(
+                    title = "😔 Terlewat",
+                    items = missedHabits
+                ) { item ->
+                    MissedHabitItem(name = item.title, completed = item.done, total = item.total)
+                }
             }
         }
-
-        item {
-            ExpandableAccordion(
-                title = "🎉 Selesai",
-                items = completedHabits
-            ) { (name, total) ->
-                CompletedHabitItem(name = name, total = total)
-            }
-        }
-
-        item {
-            ExpandableAccordion(
-                title = "😔 Terlewat",
-                items = missedHabits
-            ) { (name, completed, total) ->
-                MissedHabitItem(name = name, completed = completed, total = total)
-            }
-        }
-
     }
 }
