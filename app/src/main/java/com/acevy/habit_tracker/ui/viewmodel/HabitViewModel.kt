@@ -1,38 +1,46 @@
 package com.acevy.habit_tracker.ui.viewmodel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.acevy.habit_tracker.domain.model.habit.Habit
-import com.acevy.habit_tracker.domain.usecase.habit.DeleteHabitUseCase
-import com.acevy.habit_tracker.domain.usecase.habit.GetHabitsUseCase
-import com.acevy.habit_tracker.domain.usecase.habit.InsertHabitUseCase
-import com.acevy.habit_tracker.domain.usecase.habit.UpdateHabitUseCase
+import com.acevy.habit_tracker.data.local.entity.HabitEntity
+import com.acevy.habit_tracker.domain.usecase.habit.HabitUseCases
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class HabitViewModel(
-    private val insertHabitUseCase: InsertHabitUseCase,
-    private val getHabitsUseCase: GetHabitsUseCase,
-    private val deleteHabitUseCase: DeleteHabitUseCase,
-    private val updateHabitUseCase: UpdateHabitUseCase
+    private val useCases: HabitUseCases
 ) : ViewModel() {
 
-    private val _habitName = mutableStateOf("")
-    val habitName: State<String> get() = _habitName
+    val habitList: StateFlow<List<HabitEntity>> = useCases
+        .getAllHabits()
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            emptyList()
+        )
 
-    fun onHabitNameChange(name: String) {
-        _habitName.value = name
+    fun getHabitById(id: Int): Flow<HabitEntity?> {
+        return useCases.getHabitById(id)
     }
 
-    fun insertHabit(habit: Habit) {
+    fun addHabit(habit: HabitEntity) {
         viewModelScope.launch {
-            insertHabitUseCase(habit)
+            useCases.addHabit(habit)
         }
     }
 
-    fun getHabits(userId: Long): Flow<List<Habit>> {
-        return getHabitsUseCase(userId)
+    fun updateHabit(habit: HabitEntity) {
+        viewModelScope.launch {
+            useCases.updateHabit(habit)
+        }
+    }
+
+    fun deleteHabit(habit: HabitEntity) {
+        viewModelScope.launch {
+            useCases.deleteHabit(habit)
+        }
     }
 }

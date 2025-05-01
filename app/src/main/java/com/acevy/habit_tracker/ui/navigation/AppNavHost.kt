@@ -16,15 +16,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navArgument
 import com.acevy.habit_tracker.data.local.datastore.UserPreferences
+import com.acevy.habit_tracker.ui.ViewModelFactory
 import com.acevy.habit_tracker.ui.layout.MainScreenWithBottomNav
 import com.acevy.habit_tracker.ui.screens.habit.habittrack.AddHabitScreen
 import com.acevy.habit_tracker.ui.screens.habit.HabitScreen
 import com.acevy.habit_tracker.ui.screens.habit.habitstack.AddStackScreen
+import com.acevy.habit_tracker.ui.screens.habit.habitstack.UpdateStackScreen
 import com.acevy.habit_tracker.ui.screens.habit.habittrack.UpdateHabitScreen
 import com.acevy.habit_tracker.ui.screens.home.HomeScreen
 import com.acevy.habit_tracker.ui.screens.notification.NotificationScreen
@@ -32,6 +37,7 @@ import com.acevy.habit_tracker.ui.screens.onboarding.GetStartedScreen
 import com.acevy.habit_tracker.ui.screens.onboarding.OnboardingScreen
 import com.acevy.habit_tracker.ui.screens.progress.ProgressScreen
 import com.acevy.habit_tracker.ui.screens.splash.SplashScreen
+import com.acevy.habit_tracker.ui.viewmodel.HabitViewModel
 import kotlinx.coroutines.delay
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -59,7 +65,7 @@ fun AppNavHost(
 
             when {
                 !isDelayFinished -> {
-                    SplashScreen() // ⬅️ TAMPILKAN SPLASH PENUH MINIMAL 1.5 DETIK
+                    SplashScreen()
                 }
                 isOnboardingCompleted == true -> {
                     LaunchedEffect(Unit) {
@@ -173,12 +179,23 @@ fun AppNavHost(
                 )
             }
 
-//            composable(Screen.UpdateHabit.route) {
-//                UpdateHabitScreen(
-//                    onBack = { navController.popBackStack() },
-//                    navController = navController
-//                )
-//            }
+            composable(
+                route = Screen.UpdateHabit.route,
+                arguments = listOf(navArgument("habitId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val habitId = backStackEntry.arguments?.getInt("habitId") ?: return@composable
+                val viewModel: HabitViewModel = viewModel(factory = ViewModelFactory(LocalContext.current))
+                val habit by viewModel.getHabitById(habitId).collectAsState(initial = null)
+
+                habit?.let {
+                    UpdateHabitScreen(
+                        habit = it,
+                        onBack = { navController.popBackStack() },
+                        navController = navController,
+                        viewModel = viewModel
+                    )
+                }
+            }
 
             composable(Screen.AddStack.route) {
                 AddStackScreen(
@@ -187,11 +204,17 @@ fun AppNavHost(
                 )
             }
 
-//            composable(Screen.UpdateStack.route) {
-//                UpdateStackScreen(
-//                    onBack = { navController.popBackStack() }
-//                )
-//            }
+            composable(
+                route = Screen.UpdateStack.route,
+                arguments = listOf(navArgument("stackId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val stackId = backStackEntry.arguments?.getInt("stackId") ?: return@composable
+                UpdateStackScreen(
+                    stackId = stackId,
+                    onBack = { navController.popBackStack() },
+                    navController = navController
+                )
+            }
         }
     }
 }

@@ -17,31 +17,31 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.acevy.habit_tracker.ui.ViewModelFactory
 import com.acevy.habit_tracker.ui.components.cards.HabitCardItem
 import com.acevy.habit_tracker.ui.components.indicators.AsyncImageWithIndicator
 import com.acevy.habit_tracker.ui.navigation.Screen
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.AppType
+import com.acevy.habit_tracker.ui.viewmodel.HabitViewModel
 
 @Composable
-fun HabitTrackingPage(navController: NavController) {
-    // Dummy Habit Data dulu
-    val habits = remember {
-        listOf(
-            "Bekerja",
-            "Olahraga",
-            "Makan",
-            "Mandi",
-            "Tidur"
-        )
-    }
+fun HabitTrackingPage(
+    navController: NavController,
+    viewModel: HabitViewModel = viewModel(factory = ViewModelFactory(LocalContext.current))
+) {
+    val habits by viewModel.habitList.collectAsState()
 
     Box(
         modifier = Modifier
@@ -78,12 +78,12 @@ fun HabitTrackingPage(navController: NavController) {
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(habits) { habitName ->
+                    items(habits) { habit ->
                         HabitCardItem(
-                            habitName = habitName,
+                            habitName = habit.title,
                             showTrailingIcon = true,
                             onClick = {
-                                /* Navigate to Update Habit */
+                                navController.navigate(Screen.UpdateHabit.createRoute(habit.id))
                             }
                         )
                     }

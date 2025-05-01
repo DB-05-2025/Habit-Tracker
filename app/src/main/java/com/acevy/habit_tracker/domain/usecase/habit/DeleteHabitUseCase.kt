@@ -1,10 +1,12 @@
 package com.acevy.habit_tracker.domain.usecase.habit
 
-import com.acevy.habit_tracker.domain.model.habit.Habit
-import com.acevy.habit_tracker.domain.repository.habit.HabitRepository
+import com.acevy.habit_tracker.data.local.entity.HabitEntity
+import com.acevy.habit_tracker.domain.repository.HabitRepository
 
-class DeleteHabitUseCase(private val repo: HabitRepository) {
-    suspend operator fun invoke(habit: Habit) {
-        repo.deleteHabit(habit)
+class DeleteHabitUseCase(
+    private val repository: HabitRepository
+) {
+    suspend operator fun invoke(habit: HabitEntity) {
+        repository.deleteHabit(habit)
     }
 }
