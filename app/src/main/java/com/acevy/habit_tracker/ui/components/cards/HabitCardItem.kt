@@ -10,12 +10,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,8 +40,10 @@ fun HabitCardItem(
     isChecked: Boolean = false,
     isCheckable: Boolean = false,
     showTrailingIcon: Boolean = true,
+    showDeleteIcon: Boolean = false,
     onCheckedChange: (Boolean) -> Unit = {},
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    onDeleteClick: () -> Unit = {}
 ) {
     val borderColor = if (isChecked) AppColors.GreenPrimary else AppColors.GrayLight
     val backgroundColor = if (isChecked) AppColors.OffWhite else AppColors.White
@@ -64,10 +68,22 @@ fun HabitCardItem(
             Text(
                 text = habitName,
                 style = AppType.body14,
-                color = AppColors.GrayDark
+                color = AppColors.GrayDark,
+                modifier = Modifier.weight(1f)
             )
 
-            if (showTrailingIcon) {
+            if (showDeleteIcon) {
+                // Tampilkan ikon delete
+                IconButton(
+                    onClick = onDeleteClick
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Hapus",
+                        tint = AppColors.GrayDark
+                    )
+                }
+            } else if (showTrailingIcon) {
                 if (isCheckable) {
                     Checkbox(
                         checked = isChecked,

@@ -13,13 +13,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.acevy.habit_tracker.data.local.entity.HabitEntity
+import com.acevy.habit_tracker.data.local.entity.HabitStackEntity
 import com.acevy.habit_tracker.ui.ViewModelFactory
 import com.acevy.habit_tracker.ui.components.cards.HabitCardItem
 import com.acevy.habit_tracker.ui.components.indicators.AsyncImageWithIndicator
@@ -42,6 +48,7 @@ fun HabitTrackingPage(
     viewModel: HabitViewModel = viewModel(factory = ViewModelFactory(LocalContext.current))
 ) {
     val habits by viewModel.habitList.collectAsState()
+    var showDialog by remember { mutableStateOf<HabitEntity?>(null) }
 
     Box(
         modifier = Modifier
@@ -81,14 +88,39 @@ fun HabitTrackingPage(
                     items(habits) { habit ->
                         HabitCardItem(
                             habitName = habit.title,
-                            showTrailingIcon = true,
+                            showTrailingIcon = false,
+                            showDeleteIcon = true,
                             onClick = {
                                 navController.navigate(Screen.UpdateHabit.createRoute(habit.id))
+                            },
+                            onDeleteClick = {
+                                showDialog = habit
                             }
                         )
                     }
                 }
             }
+        }
+
+        if (showDialog != null) {
+            AlertDialog(
+                onDismissRequest = { showDialog = null },
+                title = { Text("Hapus habit") },
+                text = { Text("Yakin ingin menghapus habit '${showDialog?.title}'?") },
+                confirmButton = {
+                    TextButton(onClick = {
+                        viewModel.deleteHabit(showDialog!!)
+                        showDialog = null
+                    }) {
+                        Text("Hapus")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDialog = null }) {
+                        Text("Batal")
+                    }
+                }
+            )
         }
 
         FloatingActionButton(
