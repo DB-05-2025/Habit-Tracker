@@ -3,7 +3,7 @@ accompanistSystemuicontroller = "0.30.1"
 agp = "8.8.2"
 coilCompose = "2.2.2"
 coreSplashscreen = "1.0.1"
-datastorePreferences = "1.1.5"
+datastorePreferences = "1.1.4"
 kotlin = "2.1.0"
 coreKtx = "1.16.0"
 junit = "4.13.2"
@@ -11,17 +11,15 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
-composeBom = "2025.04.01"
+composeBom = "2025.04.00"
 lottieCompose = "6.1.0"
 navigationCompose = "2.8.9"
 navigationTesting = "2.8.9"
 lifecycleViewmodelCompose = "2.8.7"
 lifecycleLivedataKtx = "2.8.7"
 lifecycleViewmodelKtx = "2.8.7"
-roomCompiler = "2.7.1"
-roomRuntime = "2.7.1"
-activityKtx = "1.10.1"
-coroutines = "1.7.3"
+roomCompiler = "2.7.0"
+roomRuntime = "2.7.0"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
@@ -48,12 +46,9 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
-androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigationTesting" }
-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

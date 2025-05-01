@@ -15,29 +15,21 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.acevy.habit_tracker.domain.model.user.User
 import com.acevy.habit_tracker.ui.components.buttons.ButtonPrimary
 import com.acevy.habit_tracker.ui.components.forminputs.TextInputField
 import com.acevy.habit_tracker.ui.components.indicators.AsyncImageWithIndicator
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.AppType
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
-import com.acevy.habit_tracker.ui.viewmodel.UserViewModel
-import com.acevy.habit_tracker.ui.viewmodel.ViewModelFactory
 
 @Composable
 fun GetStartedScreen(
     onSubmit: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
-    val viewModel: UserViewModel = viewModel(factory = ViewModelFactory())
-
     var name by rememberSaveable { mutableStateOf("") }
 
     Column(
@@ -75,20 +67,8 @@ fun GetStartedScreen(
 
         ButtonPrimary(
             text = "Continue",
-            onClick = {
-                if (name.isNotBlank()) {
-                    val now = System.currentTimeMillis()
-                    val user = User(
-                        userId = 0,
-                        name = name,
-                        createdAt = now,
-                        updatedAt = now
-                    )
-                    viewModel.insertUser(user)
-                    onSubmit(name)
-                }
-            },
-            fullWidth = true
+            onClick = { if (name.isNotBlank()) onSubmit(name) },
+            fullWidth = true,
         )
     }
 }

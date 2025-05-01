@@ -14,30 +14,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.acevy.habit_tracker.data.local.entity.HabitEntity
 import com.acevy.habit_tracker.di.Injection
-import com.acevy.habit_tracker.domain.model.habit.Habit
+import com.acevy.habit_tracker.ui.ViewModelFactory
 import com.acevy.habit_tracker.ui.model.HabitFormState
 import com.acevy.habit_tracker.ui.theme.AppType
+import com.acevy.habit_tracker.ui.viewmodel.HabitViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpdateHabitScreen(
-    habit: Habit,
+    habit: HabitEntity,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController,
+    viewModel: HabitViewModel = viewModel(factory = ViewModelFactory(LocalContext.current))
 ) {
-    val context = LocalContext.current
-    val viewModel = remember { Injection.provideHabitViewModel(context) }
-
     val initialForm = HabitFormState(
         title = habit.title,
         note = habit.note.orEmpty(),
-        repeatDays = habit.repeatDays?.toSet() ?: emptySet(),
-        reminderTime = habit.reminderTime ?: ""
+        repeatDays = habit.repeatDays.toSet(),
+        reminderTime = habit.reminderTime.orEmpty()
     )
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -56,9 +57,9 @@ fun UpdateHabitScreen(
             onSubmit = { form ->
                 val updatedHabit = habit.copy(
                     title = form.title,
-                    note = form.note,
                     repeatDays = form.repeatDays.toList(),
-                    reminderTime = form.reminderTime,
+                    reminderTime = form.reminderTime.ifEmpty { null },
+                    note = form.note,
                     updatedAt = System.currentTimeMillis()
                 )
                 viewModel.updateHabit(updatedHabit)

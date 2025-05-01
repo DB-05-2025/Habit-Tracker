@@ -12,30 +12,36 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.acevy.habit_tracker.domain.model.habitstack.HabitStack
+import com.acevy.habit_tracker.data.local.entity.HabitStackEntity
+import com.acevy.habit_tracker.ui.ViewModelFactory
 import com.acevy.habit_tracker.ui.model.HabitOption
 import com.acevy.habit_tracker.ui.theme.AppType
+import com.acevy.habit_tracker.ui.viewmodel.StackViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpdateStackScreen(
-    stack: HabitStack,
+    stack: HabitStackEntity,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: StackViewModel = viewModel(factory = ViewModelFactory(LocalContext.current))
 ) {
+    // TODO: Replace dummy with ViewModel data
     val dummyHabits = listOf(
-        1L to "Bekerja",
-        2L to "Olahraga",
-        3L to "Makan",
-        4L to "Tidur",
-        5L to "Mandi"
+        1 to "Bekerja",
+        2 to "Olahraga",
+        3 to "Makan",
+        4 to "Tidur",
+        5 to "Mandi"
     ).map { (id, name) ->
         HabitOption(
             id = id,
             name = name,
-            isSelected = id == stack.stackedHabitId
+            isSelected = id in stack.habitIds
         )
     }
 
@@ -50,10 +56,14 @@ fun UpdateStackScreen(
         )
 
         StackForm(
-            initialStackName = "",
+            initialStackName = stack.title,
             initialHabits = dummyHabits,
             onSubmit = { name, selectedHabits ->
-                Log.d("STACK", "Updated: $name with ${selectedHabits.count { it.isSelected }} habits")
+                val updatedStack = stack.copy(
+                    title = name,
+                    habitIds = selectedHabits.filter { it.isSelected }.map { it.id }
+                )
+                viewModel.updateStack(updatedStack)
                 onBack()
             },
             navController = navController

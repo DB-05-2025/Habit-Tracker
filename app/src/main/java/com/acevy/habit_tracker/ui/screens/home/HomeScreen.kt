@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -26,7 +25,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.acevy.habit_tracker.data.local.datastore.UserPreferences
@@ -37,8 +35,6 @@ import com.acevy.habit_tracker.ui.components.navigation.BottomNavBar
 import com.acevy.habit_tracker.ui.model.HabitItemUiState
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.AppType
-import com.acevy.habit_tracker.ui.viewmodel.HabitViewModel
-import com.acevy.habit_tracker.ui.viewmodel.ViewModelFactory
 import com.acevy.habit_tracker.utils.getFormattedToday
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -46,20 +42,17 @@ import com.acevy.habit_tracker.utils.getFormattedToday
 fun HomeScreen(
     userPreferences: UserPreferences,
     navController: NavController,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val userName by userPreferences.userNameFlow.collectAsState(initial = "")
     val today = remember { getFormattedToday() }
 
-    val viewModel: HabitViewModel = viewModel(factory = ViewModelFactory())
-    val habits by viewModel.habits.collectAsState()
-
-    val todayIndex = remember { java.time.LocalDate.now().dayOfWeek.value % 7 }
-    val todayHabits = habits.filter { it.repeatDays?.contains(todayIndex) == true }
-        .map { HabitItemUiState(name = it.title, isCompleted = false) }  // default uncheck
-
-    LaunchedEffect(Unit) {
-        viewModel.load(userId = 1L)
+    val todayHabits = remember {
+        mutableStateListOf(
+            HabitItemUiState("Bekerja", false),
+            HabitItemUiState("Olahraga", true),
+            HabitItemUiState("Mandi", false),
+        )
     }
 
     Scaffold(
@@ -139,7 +132,7 @@ fun HomeScreen(
                         isCheckable = true,
                         isChecked = habit.isCompleted,
                         onCheckedChange = { checked ->
-                            // update UI state only, real status simpan di HabitLog nanti
+                            todayHabits[index] = habit.copy(isCompleted = checked)
                         }
                     )
                 }

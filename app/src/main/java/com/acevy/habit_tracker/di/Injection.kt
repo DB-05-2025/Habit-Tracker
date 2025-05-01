@@ -1,165 +1,130 @@
 package com.acevy.habit_tracker.di
 
 import android.content.Context
-import androidx.room.Room
-import com.acevy.habit_tracker.data.local.database.AppDatabase
-import com.acevy.habit_tracker.data.repository.habit.HabitRepositoryImpl
-import com.acevy.habit_tracker.data.repository.habitlog.HabitLogRepositoryImpl
-import com.acevy.habit_tracker.data.repository.habitstack.HabitStackRepositoryImpl
-import com.acevy.habit_tracker.data.repository.notificationlog.NotificationLogRepositoryImpl
-import com.acevy.habit_tracker.data.repository.reward.UserRewardRepositoryImpl
-import com.acevy.habit_tracker.data.repository.user.UserRepositoryImpl
-import com.acevy.habit_tracker.data.repository.userlevel.UserLevelRepositoryImpl
-import com.acevy.habit_tracker.di.container.HabitLogUseCases
-import com.acevy.habit_tracker.di.container.HabitStackUseCases
-import com.acevy.habit_tracker.di.container.HabitUseCases
-import com.acevy.habit_tracker.di.container.NotificationLogUseCases
-import com.acevy.habit_tracker.di.container.UserLevelUseCases
-import com.acevy.habit_tracker.di.container.UserRewardUseCases
-import com.acevy.habit_tracker.di.container.UserUseCases
+import com.acevy.habit_tracker.data.local.room.db.DatabaseBuilder
+import com.acevy.habit_tracker.data.repository.HabitRepositoryImpl
+import com.acevy.habit_tracker.data.repository.NotificationRepositoryImpl
+import com.acevy.habit_tracker.data.repository.ProgressRepositoryImpl
+import com.acevy.habit_tracker.data.repository.StackRepositoryImpl
+import com.acevy.habit_tracker.data.repository.TrackRepositoryImpl
+import com.acevy.habit_tracker.domain.repository.HabitRepository
+import com.acevy.habit_tracker.domain.repository.NotificationRepository
+import com.acevy.habit_tracker.domain.repository.ProgressRepository
+import com.acevy.habit_tracker.domain.repository.StackRepository
+import com.acevy.habit_tracker.domain.repository.TrackRepository
+import com.acevy.habit_tracker.domain.usecase.habit.AddHabitUseCase
 import com.acevy.habit_tracker.domain.usecase.habit.DeleteHabitUseCase
-import com.acevy.habit_tracker.domain.usecase.habit.GetHabitsUseCase
-import com.acevy.habit_tracker.domain.usecase.habit.InsertHabitUseCase
+import com.acevy.habit_tracker.domain.usecase.habit.GetAllHabitsUseCase
+import com.acevy.habit_tracker.domain.usecase.habit.HabitUseCases
 import com.acevy.habit_tracker.domain.usecase.habit.UpdateHabitUseCase
-import com.acevy.habit_tracker.domain.usecase.habitlog.DeleteHabitLogUseCase
-import com.acevy.habit_tracker.domain.usecase.habitlog.GetLogsByHabitUseCase
-import com.acevy.habit_tracker.domain.usecase.habitlog.InsertHabitLogUseCase
-import com.acevy.habit_tracker.domain.usecase.habitlog.UpdateHabitLogUseCase
-import com.acevy.habit_tracker.domain.usecase.habitstack.DeleteHabitStackUseCase
-import com.acevy.habit_tracker.domain.usecase.habitstack.GetHabitStacksByUserUseCase
-import com.acevy.habit_tracker.domain.usecase.habitstack.InsertHabitStackUseCase
-import com.acevy.habit_tracker.domain.usecase.habitstack.UpdateHabitStackUseCase
-import com.acevy.habit_tracker.domain.usecase.notificationlog.GetNotificationLogsByUserUseCase
-import com.acevy.habit_tracker.domain.usecase.notificationlog.InsertNotificationLogUseCase
-import com.acevy.habit_tracker.domain.usecase.reward.GetUserRewardsUseCase
-import com.acevy.habit_tracker.domain.usecase.reward.InsertUserRewardUseCase
-import com.acevy.habit_tracker.domain.usecase.user.GetUserByIdUseCase
-import com.acevy.habit_tracker.domain.usecase.user.InsertUserUseCase
-import com.acevy.habit_tracker.domain.usecase.user.UpdateUserUseCase
-import com.acevy.habit_tracker.domain.usecase.userlevel.GetUserLevelUseCase
-import com.acevy.habit_tracker.domain.usecase.userlevel.InsertUserLevelUseCase
-import com.acevy.habit_tracker.domain.usecase.userlevel.UpdateUserLevelUseCase
-import com.acevy.habit_tracker.domain.usecase.userlevel.UpdateUserXpAndLevelUseCase
-import com.acevy.habit_tracker.ui.viewmodel.HabitViewModel
+import com.acevy.habit_tracker.domain.usecase.notification.ClearOldNotificationsUseCase
+import com.acevy.habit_tracker.domain.usecase.notification.GetAllNotificationsUseCase
+import com.acevy.habit_tracker.domain.usecase.notification.InsertNotificationUseCase
+import com.acevy.habit_tracker.domain.usecase.notification.NotificationUseCases
+import com.acevy.habit_tracker.domain.usecase.progress.GetUserProgressUseCase
+import com.acevy.habit_tracker.domain.usecase.progress.ProgressUseCases
+import com.acevy.habit_tracker.domain.usecase.progress.UpdateUserProgressUseCase
+import com.acevy.habit_tracker.domain.usecase.stack.CreateStackUseCase
+import com.acevy.habit_tracker.domain.usecase.stack.DeleteStackUseCase
+import com.acevy.habit_tracker.domain.usecase.stack.GetAllStacksUseCase
+import com.acevy.habit_tracker.domain.usecase.stack.GetStackByIdUseCase
+import com.acevy.habit_tracker.domain.usecase.stack.StackUseCases
+import com.acevy.habit_tracker.domain.usecase.stack.UpdateStackUseCase
+import com.acevy.habit_tracker.domain.usecase.track.AddHabitLogUseCase
+import com.acevy.habit_tracker.domain.usecase.track.DeleteLogsByHabitUseCase
+import com.acevy.habit_tracker.domain.usecase.track.GetLogsByDateUseCase
+import com.acevy.habit_tracker.domain.usecase.track.TrackUseCases
 
 object Injection {
 
-    private lateinit var db: AppDatabase
+    // ======================
+    // HABIT MODULE
+    // ======================
 
-    fun init(context: Context) {
-        db = Room.databaseBuilder(
-            context,
-            AppDatabase::class.java,
-            "habit-db"
-        ).fallbackToDestructiveMigration().build()
-
-        initUser()
-        initHabit()
-        initHabitLog()
-        initHabitStack()
-        initNotification()
-        initUserLevel()
-        initUserReward()
+    fun provideHabitRepository(context: Context): HabitRepository {
+        val db = DatabaseBuilder.getInstance(context)
+        return HabitRepositoryImpl(db.habitDao())
     }
 
-    fun provideHabitViewModel(context: Context): HabitViewModel {
-        if (!::db.isInitialized) {
-            init(context)
-        }
-        return HabitViewModel(habitUseCases)
-    }
-
-    // ---------------- USER ----------------
-    lateinit var userUseCases: UserUseCases
-        private set
-
-    private fun initUser() {
-        val repo = UserRepositoryImpl(db.userDao())
-        userUseCases = UserUseCases(
-            insertUserUseCase = InsertUserUseCase(repo),
-            getUserByIdUseCase = GetUserByIdUseCase(repo),
-            updateUserUseCase = UpdateUserUseCase(repo)
+    fun provideHabitUseCases(context: Context): HabitUseCases {
+        val repo = provideHabitRepository(context)
+        return HabitUseCases(
+            addHabit = AddHabitUseCase(repo),
+            getAllHabits = GetAllHabitsUseCase(repo),
+            updateHabit = UpdateHabitUseCase(repo),
+            deleteHabit = DeleteHabitUseCase(repo)
         )
     }
 
-    // ---------------- HABIT ----------------
-    lateinit var habitUseCases: HabitUseCases
-        private set
+    // ======================
+    // TRACK MODULE
+    // ======================
+    fun provideTrackRepository(context: Context): TrackRepository {
+        val db = DatabaseBuilder.getInstance(context)
+        return TrackRepositoryImpl(db.habitLogDao())
+    }
 
-    private fun initHabit() {
-        val repo = HabitRepositoryImpl(db.habitDao())
-        habitUseCases = HabitUseCases(
-            insertHabitUseCase = InsertHabitUseCase(repo),
-            updateHabitUseCase = UpdateHabitUseCase(repo),
-            deleteHabitUseCase = DeleteHabitUseCase(repo),
-            getHabitsUseCase = GetHabitsUseCase(repo)
+    fun provideTrackUseCases(context: Context): TrackUseCases {
+        val repo = provideTrackRepository(context)
+        return TrackUseCases(
+            addLog = AddHabitLogUseCase(repo),
+            getLogsByDate = GetLogsByDateUseCase(repo),
+            deleteLogsByHabit = DeleteLogsByHabitUseCase(repo)
         )
     }
 
-    // ---------------- HABIT LOG ----------------
-    lateinit var habitLogUseCases: HabitLogUseCases
-        private set
+    // ======================
+    // PROGRESS MODULE
+    // ======================
+    fun provideProgressRepository(context: Context): ProgressRepository {
+        val db = DatabaseBuilder.getInstance(context)
+        return ProgressRepositoryImpl(db.userProgressDao())
+    }
 
-    private fun initHabitLog() {
-        val repo = HabitLogRepositoryImpl(db.habitLogDao())
-        habitLogUseCases = HabitLogUseCases(
-            insertHabitLogUseCase = InsertHabitLogUseCase(repo),
-            getLogsByHabitUseCase = GetLogsByHabitUseCase(repo),
-            updateHabitLogUseCases = UpdateHabitLogUseCase(repo),
-            deleteHabitLogUseCase = DeleteHabitLogUseCase(repo)
+    fun provideProgressUseCases(context: Context): ProgressUseCases {
+        val repo = provideProgressRepository(context)
+        return ProgressUseCases(
+            getProgress = GetUserProgressUseCase(repo),
+            updateProgress = UpdateUserProgressUseCase(repo)
         )
     }
 
-    // ---------------- HABIT STACK ----------------
-    lateinit var habitStackUseCases: HabitStackUseCases
-        private set
+    // ======================
+    // STACK MODULE
+    // ======================
+    fun provideStackRepository(context: Context): StackRepository {
+        val db = DatabaseBuilder.getInstance(context)
+        return StackRepositoryImpl(db.habitStackDao())
+    }
 
-    private fun initHabitStack() {
-        val repo = HabitStackRepositoryImpl(db.habitStackDao())
-        habitStackUseCases = HabitStackUseCases(
-            insertHabitStackUseCase = InsertHabitStackUseCase(repo),
-            deleteHabitStackUseCase = DeleteHabitStackUseCase(repo),
-            getHabitStacksByUserUseCase = GetHabitStacksByUserUseCase(repo),
-            updateHabitStackUseCases = UpdateHabitStackUseCase(repo)
+    fun provideStackUseCases(context: Context): StackUseCases {
+        val repo = provideStackRepository(context)
+        return StackUseCases(
+            create = CreateStackUseCase(repo),
+            update = UpdateStackUseCase(repo),
+            delete = DeleteStackUseCase(repo),
+            getAll = GetAllStacksUseCase(repo),
+            getById = GetStackByIdUseCase(repo)
         )
     }
 
-    // ---------------- NOTIFICATION LOG ----------------
-    lateinit var notificationLogUseCases: NotificationLogUseCases
-        private set
 
-    private fun initNotification() {
-        val repo = NotificationLogRepositoryImpl(db.notificationLogDao())
-        notificationLogUseCases = NotificationLogUseCases(
-            insertNotificationLogUseCase = InsertNotificationLogUseCase(repo),
-            getNotificationLogsByUserUseCase = GetNotificationLogsByUserUseCase(repo)
+    // ======================
+    // NOTIFICATION MODULE
+    // ======================
+    fun provideNotificationRepository(context: Context): NotificationRepository {
+        val db = DatabaseBuilder.getInstance(context)
+        return NotificationRepositoryImpl(db.notificationLogDao())
+    }
+
+    fun provideNotificationUseCases(context: Context): NotificationUseCases {
+        val repo = provideNotificationRepository(context)
+        return NotificationUseCases(
+            insertNotification = InsertNotificationUseCase(repo),
+            getAllNotifications = GetAllNotificationsUseCase(repo),
+            clearOldNotifications = ClearOldNotificationsUseCase(repo)
         )
     }
 
-    // ---------------- USER LEVEL ----------------
-    lateinit var userLevelUseCases: UserLevelUseCases
-        private set
-
-    private fun initUserLevel() {
-        val repo = UserLevelRepositoryImpl(db.userLevelDao())
-        userLevelUseCases = UserLevelUseCases(
-            getUserLevelByUseCase = GetUserLevelUseCase(repo),
-            insertUserLevelUseCase = InsertUserLevelUseCase(repo),
-            updateUserLevelUseCase = UpdateUserLevelUseCase(repo),
-            updateUserXpAndLevelUseCase = UpdateUserXpAndLevelUseCase(repo)
-        )
-    }
-
-    // ---------------- USER REWARD ----------------
-    lateinit var userRewardUseCases: UserRewardUseCases
-        private set
-
-    private fun initUserReward() {
-        val repo = UserRewardRepositoryImpl(db.userRewardDao())
-        userRewardUseCases = UserRewardUseCases(
-            insertUserRewardUseCase = InsertUserRewardUseCase(repo),
-            getUserRewardsUseCase = GetUserRewardsUseCase(repo)
-        )
-    }
 }
 
