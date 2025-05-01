@@ -11,28 +11,30 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.acevy.habit_tracker.ui.ViewModelFactory
 import com.acevy.habit_tracker.ui.model.HabitOption
 import com.acevy.habit_tracker.ui.theme.AppType
+import com.acevy.habit_tracker.ui.viewmodel.HabitViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddStackScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: HabitViewModel = viewModel(factory = ViewModelFactory(LocalContext.current))
 ) {
-    val dummyHabits = listOf(
-        1 to "Bekerja",
-        2 to "Olahraga",
-        3 to "Makan",
-        4 to "Tidur",
-        5 to "Mandi"
-    ).map { (id, name) ->
+    val habits by viewModel.habitList.collectAsState()
+    val habitOptions = habits.map {
         HabitOption(
-            id = id,
-            name = name,
+            id = it.id,
+            name = it.title,
             isSelected = false
         )
     }
@@ -49,7 +51,7 @@ fun AddStackScreen(
 
         StackForm(
             initialStackName = "",
-            initialHabits = dummyHabits,
+            initialHabits = habitOptions,
             onSubmit = { name, selectedHabits ->
                 Log.d("STACK", "Submitted: $name with ${selectedHabits.count { it.isSelected }} habits")
                 onBack()

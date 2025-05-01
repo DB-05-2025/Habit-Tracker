@@ -21,8 +21,11 @@ import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
 @Composable
 fun PillSwitcher(
     selectedIndex: Int,
-    onClick: (Int) -> Unit
+    onClick: (Int) -> Unit,
+    showStacking: Boolean = true
 ) {
+    val tabItems = if (showStacking) listOf("Tracking", "Stacking") else listOf("Tracking")
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -30,7 +33,7 @@ fun PillSwitcher(
             .background(AppColors.GrayLight, shape = AppShapes.Rounded16)
             .padding(0.dp)
     ) {
-        listOf("Tracking", "Stacking").forEachIndexed { index, label ->
+        tabItems.forEachIndexed { index, label ->
             val isSelected = index == selectedIndex
             val bgColor = if (isSelected) AppColors.GreenPrimary else AppColors.GrayLight
             val textColor = if (isSelected) AppColors.White else AppColors.GrayDark

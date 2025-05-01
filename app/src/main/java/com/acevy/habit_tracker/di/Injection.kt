@@ -15,6 +15,7 @@ import com.acevy.habit_tracker.domain.repository.TrackRepository
 import com.acevy.habit_tracker.domain.usecase.habit.AddHabitUseCase
 import com.acevy.habit_tracker.domain.usecase.habit.DeleteHabitUseCase
 import com.acevy.habit_tracker.domain.usecase.habit.GetAllHabitsUseCase
+import com.acevy.habit_tracker.domain.usecase.habit.GetHabitByIdUseCase
 import com.acevy.habit_tracker.domain.usecase.habit.HabitUseCases
 import com.acevy.habit_tracker.domain.usecase.habit.UpdateHabitUseCase
 import com.acevy.habit_tracker.domain.usecase.notification.ClearOldNotificationsUseCase
@@ -51,6 +52,7 @@ object Injection {
         return HabitUseCases(
             addHabit = AddHabitUseCase(repo),
             getAllHabits = GetAllHabitsUseCase(repo),
+            getHabitById = GetHabitByIdUseCase(repo),
             updateHabit = UpdateHabitUseCase(repo),
             deleteHabit = DeleteHabitUseCase(repo)
         )
