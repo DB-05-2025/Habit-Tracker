@@ -9,5 +9,6 @@ data class HabitStackEntity(
     val id: Int = 0,
     val title: String,
     val habitIds: List<Int>,
-    val createdAt: Long = System.currentTimeMillis()
+    val createdAt: Long = System.currentTimeMillis(),
+    val updatedAt: Long = System.currentTimeMillis()
 )

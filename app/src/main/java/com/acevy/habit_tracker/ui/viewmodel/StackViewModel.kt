@@ -14,7 +14,7 @@ class StackViewModel(
     private val useCases: StackUseCases
 ) : ViewModel() {
 
-    val allStacks: StateFlow<List<HabitStackEntity>> = useCases
+    val getAllStacks: StateFlow<List<HabitStackEntity>> = useCases
         .getAll()
         .stateIn(
             viewModelScope,
@@ -22,7 +22,7 @@ class StackViewModel(
             emptyList()
         )
 
-    fun createStack(stack: HabitStackEntity) {
+    fun insertStack(stack: HabitStackEntity) {
         viewModelScope.launch {
             useCases.create(stack)
         }

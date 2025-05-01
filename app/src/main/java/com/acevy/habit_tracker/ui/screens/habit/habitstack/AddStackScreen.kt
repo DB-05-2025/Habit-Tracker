@@ -13,14 +13,18 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.acevy.habit_tracker.data.local.entity.HabitStackEntity
 import com.acevy.habit_tracker.ui.ViewModelFactory
 import com.acevy.habit_tracker.ui.model.HabitOption
 import com.acevy.habit_tracker.ui.theme.AppType
 import com.acevy.habit_tracker.ui.viewmodel.HabitViewModel
+import com.acevy.habit_tracker.ui.viewmodel.StackViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,15 +32,18 @@ fun AddStackScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    viewModel: HabitViewModel = viewModel(factory = ViewModelFactory(LocalContext.current))
+    habitViewModel: HabitViewModel = viewModel(factory = ViewModelFactory(LocalContext.current)),
+    stackViewModel: StackViewModel = viewModel(factory = ViewModelFactory(LocalContext.current)) // ✅ tambahkan ini
 ) {
-    val habits by viewModel.habitList.collectAsState()
-    val habitOptions = habits.map {
-        HabitOption(
-            id = it.id,
-            name = it.title,
-            isSelected = false
-        )
+    val habits by habitViewModel.habitList.collectAsState()
+    val habitOptions = remember(habits) {
+        habits.map {
+            HabitOption(
+                id = it.id,
+                name = it.title,
+                isSelected = false
+            )
+        }.toMutableStateList()
     }
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -53,7 +60,12 @@ fun AddStackScreen(
             initialStackName = "",
             initialHabits = habitOptions,
             onSubmit = { name, selectedHabits ->
-                Log.d("STACK", "Submitted: $name with ${selectedHabits.count { it.isSelected }} habits")
+                val newStack = HabitStackEntity(
+                    title = name,
+                    habitIds = selectedHabits.map { it.id },
+                    createdAt = System.currentTimeMillis()
+                )
+                stackViewModel.insertStack(newStack)
                 onBack()
             },
             navController = navController

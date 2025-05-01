@@ -29,6 +29,7 @@ import com.acevy.habit_tracker.ui.layout.MainScreenWithBottomNav
 import com.acevy.habit_tracker.ui.screens.habit.habittrack.AddHabitScreen
 import com.acevy.habit_tracker.ui.screens.habit.HabitScreen
 import com.acevy.habit_tracker.ui.screens.habit.habitstack.AddStackScreen
+import com.acevy.habit_tracker.ui.screens.habit.habitstack.UpdateStackScreen
 import com.acevy.habit_tracker.ui.screens.habit.habittrack.UpdateHabitScreen
 import com.acevy.habit_tracker.ui.screens.home.HomeScreen
 import com.acevy.habit_tracker.ui.screens.notification.NotificationScreen
@@ -203,11 +204,17 @@ fun AppNavHost(
                 )
             }
 
-//            composable(Screen.UpdateStack.route) {
-//                UpdateStackScreen(
-//                    onBack = { navController.popBackStack() }
-//                )
-//            }
+            composable(
+                route = Screen.UpdateStack.route,
+                arguments = listOf(navArgument("stackId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val stackId = backStackEntry.arguments?.getInt("stackId") ?: return@composable
+                UpdateStackScreen(
+                    stackId = stackId,
+                    onBack = { navController.popBackStack() },
+                    navController = navController
+                )
+            }
         }
     }
 }

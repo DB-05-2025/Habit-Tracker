@@ -1,5 +1,6 @@
 package com.acevy.habit_tracker.ui.screens.habit.habitstack
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,11 +16,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +43,7 @@ import com.acevy.habit_tracker.ui.model.HabitOption
 import com.acevy.habit_tracker.ui.navigation.Screen
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.AppType
+import kotlinx.coroutines.launch
 
 @Composable
 fun StackForm(
@@ -47,15 +55,27 @@ fun StackForm(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
     val stackName = remember { mutableStateOf(initialStackName) }
     val searchQuery = remember { mutableStateOf("") }
-    val habits = remember {
-        initialHabits.map { it.copy() }.toMutableStateList()
+    val initial = rememberUpdatedState(initialHabits)
+    val habits = remember { mutableStateListOf<HabitOption>() }
+
+    LaunchedEffect(initial.value) {
+        habits.clear()
+        habits.addAll(initial.value.map { it.copy() })
     }
 
-    val filteredHabits = habits.filter {
-        it.name.contains(searchQuery.value, ignoreCase = true)
+    Log.d("StackForm - INIT HABITS", "StackForm: $initialHabits")
+    Log.d("StackForm - HABITS", "StackForm: $habits")
+
+
+    val filteredIndices = habits.mapIndexedNotNull { index, habit ->
+        if (habit.name.contains(searchQuery.value, ignoreCase = true)) index else null
     }
+
+    Log.d("HELLO", "StackForm: $filteredIndices")
 
     ScreenContentLayout {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -83,7 +103,10 @@ fun StackForm(
 
                 Column(
                     modifier = Modifier
-                        .background(AppColors.White, shape = RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
+                        .background(
+                            AppColors.White,
+                            shape = RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp)
+                        )
                         .padding(horizontal = 16.dp, vertical = 16.dp)
                 ) {
                     SearchInputField(
@@ -95,16 +118,17 @@ fun StackForm(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     LazyColumn {
-                        items(filteredHabits) { habit ->
+                        items(filteredIndices) { index ->
+                            val habit = habits[index]
                             HabitCardItem(
                                 habitName = habit.name,
                                 isCheckable = true,
                                 isChecked = habit.isSelected,
                                 onCheckedChange = {
-                                    habit.isSelected = it
+                                    habits[index] = habit.copy(isSelected = it)
                                 },
                                 onClick = {
-                                    habit.isSelected = !habit.isSelected
+                                    habits[index] = habit.copy(isSelected = !habit.isSelected)
                                 }
                             )
                             Spacer(modifier = Modifier.height(8.dp))
@@ -115,10 +139,24 @@ fun StackForm(
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.padding(bottom = 72.dp) // biar gak ketiban
+            )
+
             ButtonPrimary(
                 text = if (currentRoute == Screen.AddStack.route) "Tambah Stack" else "Update Stack",
                 onClick = {
-                    onSubmit(stackName.value, habits)
+                    val selected = habits.filter { it.isSelected }
+
+                    if (selected.size != 2) {
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar("Pilih tepat 2 habit untuk membuat stack")
+                        }
+                        return@ButtonPrimary
+                    }
+
+                    onSubmit(stackName.value, selected)
                 },
                 fullWidth = true
             )

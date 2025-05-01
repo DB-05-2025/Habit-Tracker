@@ -23,7 +23,7 @@ import com.acevy.habit_tracker.data.local.room.db.converter.IntListConverter
         HabitStackEntity::class,
         NotificationLogEntity::class,
         UserProgressEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(

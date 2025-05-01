@@ -14,7 +14,9 @@ object DatabaseBuilder {
                 context.applicationContext,
                 AppDatabase::class.java,
                 "habit_tracker.db"
-            ).build().also { INSTANCE = it }
+            )
+                .fallbackToDestructiveMigration() // ⚠️ WARNING: akan hapus semua data, auto reset skema dan versi, bad practice untuk prod
+                .build().also { INSTANCE = it }
         }
     }
 }
