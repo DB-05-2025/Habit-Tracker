@@ -15,7 +15,7 @@ interface HabitLogDao {
     suspend fun insertLog(log: HabitLogEntity)
 
     @Query("SELECT * FROM habit_logs WHERE habitId = :habitId AND date = :date LIMIT 1")
-    suspend fun getLogByHabitAndDate(habitId: Int, date: String): HabitLogEntity?
+    suspend fun getLogByHabitAndDate(habitId: Int, date: String): HabitLogEntity
 
     @Query("SELECT * FROM habit_logs WHERE date = :date AND status = :status")
     fun getLogsByDateAndStatus(date: String, status: HabitStatus): Flow<List<HabitLogEntity>>

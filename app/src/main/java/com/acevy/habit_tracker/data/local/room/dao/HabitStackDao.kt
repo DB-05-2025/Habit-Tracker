@@ -25,6 +25,7 @@ interface HabitStackDao {
     fun getAllStacks(): Flow<List<HabitStackEntity>>
 
     @Query("SELECT * FROM habit_stacks WHERE id = :id LIMIT 1")
+//    fun getStackById(id: Int): Flow<HabitStackEntity>
     fun getStackById(id: Int): Flow<HabitStackEntity?>
 }
 

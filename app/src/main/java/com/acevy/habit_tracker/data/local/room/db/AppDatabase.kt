@@ -5,24 +5,30 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.acevy.habit_tracker.data.local.entity.HabitEntity
 import com.acevy.habit_tracker.data.local.entity.HabitLogEntity
+import com.acevy.habit_tracker.data.local.entity.HabitStackEntity
+import com.acevy.habit_tracker.data.local.entity.NotificationLogEntity
+import com.acevy.habit_tracker.data.local.entity.UserProgressEntity
 import com.acevy.habit_tracker.data.local.room.dao.HabitDao
 import com.acevy.habit_tracker.data.local.room.dao.HabitLogDao
 import com.acevy.habit_tracker.data.local.room.dao.HabitStackDao
 import com.acevy.habit_tracker.data.local.room.dao.NotificationLogDao
 import com.acevy.habit_tracker.data.local.room.dao.UserProgressDao
-import com.acevy.habit_tracker.data.local.room.db.converter.HabitIdListConverter
 import com.acevy.habit_tracker.data.local.room.db.converter.HabitStatusConverter
-import com.acevy.habit_tracker.data.local.room.db.converter.RepeatDaysConverter
+import com.acevy.habit_tracker.data.local.room.db.converter.IntListConverter
 
 @Database(
-    entities = [HabitEntity::class, HabitLogEntity::class],
+    entities = [
+        HabitEntity::class,
+        HabitLogEntity::class,
+        HabitStackEntity::class,
+        NotificationLogEntity::class,
+        UserProgressEntity::class],
     version = 1,
     exportSchema = false
 )
 @TypeConverters(
-    RepeatDaysConverter::class,
     HabitStatusConverter::class,
-    HabitIdListConverter::class
+    IntListConverter::class
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun habitDao(): HabitDao
