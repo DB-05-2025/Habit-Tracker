@@ -1,6 +1,7 @@
 package com.acevy.habit_tracker.ui.screens.home
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,23 +12,30 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.acevy.habit_tracker.data.local.datastore.UserPreferences
+import com.acevy.habit_tracker.data.local.entity.HabitStatus
+import com.acevy.habit_tracker.ui.ViewModelFactory
 import com.acevy.habit_tracker.ui.components.cards.HabitCardItem
 import com.acevy.habit_tracker.ui.components.cards.HomeProgressCard
 import com.acevy.habit_tracker.ui.components.indicators.AsyncImageWithIndicator
@@ -35,24 +43,34 @@ import com.acevy.habit_tracker.ui.components.navigation.BottomNavBar
 import com.acevy.habit_tracker.ui.model.HabitItemUiState
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.AppType
+import com.acevy.habit_tracker.ui.viewmodel.LogViewModel
 import com.acevy.habit_tracker.utils.getFormattedToday
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
     userPreferences: UserPreferences,
     navController: NavController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    logViewModel: LogViewModel = viewModel(factory = ViewModelFactory(LocalContext.current))
 ) {
     val userName by userPreferences.userNameFlow.collectAsState(initial = "")
-    val today = remember { getFormattedToday() }
+    val today = remember {
+        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+    }
+    val todayLogs by logViewModel.todayHabitStatus.collectAsState()
 
-    val todayHabits = remember {
-        mutableStateListOf(
-            HabitItemUiState("Bekerja", false),
-            HabitItemUiState("Olahraga", true),
-            HabitItemUiState("Mandi", false),
-        )
+    val total = todayLogs.size
+    val done = todayLogs.count { it.status == HabitStatus.DONE }
+    val progress = if (total > 0) done.toFloat() / total else 0f
+
+
+    LaunchedEffect(Unit) {
+        logViewModel.fetchAndGenerate(today)
     }
 
     Scaffold(
@@ -92,8 +110,10 @@ fun HomeScreen(
             }
 
             item {
-                HomeProgressCard(percent = 0.5f)
-            }
+                HomeProgressCard(
+                    percent = progress,
+                    text = "$done dari $total kebiasaan\nhari ini kamu telah\ndiselesaikan"
+                )            }
 
             item {
                 Text(
@@ -103,7 +123,7 @@ fun HomeScreen(
                 )
             }
 
-            if (todayHabits.isEmpty()) {
+            if (todayLogs.isEmpty()) {
                 item {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -126,13 +146,19 @@ fun HomeScreen(
                     }
                 }
             } else {
-                itemsIndexed(todayHabits) { index, habit ->
+                items(todayLogs) { habit ->
                     HabitCardItem(
-                        habitName = habit.name,
+                        habitName = habit.title,
                         isCheckable = true,
-                        isChecked = habit.isCompleted,
+                        isChecked = habit.status == HabitStatus.DONE,
                         onCheckedChange = { checked ->
-                            todayHabits[index] = habit.copy(isCompleted = checked)
+                            val newStatus = if (checked) HabitStatus.DONE else HabitStatus.PENDING
+                            logViewModel.updateLogStatus(
+                                logId = habit.logId,
+                                habitId = habit.habitId,
+                                status = newStatus,
+                                date = today
+                            )
                         }
                     )
                 }

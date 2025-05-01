@@ -11,49 +11,52 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.acevy.habit_tracker.domain.model.habitstack.HabitStack
+import com.acevy.habit_tracker.data.local.entity.HabitStackEntity
+import com.acevy.habit_tracker.ui.ViewModelFactory
 import com.acevy.habit_tracker.ui.model.HabitOption
 import com.acevy.habit_tracker.ui.theme.AppType
+import com.acevy.habit_tracker.ui.viewmodel.HabitViewModel
+import com.acevy.habit_tracker.ui.viewmodel.StackViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpdateStackScreen(
-    stack: HabitStack,
+    stackId: Int,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    stackViewModel: StackViewModel = viewModel(factory = ViewModelFactory(LocalContext.current)),
+    habitViewModel: HabitViewModel = viewModel(factory = ViewModelFactory(LocalContext.current))
 ) {
-    val dummyHabits = listOf(
-        1L to "Bekerja",
-        2L to "Olahraga",
-        3L to "Makan",
-        4L to "Tidur",
-        5L to "Mandi"
-    ).map { (id, name) ->
-        HabitOption(
-            id = id,
-            name = name,
-            isSelected = id == stack.stackedHabitId
-        )
-    }
+    val habits by habitViewModel.habitList.collectAsState()
+    val stack by stackViewModel.getStackById(stackId).collectAsState(initial = null)
 
-    Column(modifier = modifier.fillMaxSize()) {
-        TopAppBar(
-            title = { Text("Update Stack", style = AppType.bold20) },
-            navigationIcon = {
-                IconButton(onClick = onBack) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                }
+    stack?.let { nonNullStack ->
+        val habitOptions = remember(habits) {
+            habits.map {
+                HabitOption(
+                    id = it.id,
+                    name = it.title,
+                    isSelected = it.id in nonNullStack.habitIds
+                )
             }
-        )
+        }
 
         StackForm(
-            initialStackName = "",
-            initialHabits = dummyHabits,
+            initialStackName = nonNullStack.title,
+            initialHabits = habitOptions,
             onSubmit = { name, selectedHabits ->
-                Log.d("STACK", "Updated: $name with ${selectedHabits.count { it.isSelected }} habits")
+                val updated = nonNullStack.copy(
+                    title = name,
+                    habitIds = selectedHabits.map { it.id },
+                    updatedAt = System.currentTimeMillis()
+                )
+                stackViewModel.updateStack(updated)
                 onBack()
             },
             navController = navController

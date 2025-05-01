@@ -33,7 +33,11 @@ import com.acevy.habit_tracker.ui.theme.AppType
 import com.acevy.habit_tracker.ui.theme.HabitTrackerTheme
 
 @Composable
-fun HomeProgressCard(percent: Float, modifier: Modifier = Modifier) {
+fun HomeProgressCard(
+    text: String,
+    percent: Float,
+    modifier: Modifier = Modifier
+) {
     // Animasi dari 0 ke percent
     val animatedProgress by animateFloatAsState(
         targetValue = percent,
@@ -96,7 +100,7 @@ fun HomeProgressCard(percent: Float, modifier: Modifier = Modifier) {
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "3 dari 5 kebiasaan",
+                    text = text,
                     style = AppType.bold16,
                     color = AppColors.White
                 )
@@ -122,7 +126,10 @@ fun PreviewHomeProgressCard() {
                 .background(AppColors.White)
                 .padding(24.dp)
         ) {
-            HomeProgressCard(percent = 0f)
+            HomeProgressCard(
+                percent = 0f,
+                text = "3 dari 5 kebiasaan\nhari ini kamu telah\ndiselesaikan"
+            )
         }
     }
 }
