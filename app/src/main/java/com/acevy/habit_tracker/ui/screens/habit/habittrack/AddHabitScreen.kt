@@ -15,25 +15,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.acevy.habit_tracker.data.local.entity.HabitEntity
 import com.acevy.habit_tracker.di.Injection
-import com.acevy.habit_tracker.domain.model.habit.Habit
+import com.acevy.habit_tracker.ui.ViewModelFactory
 import com.acevy.habit_tracker.ui.model.HabitFormState
 import com.acevy.habit_tracker.ui.theme.AppType
+import com.acevy.habit_tracker.ui.viewmodel.HabitViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddHabitScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: HabitViewModel = viewModel(factory = ViewModelFactory(LocalContext.current)) // ✅ DI PARAM
 ) {
-    val context = LocalContext.current
-    val viewModel = remember { Injection.provideHabitViewModel(context) }
-
     Column(modifier = modifier.fillMaxSize()) {
         TopAppBar(
             title = { Text("Buat Habit", style = AppType.bold20) },
@@ -53,18 +54,17 @@ fun AddHabitScreen(
                 note = null
             ),
             onSubmit = { form ->
-                val newHabit = Habit(
-                    habitId = 0,
-                    userId = 1,
+                val newHabit = HabitEntity(
+                    id = 0,
                     title = form.title,
                     note = form.note,
                     repeatDays = form.repeatDays.toList(),
-                    reminderTime = if (form.reminderTime.isNotEmpty()) "06:00" else null,
+                    reminderTime = if (form.reminderTime.isNotEmpty()) form.reminderTime else null,
                     createdAt = System.currentTimeMillis(),
                     updatedAt = System.currentTimeMillis()
                 )
                 Log.d("CHECK", "AddHabitScreen: $newHabit")
-                viewModel.insertHabit(newHabit)
+                viewModel.addHabit(newHabit)
                 onBack()
             },
         )

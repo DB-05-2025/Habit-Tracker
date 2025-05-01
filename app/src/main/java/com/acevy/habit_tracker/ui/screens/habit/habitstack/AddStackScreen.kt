@@ -24,11 +24,11 @@ fun AddStackScreen(
     navController: NavHostController
 ) {
     val dummyHabits = listOf(
-        1L to "Bekerja",
-        2L to "Olahraga",
-        3L to "Makan",
-        4L to "Tidur",
-        5L to "Mandi"
+        1 to "Bekerja",
+        2 to "Olahraga",
+        3 to "Makan",
+        4 to "Tidur",
+        5 to "Mandi"
     ).map { (id, name) ->
         HabitOption(
             id = id,

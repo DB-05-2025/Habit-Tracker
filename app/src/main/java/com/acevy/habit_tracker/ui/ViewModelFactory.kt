@@ -1,5 +1,15 @@
 package com.acevy.habit_tracker.ui
 
+import android.content.Context
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.acevy.habit_tracker.di.Injection
+import com.acevy.habit_tracker.ui.viewmodel.HabitViewModel
+import com.acevy.habit_tracker.ui.viewmodel.NotificationViewModel
+import com.acevy.habit_tracker.ui.viewmodel.ProgressViewModel
+import com.acevy.habit_tracker.ui.viewmodel.StackViewModel
+import com.acevy.habit_tracker.ui.viewmodel.TrackViewModel
+
 class ViewModelFactory(
     private val context: Context
 ) : ViewModelProvider.Factory {
