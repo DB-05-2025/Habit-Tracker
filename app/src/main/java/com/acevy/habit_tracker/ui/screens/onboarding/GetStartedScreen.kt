@@ -35,8 +35,8 @@ fun GetStartedScreen(
     onSubmit: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
-    val viewModel: UserViewModel = viewModel(factory = ViewModelFactory())
+    val context = LocalContext.current // Tambahkan baris ini
+    val viewModel: UserViewModel = viewModel(factory = ViewModelFactory(context)) // Ubah baris ini
 
     var name by rememberSaveable { mutableStateOf("") }
 

@@ -2,10 +2,7 @@ package com.acevy.habit_tracker.ui.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -13,7 +10,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
@@ -25,7 +21,6 @@ import com.acevy.habit_tracker.ui.layout.MainScreenWithBottomNav
 import com.acevy.habit_tracker.ui.screens.habit.habittrack.AddHabitScreen
 import com.acevy.habit_tracker.ui.screens.habit.HabitScreen
 import com.acevy.habit_tracker.ui.screens.habit.habitstack.AddStackScreen
-import com.acevy.habit_tracker.ui.screens.habit.habittrack.UpdateHabitScreen
 import com.acevy.habit_tracker.ui.screens.home.HomeScreen
 import com.acevy.habit_tracker.ui.screens.notification.NotificationScreen
 import com.acevy.habit_tracker.ui.screens.onboarding.GetStartedScreen
@@ -61,6 +56,7 @@ fun AppNavHost(
                 !isDelayFinished -> {
                     SplashScreen() // ⬅️ TAMPILKAN SPLASH PENUH MINIMAL 1.5 DETIK
                 }
+
                 isOnboardingCompleted == true -> {
                     LaunchedEffect(Unit) {
                         navController.navigate(Screen.Main.route) {
@@ -68,6 +64,7 @@ fun AppNavHost(
                         }
                     }
                 }
+
                 isOnboardingCompleted == false -> {
                     LaunchedEffect(Unit) {
                         navController.navigate(Screen.Onboarding.route) {
@@ -123,7 +120,6 @@ fun AppNavHost(
                     currentRoute = Screen.Home.route
                 ) { padding ->
                     HomeScreen(
-                        userPreferences = userPreferences,
                         navController = navController,
                         modifier = Modifier.padding(padding)
                     )

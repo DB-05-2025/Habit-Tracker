@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.acevy.habit_tracker.di.container.UserUseCases
 import com.acevy.habit_tracker.domain.model.user.User
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class UserViewModel(private val useCases: UserUseCases) : ViewModel() {
@@ -11,5 +12,9 @@ class UserViewModel(private val useCases: UserUseCases) : ViewModel() {
         viewModelScope.launch {
             useCases.insertUserUseCase(user)
         }
+    }
+
+    fun getUserById(userId: Long): Flow<User?> {
+        return useCases.getUserByIdUseCase(userId)
     }
 }

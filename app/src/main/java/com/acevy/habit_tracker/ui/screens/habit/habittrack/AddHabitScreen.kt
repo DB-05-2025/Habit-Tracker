@@ -1,6 +1,8 @@
 package com.acevy.habit_tracker.ui.screens.habit.habittrack
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
@@ -24,6 +26,7 @@ import com.acevy.habit_tracker.domain.model.habit.Habit
 import com.acevy.habit_tracker.ui.model.HabitFormState
 import com.acevy.habit_tracker.ui.theme.AppType
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddHabitScreen(

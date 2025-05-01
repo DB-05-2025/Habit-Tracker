@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,6 +23,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
@@ -38,29 +40,35 @@ import com.acevy.habit_tracker.ui.model.HabitItemUiState
 import com.acevy.habit_tracker.ui.theme.AppColors
 import com.acevy.habit_tracker.ui.theme.AppType
 import com.acevy.habit_tracker.ui.viewmodel.HabitViewModel
+import com.acevy.habit_tracker.ui.viewmodel.UserViewModel
 import com.acevy.habit_tracker.ui.viewmodel.ViewModelFactory
 import com.acevy.habit_tracker.utils.getFormattedToday
+import java.util.Calendar
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
-    userPreferences: UserPreferences,
     navController: NavController,
     modifier: Modifier = Modifier,
 ) {
-    val userName by userPreferences.userNameFlow.collectAsState(initial = "")
     val today = remember { getFormattedToday() }
 
-    val viewModel: HabitViewModel = viewModel(factory = ViewModelFactory())
-    val habits by viewModel.habits.collectAsState()
-
-    val todayIndex = remember { java.time.LocalDate.now().dayOfWeek.value % 7 }
-    val todayHabits = habits.filter { it.repeatDays?.contains(todayIndex) == true }
-        .map { HabitItemUiState(name = it.title, isCompleted = false) }  // default uncheck
+    val habitViewModel: HabitViewModel = viewModel(factory = ViewModelFactory(LocalContext.current))
+    val userViewModel: UserViewModel = viewModel(factory = ViewModelFactory(LocalContext.current))
+    val allHabits by habitViewModel.habits.collectAsState()
+    val user by userViewModel.getUserById(1L).collectAsState(initial = null)
+    val userName = user?.name ?: ""
 
     LaunchedEffect(Unit) {
-        viewModel.load(userId = 1L)
+        habitViewModel.load(userId = 1L)
     }
+
+    val todayHabits = allHabits.filter { habit ->
+        val calendar = Calendar.getInstance()
+        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+        val todayIndex = (dayOfWeek - 1) % 7
+        habit.repeatDays?.contains(todayIndex) ?: false
+    }.map { HabitItemUiState(name = it.title, isCompleted = false) }
 
     Scaffold(
         bottomBar = {
@@ -133,7 +141,7 @@ fun HomeScreen(
                     }
                 }
             } else {
-                itemsIndexed(todayHabits) { index, habit ->
+                items(todayHabits) { habit ->
                     HabitCardItem(
                         habitName = habit.name,
                         isCheckable = true,
