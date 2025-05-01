@@ -1,38 +1,41 @@
 package com.acevy.habit_tracker.ui.viewmodel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.acevy.habit_tracker.di.container.HabitUseCases
 import com.acevy.habit_tracker.domain.model.habit.Habit
-import com.acevy.habit_tracker.domain.usecase.habit.DeleteHabitUseCase
-import com.acevy.habit_tracker.domain.usecase.habit.GetHabitsUseCase
-import com.acevy.habit_tracker.domain.usecase.habit.InsertHabitUseCase
-import com.acevy.habit_tracker.domain.usecase.habit.UpdateHabitUseCase
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class HabitViewModel(
-    private val insertHabitUseCase: InsertHabitUseCase,
-    private val getHabitsUseCase: GetHabitsUseCase,
-    private val deleteHabitUseCase: DeleteHabitUseCase,
-    private val updateHabitUseCase: UpdateHabitUseCase
-) : ViewModel() {
+class HabitViewModel(private val useCases: HabitUseCases) : ViewModel() {
+    val habits = MutableStateFlow<List<Habit>>(emptyList())
 
-    private val _habitName = mutableStateOf("")
-    val habitName: State<String> get() = _habitName
-
-    fun onHabitNameChange(name: String) {
-        _habitName.value = name
+    fun load(userId: Long) {
+        viewModelScope.launch {
+            useCases.getHabitsUseCase(userId).collect {
+                habits.value = it
+            }
+        }
     }
 
     fun insertHabit(habit: Habit) {
         viewModelScope.launch {
-            insertHabitUseCase(habit)
+            useCases.insertHabitUseCase(habit)
+            load(habit.userId)
         }
     }
 
-    fun getHabits(userId: Long): Flow<List<Habit>> {
-        return getHabitsUseCase(userId)
+    fun updateHabit(habit: Habit) {
+        viewModelScope.launch {
+            useCases.updateHabitUseCase(habit)
+            load(habit.userId)
+        }
+    }
+
+    fun deleteHabit(habit: Habit) {
+        viewModelScope.launch {
+            useCases.deleteHabitUseCase(habit)
+            load(habit.userId)
+        }
     }
 }

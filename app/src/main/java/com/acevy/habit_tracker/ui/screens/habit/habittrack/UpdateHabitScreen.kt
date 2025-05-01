@@ -54,18 +54,14 @@ fun UpdateHabitScreen(
             navController = navController,
             initialState = initialForm,
             onSubmit = { form ->
-                val newHabit = Habit(
-                    habitId = 0,
-                    userId = 1,
+                val updatedHabit = habit.copy(
                     title = form.title,
                     note = form.note,
                     repeatDays = form.repeatDays.toList(),
-                    reminderTime = if (form.reminderTime.isNotEmpty()) "06:00" else null,
-                    createdAt = System.currentTimeMillis(),
+                    reminderTime = form.reminderTime,
                     updatedAt = System.currentTimeMillis()
                 )
-                Log.d("CHECK", "AddHabitScreen: $newHabit")
-                viewModel.insertHabit(newHabit)
+                viewModel.updateHabit(updatedHabit)
                 onBack()
             },
         )

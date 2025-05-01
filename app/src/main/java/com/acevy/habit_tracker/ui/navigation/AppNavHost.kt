@@ -97,11 +97,10 @@ fun AppNavHost(
             )
         }
         composable(Screen.GetStarted.route) {
-            var submittedName by remember { mutableStateOf<String?>(null) }
+            var submitted by remember { mutableStateOf(false) }
 
-            if (submittedName != null) {
+            if (submitted) {
                 LaunchedEffect(Unit) {
-                    userPreferences.setUserName(submittedName!!)
                     userPreferences.setOnboardingCompleted(true)
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.GetStarted.route) { inclusive = true }
@@ -110,9 +109,7 @@ fun AppNavHost(
             }
 
             GetStartedScreen(
-                onSubmit = { name ->
-                    submittedName = name
-                }
+                onSubmit = { submitted = true }
             )
         }
 
