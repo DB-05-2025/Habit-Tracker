@@ -26,4 +26,8 @@ interface HabitDao {
 
     @Query("SELECT * FROM habits WHERE id = :id LIMIT 1")
     fun getHabitById(id: Int): Flow<HabitEntity?>
+
+    /* REACTIVE RETRIEVE */
+    @Query("SELECT * FROM habits ORDER BY createdAt DESC")
+    suspend fun getAllHabitsOnce(): List<HabitEntity>
 }

@@ -7,4 +7,5 @@ interface TrackRepository {
     suspend fun addLog(log: HabitLogEntity)
     fun getLogsByDate(date: String): Flow<List<HabitLogEntity>>
     suspend fun deleteLogsByHabitId(habitId: Int)
+    suspend fun updateLog(log: HabitLogEntity) // ➕
 }

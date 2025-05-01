@@ -18,6 +18,10 @@ import com.acevy.habit_tracker.domain.usecase.habit.GetAllHabitsUseCase
 import com.acevy.habit_tracker.domain.usecase.habit.GetHabitByIdUseCase
 import com.acevy.habit_tracker.domain.usecase.habit.HabitUseCases
 import com.acevy.habit_tracker.domain.usecase.habit.UpdateHabitUseCase
+import com.acevy.habit_tracker.domain.usecase.log.GenerateTodayLogsUseCase
+import com.acevy.habit_tracker.domain.usecase.log.GetTodayHabitStatusUseCase
+import com.acevy.habit_tracker.domain.usecase.log.LogUseCases
+import com.acevy.habit_tracker.domain.usecase.log.UpdateHabitLogUseCase
 import com.acevy.habit_tracker.domain.usecase.notification.ClearOldNotificationsUseCase
 import com.acevy.habit_tracker.domain.usecase.notification.GetAllNotificationsUseCase
 import com.acevy.habit_tracker.domain.usecase.notification.InsertNotificationUseCase
@@ -128,5 +132,22 @@ object Injection {
         )
     }
 
+    // ======================
+    // HABIT LOG MODULE
+    // ======================
+    fun provideLogUseCases(context: Context): LogUseCases {
+        val db = DatabaseBuilder.getInstance(context)
+        return LogUseCases(
+            generateTodayLogs = GenerateTodayLogsUseCase(
+                habitDao = db.habitDao(),
+                logDao = db.habitLogDao()
+            ),
+            getTodayHabitStatus = GetTodayHabitStatusUseCase(
+                habitDao = db.habitDao(),
+                logDao = db.habitLogDao()
+            ),
+            updateLog = UpdateHabitLogUseCase(TrackRepositoryImpl(db.habitLogDao())) // ✅ ini
+        )
+    }
 }
 

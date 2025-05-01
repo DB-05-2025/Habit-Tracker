@@ -20,4 +20,8 @@ class TrackRepositoryImpl(
     override suspend fun deleteLogsByHabitId(habitId: Int) {
         dao.deleteLogsByHabitId(habitId)
     }
+
+    override suspend fun updateLog(log: HabitLogEntity) {
+        dao.updateLog(log)
+    }
 }

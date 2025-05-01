@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.acevy.habit_tracker.di.Injection
 import com.acevy.habit_tracker.ui.viewmodel.HabitViewModel
+import com.acevy.habit_tracker.ui.viewmodel.LogViewModel
 import com.acevy.habit_tracker.ui.viewmodel.NotificationViewModel
 import com.acevy.habit_tracker.ui.viewmodel.ProgressViewModel
 import com.acevy.habit_tracker.ui.viewmodel.StackViewModel
@@ -41,6 +42,10 @@ class ViewModelFactory(
             modelClass.isAssignableFrom(NotificationViewModel::class.java) -> {
                 val useCases = Injection.provideNotificationUseCases(context)
                 NotificationViewModel(useCases) as T
+            }
+            modelClass.isAssignableFrom(LogViewModel::class.java) -> {
+                val useCases = Injection.provideLogUseCases(context)
+                LogViewModel(useCases) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
