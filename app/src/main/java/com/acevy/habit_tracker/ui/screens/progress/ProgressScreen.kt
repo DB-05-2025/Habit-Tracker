@@ -51,10 +51,12 @@ fun ProgressScreen(
     val missedHabits = progressViewModel.missedHabits.value
     val progress = progressViewModel.progress.collectAsState().value
     val allHabits = habitViewModel.habitList.collectAsState().value
+    val xpToday = progressViewModel.xpToday.value
+    val xpBase = progress?.currentXp ?: 0
     val statList = listOf(
         StatData("Level ${progress?.level ?: 0}", "saat ini", Icons.Default.Stairs, AppColors.RedIcon),
         StatData("${allHabits.size} Habit", "telah dibuat", Icons.AutoMirrored.Filled.ListAlt, AppColors.PurpleIcon),
-        StatData("${progress?.currentXp ?: 0} XP", "telah dicapai", Icons.Default.Flag, AppColors.BlueIcon)
+        StatData("${xpBase + xpToday} XP", "telah dicapai", Icons.Default.Flag, AppColors.BlueIcon)
     )
 
     val isHabitListEmpty = todayHabits.isEmpty() && completedHabits.isEmpty() && missedHabits.isEmpty()
