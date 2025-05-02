@@ -8,8 +8,7 @@ Aplikasi **Habit Tracker** adalah aplikasi Android yang membantu pengguna memben
 
 Kamu bisa mengunduh APK terbaru dari aplikasi ini melalui link berikut:
 
-👉 [Download APK Habit Tracker](https://example.com/link-to-apk)  
-*(Ganti link di atas dengan link Google Drive/Dropbox sebenarnya)*
+👉 [Download APK Habit Tracker](https://drive.google.com/drive/folders/169nOLeKQyCLCbxiX7mSL9IHIxGFoDQQa?usp=drive_link)  
 
 ---
 
@@ -18,7 +17,7 @@ Kamu bisa mengunduh APK terbaru dari aplikasi ini melalui link berikut:
 ### Fitur Utama
 
 - ✅ Tambah kebiasaan baru dengan nama dan durasi
-- 📆 Filter kebiasaan berdasarkan urutan: prioritas atau berdasarkan waktu
+- 📆 Habit Tracking dan Habit Stacking
 - 📊 Statistik sederhana untuk melihat progres
 - 🗑️ Hapus kebiasaan yang tidak lagi relevan
 
@@ -38,9 +37,8 @@ Kamu bisa mengunduh APK terbaru dari aplikasi ini melalui link berikut:
 ### Teknologi yang Digunakan
 
 - Kotlin
-- Android Jetpack (ViewModel, LiveData, Room, Data Binding)
+- Android Jetpack (ViewModel, StateFlow, Room, Data Binding)
 - MVVM Architecture
-- RecyclerView
 - Material Design Components
 
 ---
@@ -50,17 +48,24 @@ Kamu bisa mengunduh APK terbaru dari aplikasi ini melalui link berikut:
 ### 1. Install Aplikasi
 Unduh APK dari link di atas, lalu install di perangkat Android kamu. Pastikan pengaturan “Install from unknown sources” telah diaktifkan.
 
+### 2. Mengisi Nama Pengguna
+- Isi nama pengguna
+- Simpan kebiasaan untuk mulai Habit Tracker App.
+
 ### 2. Menambahkan Habit
 - Klik tombol **Add Habit (+)**.
 - Isi nama kebiasaan dan durasi waktu (dalam menit).
 - Simpan kebiasaan untuk mulai tracking.
 
-### 3. Melihat & Menyaring Habit
-- Habit akan ditampilkan dalam daftar.
-- Gunakan opsi penyaringan di atas daftar untuk mengurutkan berdasarkan durasi atau prioritas.
+### 3. Habit Tracking dan Habit Stacking
+- Habit Tracking akan ditampilkan dalam daftar. bisa add, edit, delete
+- Habit Stacking akan ditampilkan dalam daftar. bisa add, edit, delete
 
 ### 4. Menghapus Habit
-- Tap ikon **hapus** pada item habit yang ingin dihapus.
+- Tap ikon **hapus** pada item habit / habitstack yang ingin dihapus.
+
+### 5. Mengedit Habit
+- Tap ikon **edit** pada item habit / habitstack yang ingin diedit.
 
 ---
 
@@ -74,7 +79,7 @@ Unduh APK dari link di atas, lalu install di perangkat Android kamu. Pastikan pe
 
 ## 🧑‍💻 Kontributor
 
-Proyek ini dikembangkan oleh tim **DB-05-2025**  
+Proyek ini dikembangkan oleh tim **DB5-PS001 2025**  
 📍 Repo: [Habit Tracker GitHub](https://github.com/DB-05-2025/Habit-Tracker)
 
 ---
