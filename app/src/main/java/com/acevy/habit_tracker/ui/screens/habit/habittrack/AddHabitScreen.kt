@@ -35,6 +35,8 @@ fun AddHabitScreen(
     navController: NavHostController,
     viewModel: HabitViewModel = viewModel(factory = ViewModelFactory(LocalContext.current)) // ✅ DI PARAM
 ) {
+    val context = LocalContext.current
+
     Column(modifier = modifier.fillMaxSize()) {
         TopAppBar(
             title = { Text("Buat Habit", style = AppType.bold20) },
@@ -64,7 +66,7 @@ fun AddHabitScreen(
                     updatedAt = System.currentTimeMillis()
                 )
                 Log.d("CHECK", "AddHabitScreen: $newHabit")
-                viewModel.addHabit(newHabit)
+                viewModel.addHabit(newHabit, context)
                 onBack()
             },
         )

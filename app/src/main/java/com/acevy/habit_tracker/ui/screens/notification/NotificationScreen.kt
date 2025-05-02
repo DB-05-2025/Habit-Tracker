@@ -1,5 +1,7 @@
 package com.acevy.habit_tracker.ui.screens.notification
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,20 +30,13 @@ import com.acevy.habit_tracker.ui.theme.AppType
 import com.acevy.habit_tracker.ui.viewmodel.HabitViewModel
 import com.acevy.habit_tracker.ui.viewmodel.NotificationViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NotificationScreen(
     modifier: Modifier = Modifier,
     notificationViewModel: NotificationViewModel = viewModel(factory = ViewModelFactory(LocalContext.current)),
     habitViewModel: HabitViewModel = viewModel(factory = ViewModelFactory(LocalContext.current))
 ) {
-//    val dummyNotifications = remember {
-//        listOf(
-//            NotificationItemCardUiState("💼", "Bekerja", "Sekitar 2 jam yang lalu", isActive = false),
-//            NotificationItemCardUiState("💪", "Olahraga", "Sekitar 15 menit lagi", isActive = true),
-//            NotificationItemCardUiState("📖", "Membaca Buku", "5 jam yang lalu", isActive = false)
-//        )
-//    }
-
     val notifications by notificationViewModel.notificationsUiState.collectAsState()
     val habits by habitViewModel.habitList.collectAsState()
 
@@ -73,7 +68,7 @@ fun NotificationScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     AsyncImageWithIndicator(
-                        model = "https://ofcnpgzapkplcbfngucb.supabase.co/storage/v1/object/sign/habit-tracker/empty-notif.png?token=...",
+                        model = "https://ofcnpgzapkplcbfngucb.supabase.co/storage/v1/object/sign/habit-tracker/empty-notif.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzFmMGNmZDEyLTQzNTktNDZlOS1iODRiLTMyYmViZDFhODY3ZiJ9.eyJ1cmwiOiJoYWJpdC10cmFja2VyL2VtcHR5LW5vdGlmLnBuZyIsImlhdCI6MTc0NjE1MDc2NCwiZXhwIjoxNzc3Njg2NzY0fQ._1PT7O1XHPGu1hm3SdRB_kZ7h4ucDl1YBJbwene2ImM",
                         contentDescription = "Empty Notification",
                         modifier = Modifier
                             .height(200.dp)
