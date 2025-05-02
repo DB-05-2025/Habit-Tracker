@@ -23,6 +23,7 @@ import com.acevy.habit_tracker.domain.usecase.log.GetTodayHabitStatusUseCase
 import com.acevy.habit_tracker.domain.usecase.log.LogUseCases
 import com.acevy.habit_tracker.domain.usecase.log.UpdateHabitLogUseCase
 import com.acevy.habit_tracker.domain.usecase.notification.ClearOldNotificationsUseCase
+import com.acevy.habit_tracker.domain.usecase.notification.DeleteNotificationByHabitIdUseCase
 import com.acevy.habit_tracker.domain.usecase.notification.GetAllNotificationsUseCase
 import com.acevy.habit_tracker.domain.usecase.notification.InsertNotificationUseCase
 import com.acevy.habit_tracker.domain.usecase.notification.NotificationUseCases
@@ -143,7 +144,8 @@ object Injection {
         return NotificationUseCases(
             insertNotification = InsertNotificationUseCase(repo),
             getAllNotifications = GetAllNotificationsUseCase(repo),
-            clearOldNotifications = ClearOldNotificationsUseCase(repo)
+            clearOldNotifications = ClearOldNotificationsUseCase(repo),
+            deleteByHabitId = DeleteNotificationByHabitIdUseCase(repo)
         )
     }
 

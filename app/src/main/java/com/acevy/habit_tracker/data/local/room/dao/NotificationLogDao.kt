@@ -20,4 +20,7 @@ interface NotificationLogDao {
 
     @Query("DELETE FROM notification_logs WHERE isActive = 0 AND timestamp < :beforeTimestamp")
     suspend fun clearNotificationsBefore(beforeTimestamp: Long)
+
+    @Query("DELETE FROM notification_logs WHERE habitId = :habitId")
+    suspend fun deleteByHabitId(habitId: Int)
 }

@@ -15,7 +15,7 @@ object DatabaseBuilder {
                 AppDatabase::class.java,
                 "habit_tracker.db"
             )
-                .fallbackToDestructiveMigration() // ⚠️ WARNING: akan hapus semua data, auto reset skema dan versi, bad practice untuk prod
+                .fallbackToDestructiveMigration(false) // ⚠️ WARNING: akan hapus semua data, auto reset skema dan versi, bad practice untuk prod
                 .build().also { INSTANCE = it }
         }
     }

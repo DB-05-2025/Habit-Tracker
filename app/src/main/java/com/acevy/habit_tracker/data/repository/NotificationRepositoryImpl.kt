@@ -20,4 +20,8 @@ class NotificationRepositoryImpl(
     override suspend fun clearOldNotifications(beforeTimestamp: Long) {
         dao.clearNotificationsBefore(beforeTimestamp)
     }
+
+    override suspend fun deleteByHabitId(habitId: Int) {
+        dao.deleteByHabitId(habitId)
+    }
 }

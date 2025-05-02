@@ -13,5 +13,6 @@ data class NotificationLogEntity(
     val message: String,
     val timestamp: Long,
     val isActive: Boolean, // Apakah pengingat akan terjadi di masa depan (true) atau sudah terjadi (false)
-    val scheduledTime: Long // Waktu notifikasi dijadwalkan
+    val scheduledTime: Long,// Waktu notifikasi dijadwalkan
+    val habitUpdatedAt: Long
 )

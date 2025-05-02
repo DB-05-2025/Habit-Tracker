@@ -7,4 +7,5 @@ interface NotificationRepository {
     suspend fun insertNotification(notification: NotificationLogEntity)
     fun getAllNotifications(): Flow<List<NotificationLogEntity>>
     suspend fun clearOldNotifications(beforeTimestamp: Long)
+    suspend fun deleteByHabitId(habitId: Int)
 }
