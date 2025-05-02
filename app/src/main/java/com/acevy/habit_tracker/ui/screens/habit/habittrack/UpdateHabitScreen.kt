@@ -34,6 +34,7 @@ fun UpdateHabitScreen(
     navController: NavHostController,
     viewModel: HabitViewModel = viewModel(factory = ViewModelFactory(LocalContext.current))
 ) {
+    val context = LocalContext.current
     val initialForm = HabitFormState(
         title = habit.title,
         note = habit.note.orEmpty(),
@@ -62,7 +63,7 @@ fun UpdateHabitScreen(
                     note = form.note,
                     updatedAt = System.currentTimeMillis()
                 )
-                viewModel.updateHabit(updatedHabit)
+                viewModel.updateHabit(updatedHabit, context)
                 onBack()
             },
         )

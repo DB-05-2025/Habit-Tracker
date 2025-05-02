@@ -47,6 +47,7 @@ fun HabitTrackingPage(
     navController: NavController,
     viewModel: HabitViewModel = viewModel(factory = ViewModelFactory(LocalContext.current))
 ) {
+    val context = LocalContext.current
     val habits by viewModel.habitList.collectAsState()
     var showDialog by remember { mutableStateOf<HabitEntity?>(null) }
 
@@ -109,7 +110,7 @@ fun HabitTrackingPage(
                 text = { Text("Yakin ingin menghapus habit '${showDialog?.title}'?") },
                 confirmButton = {
                     TextButton(onClick = {
-                        viewModel.deleteHabit(showDialog!!)
+                        viewModel.deleteHabit(showDialog!!, context)
                         showDialog = null
                     }) {
                         Text("Hapus")

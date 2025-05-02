@@ -38,6 +38,7 @@ import com.acevy.habit_tracker.ui.screens.onboarding.OnboardingScreen
 import com.acevy.habit_tracker.ui.screens.progress.ProgressScreen
 import com.acevy.habit_tracker.ui.screens.splash.SplashScreen
 import com.acevy.habit_tracker.ui.viewmodel.HabitViewModel
+import com.acevy.habit_tracker.utils.ReminderScheduler
 import kotlinx.coroutines.delay
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -56,6 +57,7 @@ fun AppNavHost(
         modifier = modifier
     ) {
         composable(Screen.Splash.route) {
+            val context = LocalContext.current
             var isDelayFinished by remember { mutableStateOf(false) }
 
             LaunchedEffect(Unit) {
@@ -67,13 +69,20 @@ fun AppNavHost(
                 !isDelayFinished -> {
                     SplashScreen()
                 }
+
                 isOnboardingCompleted == true -> {
+                    val viewModel: HabitViewModel = viewModel(factory = ViewModelFactory(context))
+
                     LaunchedEffect(Unit) {
+                        val habits = viewModel.getAllHabitsOnce()
+                        ReminderScheduler.scheduleTodayReminders(context, habits)
+
                         navController.navigate(Screen.Main.route) {
                             popUpTo(Screen.Splash.route) { inclusive = true }
                         }
                     }
                 }
+
                 isOnboardingCompleted == false -> {
                     LaunchedEffect(Unit) {
                         navController.navigate(Screen.Onboarding.route) {
@@ -83,6 +92,7 @@ fun AppNavHost(
                 }
             }
         }
+
 
         composable(Screen.Onboarding.route) {
             var hasFinished by remember { mutableStateOf(false) }
