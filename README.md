@@ -20,19 +20,7 @@ Kamu bisa mengunduh APK terbaru dari aplikasi ini melalui link berikut:
 - 📆 Habit Tracking dan Habit Stacking
 - 📊 Statistik sederhana untuk melihat progres
 - 🗑️ Hapus kebiasaan yang tidak lagi relevan
-
-### Struktur Proyek (Modul Utama)
-├── ui
-│ ├── MainActivity.kt
-│ ├── AddHabitActivity.kt
-│ └── ViewModelFactory.kt
-├── data
-│ ├── Habit.kt
-│ ├── HabitDao.kt
-│ ├── HabitDatabase.kt
-│ └── HabitRepository.kt
-├── utils
-│ └── SortType.kt
+  
 
 ### Teknologi yang Digunakan
 
