@@ -1,10 +1,13 @@
 package com.acevy.habit_tracker.ui
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.acevy.habit_tracker.di.Injection
 import com.acevy.habit_tracker.ui.viewmodel.HabitViewModel
+import com.acevy.habit_tracker.ui.viewmodel.JournalViewModel
 import com.acevy.habit_tracker.ui.viewmodel.LogViewModel
 import com.acevy.habit_tracker.ui.viewmodel.NotificationViewModel
 import com.acevy.habit_tracker.ui.viewmodel.ProgressViewModel
@@ -15,6 +18,7 @@ class ViewModelFactory(
     private val context: Context
 ) : ViewModelProvider.Factory {
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
@@ -46,6 +50,10 @@ class ViewModelFactory(
             modelClass.isAssignableFrom(LogViewModel::class.java) -> {
                 val useCases = Injection.provideLogUseCases(context)
                 LogViewModel(useCases) as T
+            }
+            modelClass.isAssignableFrom(JournalViewModel::class.java) -> {
+                val useCases = Injection.provideJournalUseCases(context)
+                JournalViewModel(useCases) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

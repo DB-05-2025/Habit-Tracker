@@ -225,6 +225,13 @@ fun AppNavHost(
                     navController = navController
                 )
             }
+
+            composable(Screen.Journal.route) {
+                JournalStackScreen(
+                    onBack = { navController.popBackStack() },
+                    navController = navController
+                )
+            }
         }
     }
 }
