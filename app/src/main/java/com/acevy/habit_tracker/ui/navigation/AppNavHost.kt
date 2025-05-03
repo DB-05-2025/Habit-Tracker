@@ -32,6 +32,7 @@ import com.acevy.habit_tracker.ui.screens.habit.habitstack.AddStackScreen
 import com.acevy.habit_tracker.ui.screens.habit.habitstack.UpdateStackScreen
 import com.acevy.habit_tracker.ui.screens.habit.habittrack.UpdateHabitScreen
 import com.acevy.habit_tracker.ui.screens.home.HomeScreen
+import com.acevy.habit_tracker.ui.screens.journal.JournalScreen
 import com.acevy.habit_tracker.ui.screens.notification.NotificationScreen
 import com.acevy.habit_tracker.ui.screens.onboarding.GetStartedScreen
 import com.acevy.habit_tracker.ui.screens.onboarding.OnboardingScreen
@@ -155,6 +156,15 @@ fun AppNavHost(
                     currentRoute = Screen.Notification.route
                 ) { padding ->
                     NotificationScreen(modifier = Modifier.padding(padding))
+                }
+            }
+
+            composable(Screen.Journal.route) {
+                MainScreenWithBottomNav(
+                    navController = navController,
+                    currentRoute = Screen.Journal.route
+                ) { padding ->
+                    JournalScreen(modifier = Modifier.padding(padding))
                 }
             }
 

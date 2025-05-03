@@ -46,6 +46,10 @@ android {
 }
 
 dependencies {
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+    implementation(libs.converter.gson)
+    implementation(libs.retrofit)
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.lottie.compose)
     implementation(libs.accompanist.systemuicontroller)

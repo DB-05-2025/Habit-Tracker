@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ShowChart
+import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.DashboardCustomize
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
@@ -49,6 +50,7 @@ fun BottomNavBar(
         NavigationItem("Habits", Icons.Default.DashboardCustomize, Screen.Habit),
         NavigationItem("Kemajuan", Icons.AutoMirrored.Filled.ShowChart, Screen.Progress),
         NavigationItem("Notifications", Icons.Default.Notifications, Screen.Notification),
+        NavigationItem("Journaling", Icons.Default.Book, Screen.Journal),
     )
 
     Row(

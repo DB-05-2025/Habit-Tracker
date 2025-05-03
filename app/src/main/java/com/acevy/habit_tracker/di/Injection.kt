@@ -2,12 +2,15 @@ package com.acevy.habit_tracker.di
 
 import android.content.Context
 import com.acevy.habit_tracker.data.local.room.db.DatabaseBuilder
+import com.acevy.habit_tracker.data.remote.retrofit.ApiConfig
 import com.acevy.habit_tracker.data.repository.HabitRepositoryImpl
+import com.acevy.habit_tracker.data.repository.JournalRepositoryImpl
 import com.acevy.habit_tracker.data.repository.NotificationRepositoryImpl
 import com.acevy.habit_tracker.data.repository.ProgressRepositoryImpl
 import com.acevy.habit_tracker.data.repository.StackRepositoryImpl
 import com.acevy.habit_tracker.data.repository.TrackRepositoryImpl
 import com.acevy.habit_tracker.domain.repository.HabitRepository
+import com.acevy.habit_tracker.domain.repository.JournalRepository
 import com.acevy.habit_tracker.domain.repository.NotificationRepository
 import com.acevy.habit_tracker.domain.repository.ProgressRepository
 import com.acevy.habit_tracker.domain.repository.StackRepository
@@ -18,6 +21,9 @@ import com.acevy.habit_tracker.domain.usecase.habit.GetAllHabitsUseCase
 import com.acevy.habit_tracker.domain.usecase.habit.GetHabitByIdUseCase
 import com.acevy.habit_tracker.domain.usecase.habit.HabitUseCases
 import com.acevy.habit_tracker.domain.usecase.habit.UpdateHabitUseCase
+import com.acevy.habit_tracker.domain.usecase.journal.CreateJournalUseCase
+import com.acevy.habit_tracker.domain.usecase.journal.GetJournalsUseCase
+import com.acevy.habit_tracker.domain.usecase.journal.JournalUseCases
 import com.acevy.habit_tracker.domain.usecase.log.GenerateTodayLogsUseCase
 import com.acevy.habit_tracker.domain.usecase.log.GetTodayHabitStatusUseCase
 import com.acevy.habit_tracker.domain.usecase.log.LogUseCases
@@ -164,6 +170,22 @@ object Injection {
                 logDao = db.habitLogDao()
             ),
             updateLog = UpdateHabitLogUseCase(TrackRepositoryImpl(db.habitLogDao())) // ✅ ini
+        )
+    }
+
+    // ======================
+    // JOURNAL MODULE
+    // ======================
+    fun provideJournalRepository(context: Context): JournalRepository {
+        val apiService = ApiConfig.getApiService()
+        return JournalRepositoryImpl(apiService)
+    }
+
+    fun provideJournalUseCases(context: Context): JournalUseCases {
+        val repo = provideJournalRepository(context)
+        return JournalUseCases(
+            getJournals = GetJournalsUseCase(repo),
+            createJournal = CreateJournalUseCase(repo)
         )
     }
 }
