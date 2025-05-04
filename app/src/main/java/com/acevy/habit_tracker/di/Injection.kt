@@ -22,8 +22,10 @@ import com.acevy.habit_tracker.domain.usecase.habit.GetHabitByIdUseCase
 import com.acevy.habit_tracker.domain.usecase.habit.HabitUseCases
 import com.acevy.habit_tracker.domain.usecase.habit.UpdateHabitUseCase
 import com.acevy.habit_tracker.domain.usecase.journal.CreateJournalUseCase
+import com.acevy.habit_tracker.domain.usecase.journal.DeleteJournalUseCase
 import com.acevy.habit_tracker.domain.usecase.journal.GetJournalsUseCase
 import com.acevy.habit_tracker.domain.usecase.journal.JournalUseCases
+import com.acevy.habit_tracker.domain.usecase.journal.UpdateJournalUseCase
 import com.acevy.habit_tracker.domain.usecase.log.GenerateTodayLogsUseCase
 import com.acevy.habit_tracker.domain.usecase.log.GetTodayHabitStatusUseCase
 import com.acevy.habit_tracker.domain.usecase.log.LogUseCases
@@ -185,7 +187,9 @@ object Injection {
         val repo = provideJournalRepository(context)
         return JournalUseCases(
             getJournals = GetJournalsUseCase(repo),
-            createJournal = CreateJournalUseCase(repo)
+            createJournal = CreateJournalUseCase(repo),
+            updateJournal = UpdateJournalUseCase(repo),
+            deleteJournal = DeleteJournalUseCase(repo)
         )
     }
 }

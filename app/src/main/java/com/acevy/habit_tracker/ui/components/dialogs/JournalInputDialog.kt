@@ -1,4 +1,4 @@
-package com.acevy.habit_tracker.ui.components.forminputs
+package com.acevy.habit_tracker.ui.components.dialogs
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,18 +15,19 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.OutlinedButton
 import com.acevy.habit_tracker.ui.components.buttons.ButtonSmall
 import com.acevy.habit_tracker.ui.components.buttons.ButtonVariant
+import com.acevy.habit_tracker.ui.components.forminputs.TextAreaField
 import com.acevy.habit_tracker.ui.theme.AppType
 
 @Composable
 fun JournalInputDialog(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     onDismiss: () -> Unit,
     onSubmit: () -> Unit,
-    modifier: Modifier = Modifier
+    isEditMode: Boolean = false,
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Surface(
@@ -60,12 +61,11 @@ fun JournalInputDialog(
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    OutlinedButton(
+                    ButtonSmall(
+                        text = "Batal",
                         onClick = onDismiss,
-                        shape = RoundedCornerShape(12.dp)
-                    ) {
-                        Text("Batal")
-                    }
+                        variant = ButtonVariant.Outlined
+                    )
 
                     Spacer(modifier = Modifier.width(8.dp))
 

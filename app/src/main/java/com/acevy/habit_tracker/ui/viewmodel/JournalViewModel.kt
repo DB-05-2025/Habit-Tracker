@@ -44,4 +44,28 @@ class JournalViewModel(
             }
         }
     }
+
+    fun updateJournal(id: String, journal: JournalResponse) {
+        viewModelScope.launch {
+            try {
+                val updated = useCases.updateJournal(id, journal)
+                _journals.value = _journals.value.map {
+                    if (it.id == id) updated else it
+                }
+            } catch (e: Exception) {
+                Log.d("JournalViewModel", "Error updating journal: ${e.message}")
+            }
+        }
+    }
+
+    fun deleteJournal(id: String) {
+        viewModelScope.launch {
+            try {
+                useCases.deleteJournal(id)
+                _journals.value = _journals.value.filterNot { it.id == id }
+            } catch (e: Exception) {
+                Log.d("JournalViewModel", "Error deleting journal: ${e.message}")
+            }
+        }
+    }
 }

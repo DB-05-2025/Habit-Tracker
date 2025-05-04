@@ -13,4 +13,11 @@ class JournalRepositoryImpl(private val apiService: ApiService) : JournalReposit
         return apiService.createJournal(journal)
     }
 
+    override suspend fun updateJournal(id: String, journal: JournalResponse): JournalResponse {
+        return apiService.updateJournal(id, journal)
+    }
+
+    override suspend fun deleteJournal(id: String) {
+        apiService.deleteJournal(id)
+    }
 }
