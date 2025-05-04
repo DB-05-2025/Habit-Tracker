@@ -235,6 +235,10 @@ fun AppNavHost(
                     navController = navController
                 )
             }
+
+            composable(Screen.Journal.route) {
+                JournalScreen(modifier = Modifier)
+            }
         }
     }
 }
